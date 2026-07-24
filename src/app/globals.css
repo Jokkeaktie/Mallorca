@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: theme('colors.canvas');
+  color: theme('colors.ink');
+}
+
+/* Stribet mønster til "Ønske"-status, så statussen kan aflæses uden farve. */
+.pattern-request {
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--pattern-color) 0px,
+    var(--pattern-color) 4px,
+    transparent 4px,
+    transparent 9px
+  );
+  background-color: color-mix(in srgb, var(--pattern-color) 18%, white);
+}
+
+.pattern-approved {
+  background-color: var(--pattern-color);
+}
