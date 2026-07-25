@@ -67,6 +67,21 @@ export function DayDetailsPanel({
                   </span>
                 </div>
 
+                {booking.hasPhoto && (
+                  <a
+                    href={`/api/bookings/${booking.id}/photo`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 block"
+                  >
+                    <img
+                      src={`/api/bookings/${booking.id}/photo`}
+                      alt={`Billede af nøglegemmested for ${booking.name}`}
+                      className="h-32 w-full rounded-xl2 border border-line object-cover"
+                    />
+                  </a>
+                )}
+
                 {isAdmin && (
                   <div className="mt-2 flex flex-col gap-1 border-t border-line pt-2 text-sm text-muted">
                     {(booking.arrivalTime || booking.departureTime) && (

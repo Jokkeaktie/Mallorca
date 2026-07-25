@@ -28,9 +28,16 @@ create table if not exists public.bookings (
   departure_time time without time zone,
   internal_comment text,
   created_by text,
+  photo_path text,
+  photo_content_type text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+-- Tilføjer felterne til billede af nøglegemmested, hvis tabellen allerede
+-- fandtes fra en tidligere version af skemaet (denne fil er sikker at køre igen).
+alter table public.bookings add column if not exists photo_path text;
+alter table public.bookings add column if not exists photo_content_type text;
 
 create index if not exists bookings_date_range_idx
   on public.bookings (start_date, end_date);
@@ -71,3 +78,13 @@ create trigger app_settings_set_updated_at
 -- Kør i stedet scriptet "npm run set-family-password -- <din-adgangskode>"
 -- efter dette skema er oprettet (se README). Det udregner en rigtig
 -- bcrypt-hash og gemmer den, så adgangskoden aldrig optræder i kildekoden.
+
+-- Fillager til billeder af nøglegemmested o.lign., knyttet til en booking.
+-- Bucket'en er IKKE offentlig ("public: false") – billeder hentes udelukkende
+-- via API-ruten /api/bookings/[id]/photo, som selv tjekker at den, der spørger,
+-- enten er administrator eller har familiens fælles adgangskode. Det er samme
+-- sikkerhedsmodel som resten af appen: kun service role-nøglen har direkte
+-- adgang til bucket'en.
+insert into storage.buckets (id, name, public)
+values ('booking-photos', 'booking-photos', false)
+on conflict (id) do nothing;

@@ -12,6 +12,10 @@ export interface AdminBooking {
   departureTime: string | null; // HH:mm
   internalComment: string | null;
   createdBy: string | null;
+  photoPath: string | null;
+  photoContentType: string | null;
+  /** Bekvemmeligheds-felt afledt af photoPath, så frontend ikke selv skal tjekke det. */
+  hasPhoto: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -19,6 +23,9 @@ export interface AdminBooking {
 /**
  * Begrænset udgave af en kalenderpost til familievisningen.
  * Indeholder bevidst IKKE tidspunkter, kommentarer eller admin-metadata.
+ * "hasPhoto" fortæller kun OM der findes et billede (fx af nøglegemmested) –
+ * selve billedet hentes separat via /api/bookings/[id]/photo, som selv
+ * tjekker adgang, uanset om kalderen er familie eller administrator.
  */
 export interface PublicBooking {
   id: string;
@@ -27,6 +34,7 @@ export interface PublicBooking {
   color: string;
   startDate: string;
   endDate: string;
+  hasPhoto: boolean;
 }
 
 /**
@@ -39,6 +47,8 @@ export interface CalendarBooking extends PublicBooking {
   departureTime?: string | null;
   internalComment?: string | null;
   createdBy?: string | null;
+  photoPath?: string | null;
+  photoContentType?: string | null;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -51,5 +61,6 @@ export function toPublicBooking(booking: AdminBooking): PublicBooking {
     color: booking.color,
     startDate: booking.startDate,
     endDate: booking.endDate,
+    hasPhoto: booking.hasPhoto,
   };
 }

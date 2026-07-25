@@ -146,6 +146,12 @@ Supabase-klient osv.). Det tager typisk et minuts tid.
    tilmelding – administratorer oprettes udelukkende via scriptet i trin 6
    nedenfor.
 
+> **Opdaterer du en database, der allerede kører** (fx fordi der er kommet en
+> ny version af appen med nye felter)? `supabase/schema.sql` er skrevet, så
+> den er **sikker at køre igen** — den opretter kun det, der mangler, og
+> rører ikke ved eksisterende data. Gå bare til **SQL Editor**, indsæt hele
+> filens indhold på ny, og tryk "Run".
+
 ## 5. Sæt miljøvariabler
 
 I projektmappen:
@@ -294,6 +300,12 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    kan gerne ønske samme periode. I beslutter selv, hvem der får perioden.
 6. **Skift den fælles adgangskode** når som helst under "Indstillinger" på
    administratorsiden.
+7. **Tilføj et billede af nøglegemmested** ved at redigere en **allerede
+   oprettet** post (billedet kan først tilføjes, når posten findes). Under
+   "Billede af nøglegemmested" kan I tage et foto direkte med telefonen eller
+   vælge et fra kamerarullen. Billedet vises for familie og venner på netop
+   den kalenderpost, så den næste gæst kan finde nøglen. Tryk "Fjern billede"
+   for at slette det igen.
 
 ## 14. Tests, linting og typecheck
 

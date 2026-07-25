@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { CalendarShell } from '@/components/calendar/CalendarShell';
 import { BookingForm, type BookingFormValues } from './BookingForm';
+import { BookingPhotoManager } from './BookingPhotoManager';
 import { PasswordForm } from './PasswordForm';
 import type { AdminBooking, CalendarBooking } from '@/lib/types';
 import { getBrowserSupabaseClient } from '@/lib/supabase/browserClient';
@@ -154,6 +155,16 @@ export function AdminDashboard() {
                   : handleUpdate(formMode.booking.id, values)
               }
             />
+
+            {formMode.kind === 'edit' && (
+              <div className="mt-5 border-t border-line pt-5">
+                <BookingPhotoManager
+                  bookingId={formMode.booking.id}
+                  hasPhotoInitially={!!formMode.booking.photoPath}
+                  onChange={refresh}
+                />
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -41,6 +41,13 @@ export default function AdminGuidePage() {
           <strong>7. Farver.</strong> Vælg gerne samme farve igen, næste gang I opretter en
           post til den samme person eller familie, så farven er genkendelig i kalenderen.
         </li>
+        <li>
+          <strong>8. Billede af nøglegemmested.</strong> Åbn en allerede oprettet post via
+          “Redigér”, og tryk “Tilføj billede” for at tage et foto med telefonen eller vælge
+          et fra kamerarullen. Billedet vises for familie og venner på netop den
+          kalenderpost, så den næste gæst kan finde nøglen. Tryk “Fjern billede” for at
+          slette det igen.
+        </li>
       </ol>
 
       <Link href="/admin" className="text-sm text-accent underline underline-offset-2">
