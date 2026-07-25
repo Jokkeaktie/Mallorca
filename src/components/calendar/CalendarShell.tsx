@@ -16,6 +16,7 @@ import { WeekView } from './WeekView';
 import { YearView } from './YearView';
 import { DayDetailsPanel } from './DayDetailsPanel';
 import { Legend } from './Legend';
+import { CalendarSkeleton } from './CalendarSkeleton';
 
 interface CalendarShellProps {
   isAdmin?: boolean;
@@ -112,7 +113,7 @@ export function CalendarShell({
       <Legend />
 
       {loadError && <p className="text-sm text-red-700">{loadError}</p>}
-      {isLoading && !loadError && <p className="text-sm text-muted">Indlæser…</p>}
+      {isLoading && !loadError && <CalendarSkeleton />}
 
       {!isLoading && !loadError && (
         <>

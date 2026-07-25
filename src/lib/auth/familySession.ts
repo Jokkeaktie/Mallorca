@@ -12,7 +12,7 @@
  */
 
 export const FAMILY_SESSION_COOKIE = 'family_session';
-const FAMILY_SESSION_TTL_SECONDS = 60 * 60 * 24 * 180; // 180 dage
+const FAMILY_SESSION_TTL_SECONDS = 60 * 60 * 24 * 10; // 10 dage
 
 function getSecret(): string {
   const secret = process.env.FAMILY_SESSION_SECRET;

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { AdminDashboard } from '@/components/admin/AdminDashboard';
+import { InstallPrompt } from '@/components/InstallPrompt';
 
 export const metadata = { title: 'Administrator – Mallorca-kalenderen' };
 
@@ -15,6 +16,8 @@ export default function AdminPage() {
           </Link>
         </p>
       </header>
+
+      <InstallPrompt />
 
       <AdminDashboard />
     </main>

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { CalendarShell } from '@/components/calendar/CalendarShell';
+import { InstallPrompt } from '@/components/InstallPrompt';
 
 export default function FamilyCalendarPage() {
   return (
@@ -8,6 +9,8 @@ export default function FamilyCalendarPage() {
         <h1 className="text-xl font-semibold text-ink sm:text-2xl">Mallorca-kalenderen</h1>
         <p className="text-sm text-muted">Se hvornår lejligheden er ønsket eller booket.</p>
       </header>
+
+      <InstallPrompt />
 
       <CalendarShell />
 
