@@ -53,18 +53,18 @@ export function MonthView({ monthAnchor, today, bookings, onSelectDay }: MonthVi
                 key={day.isoDate}
                 type="button"
                 onClick={() => onSelectDay(day.isoDate)}
-                className={`flex min-h-[4.5rem] flex-col gap-0.5 border-r border-line p-1 text-left last:border-r-0 sm:min-h-[6rem] sm:p-1.5 ${
+                className={`flex min-h-[4.5rem] min-w-0 flex-col gap-0.5 overflow-hidden border-r border-line p-1 text-left last:border-r-0 sm:min-h-[6rem] sm:p-1.5 ${
                   day.isCurrentMonth ? 'bg-white' : 'bg-canvas/60 text-muted'
                 }`}
               >
                 <span
-                  className={`inline-flex h-6 w-6 items-center justify-center rounded-full text-xs ${
+                  className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs ${
                     day.isToday ? 'bg-accent font-semibold text-white' : ''
                   }`}
                 >
                   {day.date.getDate()}
                 </span>
-                <div className="flex flex-col gap-0.5">
+                <div className="flex min-w-0 flex-col gap-0.5">
                   {visible.map((booking) => (
                     <BookingBadge key={booking.id} booking={booking} />
                   ))}

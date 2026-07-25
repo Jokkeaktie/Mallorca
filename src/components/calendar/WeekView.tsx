@@ -42,7 +42,7 @@ export function WeekView({ weekAnchor, today, bookings, onSelectDay }: WeekViewP
                   {day.date.getDate()}
                 </span>
               </div>
-              <div className="flex flex-1 flex-wrap gap-1.5">
+              <div className="flex min-w-0 flex-1 flex-wrap gap-1.5">
                 {dayBookings.length === 0 ? (
                   <span className="py-1.5 text-sm text-muted">Ledig</span>
                 ) : (
