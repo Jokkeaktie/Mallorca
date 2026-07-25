@@ -64,3 +64,20 @@ export function toPublicBooking(booking: AdminBooking): PublicBooking {
     hasPhoto: booking.hasPhoto,
   };
 }
+
+/**
+ * Praktisk info til familievisningen. Der er ingen private felter her –
+ * alt indhold i disse to typer er tiltænkt at blive vist til familie/venner.
+ */
+export interface ChecklistItem {
+  id: string;
+  text: string;
+  sortOrder: number;
+}
+
+export interface FaqItem {
+  id: string;
+  question: string;
+  answer: string;
+  sortOrder: number;
+}

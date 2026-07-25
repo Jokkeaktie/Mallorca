@@ -48,6 +48,16 @@ export default function AdminGuidePage() {
           kalenderpost, så den næste gæst kan finde nøglen. Tryk “Fjern billede” for at
           slette det igen.
         </li>
+        <li>
+          <strong>9. Praktisk info (tjekliste og FAQ).</strong> Under{' '}
+          <Link href="/admin/info" className="underline underline-offset-2">
+            Praktisk info
+          </Link>{' '}
+          kan I tilføje punkter til tjeklisten ved afrejse (fx “Sluk lys og aircondition”) og
+          spørgsmål/svar til FAQ’en (fx “Hvor bytter jeg gaspatron?”). Brug ↑/↓ til at
+          omarrangere rækkefølgen. Ændringer vises med det samme for familie og venner
+          under “Praktisk info” på forsiden.
+        </li>
       </ol>
 
       <Link href="/admin" className="text-sm text-accent underline underline-offset-2">

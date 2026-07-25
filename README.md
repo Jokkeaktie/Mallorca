@@ -133,8 +133,8 @@ Supabase-klient osv.). Det tager typisk et minuts tid.
 4. Gå til **SQL Editor** i venstremenuen, opret en "New query", og indsæt
    hele indholdet af filen [`supabase/schema.sql`](./supabase/schema.sql) fra
    dette projekt. Tryk "Run".
-   - Dette opretter tabellerne `bookings` og `app_settings` samt de
-     nødvendige sikkerhedsregler (Row Level Security).
+   - Dette opretter tabellerne `bookings`, `app_settings`, `checklist_items`
+     og `faq_items` samt de nødvendige sikkerhedsregler (Row Level Security).
 5. Gå til **Project Settings -> API**. Her finder du:
    - **Project URL** → bruges som `NEXT_PUBLIC_SUPABASE_URL` og
      `SUPABASE_URL`.
@@ -306,6 +306,12 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    vælge et fra kamerarullen. Billedet vises for familie og venner på netop
    den kalenderpost, så den næste gæst kan finde nøglen. Tryk "Fjern billede"
    for at slette det igen.
+8. **Redigér praktisk info** (tjekliste ved afrejse + FAQ) under **Praktisk
+   info** på administratorsiden. Tilføj, ret, omarrangér (↑/↓) eller slet
+   punkter — ændringer vises med det samme for familie og venner under
+   "Praktisk info" på forsiden. Afkrydsningerne på tjeklisten gemmes ikke;
+   de er kun til den enkelte gæsts eget overblik og nulstilles ved næste
+   besøg.
 
 ## 14. Tests, linting og typecheck
 

@@ -13,6 +13,10 @@ export default function AdminPage() {
           Opret, redigér og slet kalenderposter.{' '}
           <Link href="/admin/vejledning" className="underline underline-offset-2">
             Kort vejledning
+          </Link>{' '}
+          ·{' '}
+          <Link href="/admin/info" className="underline underline-offset-2">
+            Praktisk info
           </Link>
         </p>
       </header>

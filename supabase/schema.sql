@@ -79,6 +79,40 @@ create trigger app_settings_set_updated_at
 -- efter dette skema er oprettet (se README). Det udregner en rigtig
 -- bcrypt-hash og gemmer den, så adgangskoden aldrig optræder i kildekoden.
 
+-- Praktisk info til familievisningen: tjekliste ved afrejse + FAQ.
+-- Samme sikkerhedsmodel som resten af appen: alle læser via API-ruter der
+-- tjekker familie-/admin-adgang, kun administratorer kan skrive.
+create table if not exists public.checklist_items (
+  id uuid primary key default gen_random_uuid(),
+  text text not null check (char_length(trim(text)) > 0),
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.checklist_items enable row level security;
+
+create table if not exists public.faq_items (
+  id uuid primary key default gen_random_uuid(),
+  question text not null check (char_length(trim(question)) > 0),
+  answer text not null check (char_length(trim(answer)) > 0),
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.faq_items enable row level security;
+
+drop trigger if exists checklist_items_set_updated_at on public.checklist_items;
+create trigger checklist_items_set_updated_at
+  before update on public.checklist_items
+  for each row execute function public.set_updated_at();
+
+drop trigger if exists faq_items_set_updated_at on public.faq_items;
+create trigger faq_items_set_updated_at
+  before update on public.faq_items
+  for each row execute function public.set_updated_at();
+
 -- Fillager til billeder af nøglegemmested o.lign., knyttet til en booking.
 -- Bucket'en er IKKE offentlig ("public: false") – billeder hentes udelukkende
 -- via API-ruten /api/bookings/[id]/photo, som selv tjekker at den, der spørger,
