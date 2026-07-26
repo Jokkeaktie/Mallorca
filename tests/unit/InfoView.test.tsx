@@ -5,12 +5,17 @@ import { InfoView } from '@/components/info/InfoView';
 
 const checklistItems = [{ id: '1', text: 'Sluk lys', sortOrder: 0 }];
 const faqItems = [{ id: '1', question: 'Hvor bytter jeg gaspatron?', answer: 'I skuret.', sortOrder: 0 }];
+let apartmentInfoText = 'Adresse: Carrer Example 12';
 
 describe('InfoView', () => {
   beforeEach(() => {
     window.localStorage.clear();
+    apartmentInfoText = 'Adresse: Carrer Example 12';
     global.fetch = vi.fn(async (url: string) => {
       const href = url.toString();
+      if (href.includes('/api/apartment-info')) {
+        return new Response(JSON.stringify({ text: apartmentInfoText }), { status: 200 });
+      }
       if (href.includes('/api/checklist')) {
         return new Response(JSON.stringify({ items: checklistItems }), { status: 200 });
       }
@@ -28,17 +33,25 @@ describe('InfoView', () => {
     vi.restoreAllMocks();
   });
 
-  it('viser FAQ og tjekliste efter indlæsning', async () => {
+  it('viser Om lejligheden, FAQ og tjekliste efter indlæsning', async () => {
     render(<InfoView />);
-    expect(await screen.findByText('Hvor bytter jeg gaspatron?')).toBeInTheDocument();
+    expect(await screen.findByText('Adresse: Carrer Example 12')).toBeInTheDocument();
+    expect(screen.getByText('Hvor bytter jeg gaspatron?')).toBeInTheDocument();
     expect(screen.getByText('Sluk lys')).toBeInTheDocument();
   });
 
-  it('viser FAQ FØR tjeklisten i rækkefølgen', async () => {
+  it('viser sektionerne i rækkefølgen Om lejligheden, FAQ, tjekliste', async () => {
     render(<InfoView />);
     await screen.findByText('Hvor bytter jeg gaspatron?');
     const headings = screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent);
-    expect(headings).toEqual(['Praktisk FAQ', 'Inden du rejser']);
+    expect(headings).toEqual(['Om lejligheden', 'Praktisk FAQ', 'Inden du rejser']);
+  });
+
+  it('skjuler "Om lejligheden" hvis teksten er tom', async () => {
+    apartmentInfoText = '';
+    render(<InfoView />);
+    await screen.findByText('Hvor bytter jeg gaspatron?');
+    expect(screen.queryByText('Om lejligheden')).not.toBeInTheDocument();
   });
 
   it('afkrydsning af tjekliste-punkt sender IKKE noget til serveren, men gemmes lokalt', async () => {

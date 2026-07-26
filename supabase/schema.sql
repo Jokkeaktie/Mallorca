@@ -45,12 +45,22 @@ create index if not exists bookings_date_range_idx
 alter table public.bookings enable row level security;
 -- Ingen policies tilføjes med vilje: default er "deny all" for anon/authenticated.
 
--- Applikationsindstillinger (i første version: hash af familiens fælles adgangskode)
+-- Applikationsindstillinger: hash af familiens fælles adgangskode +
+-- fri tekst med praktisk info om lejligheden (adresse, telefonnumre m.m.).
 create table if not exists public.app_settings (
   id smallint primary key default 1 check (id = 1),
-  family_password_hash text not null,
+  family_password_hash text,
+  apartment_info text not null default '',
   updated_at timestamptz not null default now()
 );
+
+-- Tilføjer feltet til "Om lejligheden", hvis tabellen allerede fandtes fra
+-- en tidligere version af skemaet (denne fil er sikker at køre igen).
+alter table public.app_settings add column if not exists apartment_info text not null default '';
+
+-- family_password_hash var oprindeligt "not null", men skal kunne være tom,
+-- så "Om lejligheden" kan gemmes uafhængigt af, om adgangskoden er sat endnu.
+alter table public.app_settings alter column family_password_hash drop not null;
 
 alter table public.app_settings enable row level security;
 -- Ingen policies: kun service role kan læse/skrive.

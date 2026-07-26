@@ -16,3 +16,7 @@ export type FaqItemInput = z.infer<typeof faqItemSchema>;
 export const reorderSchema = z.object({
   sortOrder: z.number().int(),
 });
+
+export const apartmentInfoSchema = z.object({
+  text: z.string().max(5000, 'Teksten er for lang').transform((v) => v.trim()),
+});

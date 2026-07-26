@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ApartmentInfoEditor } from '@/components/admin/ApartmentInfoEditor';
 import { ChecklistEditor } from '@/components/admin/ChecklistEditor';
 import { FaqEditor } from '@/components/admin/FaqEditor';
 
@@ -18,6 +19,7 @@ export default function AdminInfoPage() {
         </p>
       </header>
 
+      <ApartmentInfoEditor />
       <FaqEditor />
       <ChecklistEditor />
 

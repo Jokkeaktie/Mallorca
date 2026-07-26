@@ -10,6 +10,7 @@ import {
 } from '@/lib/checklistPersistence';
 
 export function InfoView() {
+  const [apartmentInfo, setApartmentInfo] = useState('');
   const [checklist, setChecklist] = useState<ChecklistItem[]>([]);
   const [faq, setFaq] = useState<FaqItem[]>([]);
   const [checked, setChecked] = useState<Set<string>>(new Set());
@@ -23,18 +24,21 @@ export function InfoView() {
       setIsLoading(true);
       setError(null);
       try {
-        const [checklistRes, faqRes, bookingsRes] = await Promise.all([
+        const [apartmentInfoRes, checklistRes, faqRes, bookingsRes] = await Promise.all([
+          fetch('/api/apartment-info', { cache: 'no-store' }),
           fetch('/api/checklist', { cache: 'no-store' }),
           fetch('/api/faq', { cache: 'no-store' }),
           fetch('/api/bookings', { cache: 'no-store' }),
         ]);
-        if (!checklistRes.ok || !faqRes.ok || !bookingsRes.ok) {
+        if (!apartmentInfoRes.ok || !checklistRes.ok || !faqRes.ok || !bookingsRes.ok) {
           setError('Kunne ikke hente informationen. Prøv at genindlæse siden.');
           return;
         }
+        const apartmentInfoData = await apartmentInfoRes.json();
         const checklistData = await checklistRes.json();
         const faqData = await faqRes.json();
         const bookingsData = await bookingsRes.json();
+        setApartmentInfo(apartmentInfoData.text ?? '');
         setChecklist(checklistData.items ?? []);
         setFaq(faqData.items ?? []);
 
@@ -72,6 +76,15 @@ export function InfoView() {
 
   return (
     <div className="flex flex-col gap-8">
+      {apartmentInfo && (
+        <section className="flex flex-col gap-3">
+          <h2 className="text-lg font-semibold text-ink">Om lejligheden</h2>
+          <p className="whitespace-pre-line rounded-xl2 border border-line bg-white p-3 text-ink">
+            {apartmentInfo}
+          </p>
+        </section>
+      )}
+
       <section className="flex flex-col gap-3">
         <h2 className="text-lg font-semibold text-ink">Praktisk FAQ</h2>
         {faq.length === 0 ? (
