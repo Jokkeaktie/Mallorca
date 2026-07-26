@@ -18,8 +18,8 @@ export default function AdminInfoPage() {
         </p>
       </header>
 
-      <ChecklistEditor />
       <FaqEditor />
+      <ChecklistEditor />
 
       <Link href="/admin" className="text-sm text-accent underline underline-offset-2">
         ← Tilbage til administratorområdet

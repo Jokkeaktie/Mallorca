@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { ChecklistItem } from '@/lib/types';
 
 export function ChecklistEditor() {
@@ -8,9 +8,14 @@ export function ChecklistEditor() {
   const [newText, setNewText] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [savedId, setSavedId] = useState<string | null>(null);
+  const savedTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     load();
+    return () => {
+      if (savedTimeoutRef.current) clearTimeout(savedTimeoutRef.current);
+    };
   }, []);
 
   async function load() {
@@ -50,18 +55,31 @@ export function ChecklistEditor() {
     setNewText('');
   }
 
-  async function handleTextChange(id: string, text: string) {
+  function handleTextChange(id: string, text: string) {
     setItems((prev) => prev.map((item) => (item.id === id ? { ...item, text } : item)));
   }
 
-  async function handleTextSave(id: string, text: string) {
-    const trimmed = text.trim();
-    if (!trimmed) return;
-    await fetch(`/api/checklist/${id}`, {
+  async function handleSave(item: ChecklistItem) {
+    const trimmed = item.text.trim();
+    if (!trimmed) {
+      setError('Teksten må ikke være tom.');
+      return;
+    }
+
+    const response = await fetch(`/api/checklist/${item.id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text: trimmed }),
     });
+    if (!response.ok) {
+      setError('Kunne ikke gemme ændringen.');
+      return;
+    }
+
+    setError(null);
+    setSavedId(item.id);
+    if (savedTimeoutRef.current) clearTimeout(savedTimeoutRef.current);
+    savedTimeoutRef.current = setTimeout(() => setSavedId(null), 1800);
   }
 
   async function handleDelete(id: string) {
@@ -106,8 +124,8 @@ export function ChecklistEditor() {
     <div className="flex flex-col gap-3">
       <h2 className="text-base font-semibold text-ink">Tjekliste ved afrejse</h2>
       <p className="text-sm text-muted">
-        Vises for familie og venner som en liste, de selv kan krydse af (krydsene gemmes ikke –
-        de nulstilles ved næste besøg).
+        Vises for familie og venner som en liste, de selv kan krydse af (krydsene gemmes lokalt
+        på deres enhed, indtil dagen efter opholdet slutter).
       </p>
 
       {error && <p className="text-sm text-red-700">{error}</p>}
@@ -120,7 +138,6 @@ export function ChecklistEditor() {
               <input
                 value={item.text}
                 onChange={(e) => handleTextChange(item.id, e.target.value)}
-                onBlur={(e) => handleTextSave(item.id, e.target.value)}
                 className="flex-1 rounded-lg border border-line px-2 py-1.5 text-sm outline-none focus:border-accent"
               />
               <button
@@ -143,12 +160,20 @@ export function ChecklistEditor() {
               </button>
               <button
                 type="button"
+                onClick={() => handleSave(item)}
+                className="rounded-full bg-accent px-3 py-1 text-xs font-medium text-white hover:opacity-90"
+              >
+                Gem
+              </button>
+              <button
+                type="button"
                 onClick={() => handleDelete(item.id)}
                 aria-label="Slet punkt"
                 className="rounded-full border border-red-200 px-2 py-1 text-xs text-red-700 hover:bg-red-50"
               >
                 Slet
               </button>
+              {savedId === item.id && <span className="text-xs text-accent">Gemt ✓</span>}
             </li>
           ))}
           {items.length === 0 && <p className="text-sm text-muted">Ingen punkter endnu.</p>}
@@ -167,7 +192,7 @@ export function ChecklistEditor() {
           type="submit"
           className="rounded-xl2 bg-accent px-3 py-2 text-sm font-medium text-white hover:opacity-90"
         >
-          + Tilføj
+          Gem nyt punkt
         </button>
       </form>
     </div>

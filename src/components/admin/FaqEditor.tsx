@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { FaqItem } from '@/lib/types';
 
 export function FaqEditor() {
@@ -9,9 +9,14 @@ export function FaqEditor() {
   const [newAnswer, setNewAnswer] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [savedId, setSavedId] = useState<string | null>(null);
+  const savedTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     load();
+    return () => {
+      if (savedTimeoutRef.current) clearTimeout(savedTimeoutRef.current);
+    };
   }, []);
 
   async function load() {
@@ -57,14 +62,28 @@ export function FaqEditor() {
     setItems((prev) => prev.map((item) => (item.id === id ? { ...item, [field]: value } : item)));
   }
 
-  async function handleFieldSave(id: string, field: 'question' | 'answer', value: string) {
-    const trimmed = value.trim();
-    if (!trimmed) return;
-    await fetch(`/api/faq/${id}`, {
+  async function handleSave(item: FaqItem) {
+    const question = item.question.trim();
+    const answer = item.answer.trim();
+    if (!question || !answer) {
+      setError('Spørgsmål og svar må ikke være tomme.');
+      return;
+    }
+
+    const response = await fetch(`/api/faq/${item.id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ [field]: trimmed }),
+      body: JSON.stringify({ question, answer }),
     });
+    if (!response.ok) {
+      setError('Kunne ikke gemme ændringen.');
+      return;
+    }
+
+    setError(null);
+    setSavedId(item.id);
+    if (savedTimeoutRef.current) clearTimeout(savedTimeoutRef.current);
+    savedTimeoutRef.current = setTimeout(() => setSavedId(null), 1800);
   }
 
   async function handleDelete(id: string) {
@@ -123,7 +142,6 @@ export function FaqEditor() {
                 <input
                   value={item.question}
                   onChange={(e) => handleFieldChange(item.id, 'question', e.target.value)}
-                  onBlur={(e) => handleFieldSave(item.id, 'question', e.target.value)}
                   placeholder="Spørgsmål"
                   className="flex-1 rounded-lg border border-line px-2 py-1.5 text-sm font-medium outline-none focus:border-accent"
                 />
@@ -145,23 +163,34 @@ export function FaqEditor() {
                 >
                   ↓
                 </button>
-                <button
-                  type="button"
-                  onClick={() => handleDelete(item.id)}
-                  aria-label="Slet spørgsmål"
-                  className="rounded-full border border-red-200 px-2 py-1 text-xs text-red-700 hover:bg-red-50"
-                >
-                  Slet
-                </button>
               </div>
               <textarea
                 value={item.answer}
                 onChange={(e) => handleFieldChange(item.id, 'answer', e.target.value)}
-                onBlur={(e) => handleFieldSave(item.id, 'answer', e.target.value)}
                 placeholder="Svar"
                 rows={2}
                 className="rounded-lg border border-line px-2 py-1.5 text-sm outline-none focus:border-accent"
               />
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleSave(item)}
+                  className="rounded-full bg-accent px-3 py-1.5 text-xs font-medium text-white hover:opacity-90"
+                >
+                  Gem
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleDelete(item.id)}
+                  aria-label="Slet spørgsmål"
+                  className="rounded-full border border-red-200 px-3 py-1.5 text-xs text-red-700 hover:bg-red-50"
+                >
+                  Slet
+                </button>
+                {savedId === item.id && (
+                  <span className="text-xs text-accent">Gemt ✓</span>
+                )}
+              </div>
             </li>
           ))}
           {items.length === 0 && <p className="text-sm text-muted">Ingen spørgsmål endnu.</p>}
@@ -188,7 +217,7 @@ export function FaqEditor() {
           type="submit"
           className="self-start rounded-xl2 bg-accent px-3 py-2 text-sm font-medium text-white hover:opacity-90"
         >
-          + Tilføj spørgsmål
+          Gem nyt spørgsmål
         </button>
       </form>
     </div>

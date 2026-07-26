@@ -8,14 +8,19 @@ const faqItems = [{ id: '1', question: 'Hvor bytter jeg gaspatron?', answer: 'I 
 
 describe('InfoView', () => {
   beforeEach(() => {
+    window.localStorage.clear();
     global.fetch = vi.fn(async (url: string) => {
-      if (url.toString().includes('/api/checklist')) {
+      const href = url.toString();
+      if (href.includes('/api/checklist')) {
         return new Response(JSON.stringify({ items: checklistItems }), { status: 200 });
       }
-      if (url.toString().includes('/api/faq')) {
+      if (href.includes('/api/faq')) {
         return new Response(JSON.stringify({ items: faqItems }), { status: 200 });
       }
-      throw new Error('unexpected url ' + url);
+      if (href.includes('/api/bookings')) {
+        return new Response(JSON.stringify({ bookings: [] }), { status: 200 });
+      }
+      throw new Error('unexpected url ' + href);
     }) as unknown as typeof fetch;
   });
 
@@ -23,13 +28,20 @@ describe('InfoView', () => {
     vi.restoreAllMocks();
   });
 
-  it('viser tjekliste og FAQ efter indlæsning', async () => {
+  it('viser FAQ og tjekliste efter indlæsning', async () => {
     render(<InfoView />);
-    expect(await screen.findByText('Sluk lys')).toBeInTheDocument();
-    expect(screen.getByText('Hvor bytter jeg gaspatron?')).toBeInTheDocument();
+    expect(await screen.findByText('Hvor bytter jeg gaspatron?')).toBeInTheDocument();
+    expect(screen.getByText('Sluk lys')).toBeInTheDocument();
   });
 
-  it('afkrydsning af tjekliste-punkt sender IKKE noget til serveren (gemmes ikke)', async () => {
+  it('viser FAQ FØR tjeklisten i rækkefølgen', async () => {
+    render(<InfoView />);
+    await screen.findByText('Hvor bytter jeg gaspatron?');
+    const headings = screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent);
+    expect(headings).toEqual(['Praktisk FAQ', 'Inden du rejser']);
+  });
+
+  it('afkrydsning af tjekliste-punkt sender IKKE noget til serveren, men gemmes lokalt', async () => {
     render(<InfoView />);
     const checkbox = (await screen.findByText('Sluk lys')).closest('label')!.querySelector('input')!;
 
@@ -37,10 +49,13 @@ describe('InfoView', () => {
     fireEvent.click(checkbox);
     expect(checkbox).toBeChecked();
 
-    // Ingen nye netværkskald efter klik – kun de to indledende GET-kald.
+    // Ingen nye netværkskald efter klik – kun de indledende GET-kald.
     await waitFor(() => {
       expect((global.fetch as ReturnType<typeof vi.fn>).mock.calls.length).toBe(callsBefore);
     });
+
+    // Men afkrydsningen er gemt lokalt (localStorage), så den overlever en genindlæsning.
+    expect(window.localStorage.getItem('mallorca-checklist-v1')).toContain('"1"');
   });
 
   it('FAQ-spørgsmål folder svaret ud og ind ved klik', async () => {

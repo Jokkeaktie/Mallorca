@@ -1,12 +1,19 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import type { ChecklistItem, FaqItem } from '@/lib/types';
+import type { ChecklistItem, FaqItem, PublicBooking } from '@/lib/types';
+import { getTodayInApartmentTimeZone } from '@/lib/date/timezone';
+import {
+  computeChecklistExpiry,
+  loadStoredChecked,
+  saveCheckedState,
+} from '@/lib/checklistPersistence';
 
 export function InfoView() {
   const [checklist, setChecklist] = useState<ChecklistItem[]>([]);
   const [faq, setFaq] = useState<FaqItem[]>([]);
   const [checked, setChecked] = useState<Set<string>>(new Set());
+  const [expiresAt, setExpiresAt] = useState<string | null>(null);
   const [openFaqId, setOpenFaqId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -16,18 +23,26 @@ export function InfoView() {
       setIsLoading(true);
       setError(null);
       try {
-        const [checklistRes, faqRes] = await Promise.all([
+        const [checklistRes, faqRes, bookingsRes] = await Promise.all([
           fetch('/api/checklist', { cache: 'no-store' }),
           fetch('/api/faq', { cache: 'no-store' }),
+          fetch('/api/bookings', { cache: 'no-store' }),
         ]);
-        if (!checklistRes.ok || !faqRes.ok) {
+        if (!checklistRes.ok || !faqRes.ok || !bookingsRes.ok) {
           setError('Kunne ikke hente informationen. Prøv at genindlæse siden.');
           return;
         }
         const checklistData = await checklistRes.json();
         const faqData = await faqRes.json();
+        const bookingsData = await bookingsRes.json();
         setChecklist(checklistData.items ?? []);
         setFaq(faqData.items ?? []);
+
+        const todayIso = getTodayInApartmentTimeZone();
+        const bookings: PublicBooking[] = bookingsData.bookings ?? [];
+        const expiry = computeChecklistExpiry(bookings, todayIso);
+        setExpiresAt(expiry);
+        setChecked(loadStoredChecked(todayIso));
       } catch {
         setError('Kunne ikke hente informationen. Tjek din internetforbindelse.');
       } finally {
@@ -42,6 +57,7 @@ export function InfoView() {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else next.add(id);
+      if (expiresAt) saveCheckedState(expiresAt, next);
       return next;
     });
   }
@@ -56,37 +72,6 @@ export function InfoView() {
 
   return (
     <div className="flex flex-col gap-8">
-      <section className="flex flex-col gap-3">
-        <h2 className="text-lg font-semibold text-ink">Inden du rejser</h2>
-        {checklist.length === 0 ? (
-          <p className="text-sm text-muted">Der er ikke tilføjet nogen tjekliste endnu.</p>
-        ) : (
-          <ul className="flex flex-col gap-2">
-            {checklist.map((item) => {
-              const isChecked = checked.has(item.id);
-              return (
-                <li key={item.id}>
-                  <label className="flex cursor-pointer items-start gap-3 rounded-xl2 border border-line bg-white p-3">
-                    <input
-                      type="checkbox"
-                      checked={isChecked}
-                      onChange={() => toggleChecked(item.id)}
-                      className="mt-0.5 h-5 w-5 shrink-0 accent-accent"
-                    />
-                    <span className={isChecked ? 'text-muted line-through' : 'text-ink'}>
-                      {item.text}
-                    </span>
-                  </label>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-        <p className="text-xs text-muted">
-          Afkrydsningerne gemmes ikke og nulstilles, næste gang siden åbnes.
-        </p>
-      </section>
-
       <section className="flex flex-col gap-3">
         <h2 className="text-lg font-semibold text-ink">Praktisk FAQ</h2>
         {faq.length === 0 ? (
@@ -118,6 +103,37 @@ export function InfoView() {
             })}
           </ul>
         )}
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <h2 className="text-lg font-semibold text-ink">Inden du rejser</h2>
+        {checklist.length === 0 ? (
+          <p className="text-sm text-muted">Der er ikke tilføjet nogen tjekliste endnu.</p>
+        ) : (
+          <ul className="flex flex-col gap-2">
+            {checklist.map((item) => {
+              const isChecked = checked.has(item.id);
+              return (
+                <li key={item.id}>
+                  <label className="flex cursor-pointer items-start gap-3 rounded-xl2 border border-line bg-white p-3">
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={() => toggleChecked(item.id)}
+                      className="mt-0.5 h-5 w-5 shrink-0 accent-accent"
+                    />
+                    <span className={isChecked ? 'text-muted line-through' : 'text-ink'}>
+                      {item.text}
+                    </span>
+                  </label>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+        <p className="text-xs text-muted">
+          Afkrydsningerne gemmes på denne enhed, indtil dagen efter dit ophold slutter.
+        </p>
       </section>
     </div>
   );
