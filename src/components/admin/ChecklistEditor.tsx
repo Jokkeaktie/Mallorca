@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import type { ChecklistItem } from '@/lib/types';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 export function ChecklistEditor() {
   const [items, setItems] = useState<ChecklistItem[]>([]);
@@ -129,7 +130,13 @@ export function ChecklistEditor() {
       </p>
 
       {error && <p className="text-sm text-red-700">{error}</p>}
-      {isLoading && <p className="text-sm text-muted">Indlæser…</p>}
+      {isLoading && (
+        <div className="flex flex-col gap-2">
+          {[0, 1, 2].map((i) => (
+            <Skeleton key={i} className="h-10 w-full rounded-xl2" />
+          ))}
+        </div>
+      )}
 
       {!isLoading && (
         <ul className="flex flex-col gap-2">

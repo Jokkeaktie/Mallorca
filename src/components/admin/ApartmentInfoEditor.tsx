@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 export function ApartmentInfoEditor() {
   const [text, setText] = useState('');
@@ -59,7 +60,10 @@ export function ApartmentInfoEditor() {
 
       {error && <p className="text-sm text-red-700">{error}</p>}
       {isLoading ? (
-        <p className="text-sm text-muted">Indlæser…</p>
+        <div className="flex flex-col gap-2">
+          <Skeleton className="h-32 w-full rounded-xl2" />
+          <Skeleton className="h-9 w-24" />
+        </div>
       ) : (
         <>
           <textarea

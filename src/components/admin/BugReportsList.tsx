@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import type { BugReport } from '@/lib/types';
 import { formatDanishDate } from '@/lib/date/format';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 export function BugReportsList() {
   const [reports, setReports] = useState<BugReport[]>([]);
@@ -59,7 +60,19 @@ export function BugReportsList() {
     setReports((prev) => prev.filter((r) => r.id !== id));
   }
 
-  if (isLoading) return <p className="text-sm text-muted">Indlæser…</p>;
+  if (isLoading) {
+    return (
+      <ul className="flex flex-col gap-3">
+        {[0, 1].map((i) => (
+          <li key={i} className="flex flex-col gap-2 rounded-xl2 border border-line bg-white p-3">
+            <Skeleton className="h-3 w-32" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-2/3" />
+          </li>
+        ))}
+      </ul>
+    );
+  }
   if (error) return <p className="text-sm text-red-700">{error}</p>;
 
   if (reports.length === 0) {

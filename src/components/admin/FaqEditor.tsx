@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import type { FaqItem } from '@/lib/types';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 export function FaqEditor() {
   const [items, setItems] = useState<FaqItem[]>([]);
@@ -132,7 +133,16 @@ export function FaqEditor() {
       </p>
 
       {error && <p className="text-sm text-red-700">{error}</p>}
-      {isLoading && <p className="text-sm text-muted">Indlæser…</p>}
+      {isLoading && (
+        <div className="flex flex-col gap-3">
+          {[0, 1].map((i) => (
+            <div key={i} className="flex flex-col gap-2 rounded-xl2 border border-line p-3">
+              <Skeleton className="h-9 w-full" />
+              <Skeleton className="h-14 w-full" />
+            </div>
+          ))}
+        </div>
+      )}
 
       {!isLoading && (
         <ul className="flex flex-col gap-3">

@@ -8,6 +8,7 @@ import {
   loadStoredChecked,
   saveCheckedState,
 } from '@/lib/checklistPersistence';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 export function InfoView() {
   const [apartmentInfo, setApartmentInfo] = useState('');
@@ -67,7 +68,26 @@ export function InfoView() {
   }
 
   if (isLoading) {
-    return <p className="text-sm text-muted">Indlæser…</p>;
+    return (
+      <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-3">
+          <Skeleton className="h-5 w-32" />
+          <Skeleton className="h-20 w-full rounded-xl2" />
+        </div>
+        <div className="flex flex-col gap-3">
+          <Skeleton className="h-5 w-24" />
+          {[0, 1].map((i) => (
+            <Skeleton key={i} className="h-12 w-full rounded-xl2" />
+          ))}
+        </div>
+        <div className="flex flex-col gap-3">
+          <Skeleton className="h-5 w-36" />
+          {[0, 1, 2].map((i) => (
+            <Skeleton key={i} className="h-12 w-full rounded-xl2" />
+          ))}
+        </div>
+      </div>
+    );
   }
 
   if (error) {
