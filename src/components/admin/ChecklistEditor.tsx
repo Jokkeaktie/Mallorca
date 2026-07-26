@@ -141,46 +141,48 @@ export function ChecklistEditor() {
       {!isLoading && (
         <ul className="flex flex-col gap-2">
           {items.map((item, index) => (
-            <li key={item.id} className="flex items-center gap-2 rounded-xl2 border border-line p-2">
+            <li key={item.id} className="flex flex-col gap-2 rounded-xl2 border border-line p-3">
               <input
                 value={item.text}
                 onChange={(e) => handleTextChange(item.id, e.target.value)}
-                className="flex-1 rounded-lg border border-line px-2 py-1.5 text-sm outline-none focus:border-accent"
+                className="w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-accent"
               />
-              <button
-                type="button"
-                onClick={() => handleMove(index, -1)}
-                disabled={index === 0}
-                aria-label="Flyt op"
-                className="rounded-full border border-line px-2 py-1 text-xs disabled:opacity-30"
-              >
-                ↑
-              </button>
-              <button
-                type="button"
-                onClick={() => handleMove(index, 1)}
-                disabled={index === items.length - 1}
-                aria-label="Flyt ned"
-                className="rounded-full border border-line px-2 py-1 text-xs disabled:opacity-30"
-              >
-                ↓
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSave(item)}
-                className="rounded-full bg-accent px-3 py-1 text-xs font-medium text-white hover:opacity-90"
-              >
-                Gem
-              </button>
-              <button
-                type="button"
-                onClick={() => handleDelete(item.id)}
-                aria-label="Slet punkt"
-                className="rounded-full border border-red-200 px-2 py-1 text-xs text-red-700 hover:bg-red-50"
-              >
-                Slet
-              </button>
-              {savedId === item.id && <span className="text-xs text-accent">Gemt ✓</span>}
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleMove(index, -1)}
+                  disabled={index === 0}
+                  aria-label="Flyt op"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-line text-base disabled:opacity-30"
+                >
+                  ↑
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleMove(index, 1)}
+                  disabled={index === items.length - 1}
+                  aria-label="Flyt ned"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-line text-base disabled:opacity-30"
+                >
+                  ↓
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleSave(item)}
+                  className="rounded-full bg-accent px-4 py-2 text-sm font-medium text-white hover:opacity-90"
+                >
+                  Gem
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleDelete(item.id)}
+                  aria-label="Slet punkt"
+                  className="rounded-full border border-red-200 px-4 py-2 text-sm text-red-700 hover:bg-red-50"
+                >
+                  Slet
+                </button>
+                {savedId === item.id && <span className="text-xs text-accent">Gemt ✓</span>}
+              </div>
             </li>
           ))}
           {items.length === 0 && <p className="text-sm text-muted">Ingen punkter endnu.</p>}

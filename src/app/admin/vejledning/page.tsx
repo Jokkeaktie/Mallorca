@@ -5,6 +5,10 @@ export const metadata = { title: 'Vejledning – Mallorca-kalenderen' };
 export default function AdminGuidePage() {
   return (
     <main className="mx-auto flex min-h-screen max-w-2xl flex-col gap-5 px-4 py-10">
+      <Link href="/admin" className="text-sm text-accent underline underline-offset-2">
+        ← Tilbage til administratorområdet
+      </Link>
+
       <h1 className="text-2xl font-semibold text-ink">Sådan bruger I administratorområdet</h1>
 
       <ol className="flex flex-col gap-4 text-sm leading-relaxed text-ink">

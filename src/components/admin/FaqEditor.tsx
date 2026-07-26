@@ -148,19 +148,26 @@ export function FaqEditor() {
         <ul className="flex flex-col gap-3">
           {items.map((item, index) => (
             <li key={item.id} className="flex flex-col gap-2 rounded-xl2 border border-line p-3">
-              <div className="flex items-center gap-2">
-                <input
-                  value={item.question}
-                  onChange={(e) => handleFieldChange(item.id, 'question', e.target.value)}
-                  placeholder="Spørgsmål"
-                  className="flex-1 rounded-lg border border-line px-2 py-1.5 text-sm font-medium outline-none focus:border-accent"
-                />
+              <input
+                value={item.question}
+                onChange={(e) => handleFieldChange(item.id, 'question', e.target.value)}
+                placeholder="Spørgsmål"
+                className="w-full rounded-lg border border-line px-3 py-2 text-sm font-medium outline-none focus:border-accent"
+              />
+              <textarea
+                value={item.answer}
+                onChange={(e) => handleFieldChange(item.id, 'answer', e.target.value)}
+                placeholder="Svar"
+                rows={2}
+                className="rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-accent"
+              />
+              <div className="flex flex-wrap items-center gap-2">
                 <button
                   type="button"
                   onClick={() => handleMove(index, -1)}
                   disabled={index === 0}
                   aria-label="Flyt op"
-                  className="rounded-full border border-line px-2 py-1 text-xs disabled:opacity-30"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-line text-base disabled:opacity-30"
                 >
                   ↑
                 </button>
@@ -169,23 +176,14 @@ export function FaqEditor() {
                   onClick={() => handleMove(index, 1)}
                   disabled={index === items.length - 1}
                   aria-label="Flyt ned"
-                  className="rounded-full border border-line px-2 py-1 text-xs disabled:opacity-30"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-line text-base disabled:opacity-30"
                 >
                   ↓
                 </button>
-              </div>
-              <textarea
-                value={item.answer}
-                onChange={(e) => handleFieldChange(item.id, 'answer', e.target.value)}
-                placeholder="Svar"
-                rows={2}
-                className="rounded-lg border border-line px-2 py-1.5 text-sm outline-none focus:border-accent"
-              />
-              <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => handleSave(item)}
-                  className="rounded-full bg-accent px-3 py-1.5 text-xs font-medium text-white hover:opacity-90"
+                  className="rounded-full bg-accent px-4 py-2 text-sm font-medium text-white hover:opacity-90"
                 >
                   Gem
                 </button>
@@ -193,7 +191,7 @@ export function FaqEditor() {
                   type="button"
                   onClick={() => handleDelete(item.id)}
                   aria-label="Slet spørgsmål"
-                  className="rounded-full border border-red-200 px-3 py-1.5 text-xs text-red-700 hover:bg-red-50"
+                  className="rounded-full border border-red-200 px-4 py-2 text-sm text-red-700 hover:bg-red-50"
                 >
                   Slet
                 </button>
