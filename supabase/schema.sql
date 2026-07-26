@@ -122,3 +122,32 @@ create trigger faq_items_set_updated_at
 insert into storage.buckets (id, name, public)
 values ('booking-photos', 'booking-photos', false)
 on conflict (id) do nothing;
+
+-- Fejlrapporter fra familie/venner (kun synlige for administratorer).
+-- "photos" er en liste af {path, contentType} for de vedhæftede billeder.
+create table if not exists public.bug_reports (
+  id uuid primary key default gen_random_uuid(),
+  description text not null check (char_length(trim(description)) > 0),
+  reporter_name text,
+  photos jsonb not null default '[]'::jsonb,
+  status text not null default 'new' check (status in ('new', 'resolved')),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.bug_reports enable row level security;
+-- Ingen policies: kun service role kan læse/skrive. API-ruten for oprettelse
+-- (POST) tjekker familie-/admin-adgang; læsning/redigering/sletning kræver
+-- administrator, så kun ejerne kan se, hvad der er rapporteret.
+
+drop trigger if exists bug_reports_set_updated_at on public.bug_reports;
+create trigger bug_reports_set_updated_at
+  before update on public.bug_reports
+  for each row execute function public.set_updated_at();
+
+-- Fillager til billeder vedhæftet fejlrapporter. Samme princip som
+-- booking-photos: privat bucket, kun tilgængelig via en gated API-rute
+-- til administratorer.
+insert into storage.buckets (id, name, public)
+values ('bug-report-photos', 'bug-report-photos', false)
+on conflict (id) do nothing;

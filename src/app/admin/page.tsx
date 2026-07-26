@@ -17,6 +17,10 @@ export default function AdminPage() {
           ·{' '}
           <Link href="/admin/info" className="underline underline-offset-2">
             Praktisk info
+          </Link>{' '}
+          ·{' '}
+          <Link href="/admin/fejlrapporter" className="underline underline-offset-2">
+            Fejlrapporter
           </Link>
         </p>
       </header>

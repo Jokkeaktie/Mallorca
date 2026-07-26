@@ -54,9 +54,18 @@ export default function AdminGuidePage() {
             Praktisk info
           </Link>{' '}
           kan I tilføje punkter til tjeklisten ved afrejse (fx “Sluk lys og aircondition”) og
-          spørgsmål/svar til FAQ’en (fx “Hvor bytter jeg gaspatron?”). Brug ↑/↓ til at
-          omarrangere rækkefølgen. Ændringer vises med det samme for familie og venner
-          under “Praktisk info” på forsiden.
+          spørgsmål/svar til FAQ’en (fx “Hvor bytter jeg gaspatron?”). Husk at trykke
+          “Gem” efter en ændring. Brug ↑/↓ til at omarrangere rækkefølgen. Ændringer vises
+          med det samme for familie og venner under “Praktisk info” på forsiden.
+        </li>
+        <li>
+          <strong>10. Fejlrapporter.</strong> Under{' '}
+          <Link href="/admin/fejlrapporter" className="underline underline-offset-2">
+            Fejlrapporter
+          </Link>{' '}
+          kan I se, hvad familie/venner har rapporteret via “Rapportér fejl” på forsiden
+          (inkl. eventuelle billeder). Kun I kan se disse. Markér som “løst”, genåbn, eller
+          slet permanent.
         </li>
       </ol>
 

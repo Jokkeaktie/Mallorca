@@ -133,8 +133,9 @@ Supabase-klient osv.). Det tager typisk et minuts tid.
 4. Gå til **SQL Editor** i venstremenuen, opret en "New query", og indsæt
    hele indholdet af filen [`supabase/schema.sql`](./supabase/schema.sql) fra
    dette projekt. Tryk "Run".
-   - Dette opretter tabellerne `bookings`, `app_settings`, `checklist_items`
-     og `faq_items` samt de nødvendige sikkerhedsregler (Row Level Security).
+   - Dette opretter tabellerne `bookings`, `app_settings`, `checklist_items`,
+     `faq_items` og `bug_reports` samt de nødvendige sikkerhedsregler (Row
+     Level Security).
 5. Gå til **Project Settings -> API**. Her finder du:
    - **Project URL** → bruges som `NEXT_PUBLIC_SUPABASE_URL` og
      `SUPABASE_URL`.
@@ -306,12 +307,17 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    vælge et fra kamerarullen. Billedet vises for familie og venner på netop
    den kalenderpost, så den næste gæst kan finde nøglen. Tryk "Fjern billede"
    for at slette det igen.
-8. **Redigér praktisk info** (tjekliste ved afrejse + FAQ) under **Praktisk
-   info** på administratorsiden. Tilføj, ret, omarrangér (↑/↓) eller slet
-   punkter — ændringer vises med det samme for familie og venner under
-   "Praktisk info" på forsiden. Afkrydsningerne på tjeklisten gemmes ikke;
-   de er kun til den enkelte gæsts eget overblik og nulstilles ved næste
-   besøg.
+8. **Redigér praktisk info** (FAQ + tjekliste ved afrejse) under **Praktisk
+   info** på administratorsiden. Skriv i felterne og tryk **"Gem"** for at
+   gemme en ændring, brug ↑/↓ til at omarrangere, eller "Slet" for at fjerne
+   et punkt — ændringer vises med det samme for familie og venner under
+   "Praktisk info" på forsiden. Familiens afkrydsninger på tjeklisten gemmes
+   lokalt på den enkelte gæsts egen telefon (ikke i databasen) og forsvinder
+   automatisk dagen efter opholdet slutter.
+9. **Se fejlrapporter** under **Fejlrapporter** på administratorsiden.
+   Familie og venner kan rapportere mindre fejl/mangler (med op til 5
+   billeder) fra forsiden under "Rapportér fejl" — det er kun synligt for
+   jer. Markér en rapport som "løst", genåbn den, eller slet den permanent.
 
 ## 14. Tests, linting og typecheck
 

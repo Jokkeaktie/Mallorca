@@ -11,12 +11,20 @@ export default function FamilyCalendarPage() {
             <h1 className="text-xl font-semibold text-ink sm:text-2xl">Mallorca-kalenderen</h1>
             <p className="text-sm text-muted">Se hvornår lejligheden er ønsket eller booket.</p>
           </div>
-          <Link
-            href="/info"
-            className="shrink-0 rounded-full border border-line bg-white px-3 py-1.5 text-xs font-medium text-ink hover:bg-canvas"
-          >
-            Praktisk info
-          </Link>
+          <div className="flex shrink-0 gap-2">
+            <Link
+              href="/info"
+              className="rounded-full border border-line bg-white px-3 py-1.5 text-xs font-medium text-ink hover:bg-canvas"
+            >
+              Praktisk info
+            </Link>
+            <Link
+              href="/fejl"
+              className="rounded-full border border-line bg-white px-3 py-1.5 text-xs font-medium text-ink hover:bg-canvas"
+            >
+              Rapportér fejl
+            </Link>
+          </div>
         </div>
       </header>
 

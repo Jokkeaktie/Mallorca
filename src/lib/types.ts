@@ -81,3 +81,24 @@ export interface FaqItem {
   answer: string;
   sortOrder: number;
 }
+
+export type BugReportStatus = 'new' | 'resolved';
+
+export interface BugReportPhoto {
+  path: string;
+  contentType: string;
+}
+
+/**
+ * Fejlrapport fra familie/venner. Kun administratorer kan læse disse –
+ * der findes bevidst ingen "offentlig" udgave af denne type.
+ */
+export interface BugReport {
+  id: string;
+  description: string;
+  reporterName: string | null;
+  photos: BugReportPhoto[];
+  status: BugReportStatus;
+  createdAt: string;
+  updatedAt: string;
+}
