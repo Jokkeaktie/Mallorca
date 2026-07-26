@@ -14,6 +14,18 @@ export default function BugReportPage() {
         </p>
       </header>
 
+      <div className="flex items-start gap-3 rounded-xl2 border border-line bg-white p-3 text-sm text-ink">
+        <span aria-hidden="true" className="mt-0.5">
+          ⚠️
+        </span>
+        <p>
+          Denne side er kun til <strong>mindre fejl og mangler</strong>, som ikke haster — vi
+          kigger på dem, når vi har tid. Ved <strong>akutte eller alvorlige problemer</strong>
+          (fx vandskade, ingen strøm, eller andet der skal løses med det samme), skal du i
+          stedet kontakte <strong>Sven eller Inger</strong> direkte.
+        </p>
+      </div>
+
       <BugReportForm />
 
       <Link href="/" className="text-sm text-accent underline underline-offset-2">
