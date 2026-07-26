@@ -162,6 +162,7 @@ export function CalendarShell({
               : undefined
           }
           onDelete={onDeleteBooking}
+          onPhotoUploaded={loadBookings}
         />
       )}
     </div>

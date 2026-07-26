@@ -60,12 +60,16 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
 /**
  * POST /api/bookings/:id/photo
  *
- * Uploader (eller erstatter) billedet for en booking. Kun administratorer.
+ * Uploader (eller erstatter) billedet for en booking. Tilgængelig for
+ * familie/venner OG administratorer – det er typisk den afrejsende gæst,
+ * der selv tager billedet af nøglegemmestedet til den næste gæst. Sletning
+ * er bevidst forbeholdt administratorer (se DELETE nedenfor), så et billede
+ * ikke kan fjernes permanent uden at blive erstattet.
  * Forventer multipart/form-data med et felt "photo".
  */
 export async function POST(request: NextRequest, { params }: RouteParams) {
-  const adminId = await requireAdmin();
-  if (!adminId) {
+  const isAllowed = await hasFamilyOrAdminAccess();
+  if (!isAllowed) {
     return NextResponse.json({ error: 'Ikke godkendt.' }, { status: 401 });
   }
 

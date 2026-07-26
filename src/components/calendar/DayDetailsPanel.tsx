@@ -3,6 +3,7 @@
 import type { CalendarBooking } from '@/lib/types';
 import { formatDanishDate, formatDanishDateRange } from '@/lib/date/format';
 import { isDateWithinBooking } from '@/lib/bookings/overlap';
+import { BookingPhotoUploadInline } from './BookingPhotoUploadInline';
 
 interface DayDetailsPanelProps {
   isoDate: string;
@@ -11,6 +12,8 @@ interface DayDetailsPanelProps {
   isAdmin?: boolean;
   onEdit?: (booking: CalendarBooking) => void;
   onDelete?: (booking: CalendarBooking) => void;
+  /** Kaldes efter et vellykket billede-upload, så kalenderdata kan genindlæses. */
+  onPhotoUploaded?: () => void;
 }
 
 export function DayDetailsPanel({
@@ -20,6 +23,7 @@ export function DayDetailsPanel({
   isAdmin,
   onEdit,
   onDelete,
+  onPhotoUploaded,
 }: DayDetailsPanelProps) {
   const dayBookings = bookings.filter((b) => isDateWithinBooking(isoDate, b));
 
@@ -67,20 +71,12 @@ export function DayDetailsPanel({
                   </span>
                 </div>
 
-                {booking.hasPhoto && (
-                  <a
-                    href={`/api/bookings/${booking.id}/photo`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-2 block"
-                  >
-                    <img
-                      src={`/api/bookings/${booking.id}/photo`}
-                      alt={`Billede af nøglegemmested for ${booking.name}`}
-                      className="h-32 w-full rounded-xl2 border border-line object-cover"
-                    />
-                  </a>
-                )}
+                <BookingPhotoUploadInline
+                  bookingId={booking.id}
+                  bookingName={booking.name}
+                  hasPhotoInitially={booking.hasPhoto}
+                  onUploaded={onPhotoUploaded}
+                />
 
                 {isAdmin && (
                   <div className="mt-2 flex flex-col gap-1 border-t border-line pt-2 text-sm text-muted">

@@ -308,6 +308,10 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    vælge et fra kamerarullen. Billedet vises for familie og venner på netop
    den kalenderpost, så den næste gæst kan finde nøglen. Tryk "Fjern billede"
    for at slette det igen.
+   - **Familie og venner kan også selv tilføje/opdatere dette billede** ved
+     at trykke på en dag i kalenderen (helt uden at logge ind som admin) —
+     typisk den afrejsende gæst, der tager et billede af, hvor nøglen er
+     lagt, til den næste gæst. Kun sletning er forbeholdt administratorer.
 8. **Redigér praktisk info** ("Om lejligheden" fri tekst + FAQ + tjekliste
    ved afrejse) under **Praktisk info** på administratorsiden. "Om
    lejligheden" er et frit tekstfelt til fx adresse og telefonnumre på
@@ -355,6 +359,12 @@ ingen typefejl, build lykkedes.**
   gennemgang af layoutet, men er ikke verificeret med et automatiseret
   visuelt regressionsværktøj på en fysisk iPhone. Test gerne selv på jeres
   egne telefoner efter deployment.
+- **Billede af nøglegemmested kan tilføjes/opdateres af enhver med adgang
+  til familievisningen** (ikke kun til "egen" booking) – der er ingen
+  individuelle gæstekonti at knytte det til, så dette er en bevidst
+  afvejning inden for den lille, betroede kreds af familie/venner, der har
+  den fælles adgangskode. Sletning af billedet er forbeholdt
+  administratorer.
 
 ## 16. Fremtidige udvidelser
 

@@ -63,13 +63,13 @@ describe('GET /api/bookings/:id/photo', () => {
 
 describe('POST /api/bookings/:id/photo', () => {
   beforeEach(() => {
-    requireAdmin.mockReset();
+    hasFamilyOrAdminAccess.mockReset();
     upload.mockReset();
     setBookingPhoto.mockReset();
   });
 
-  it('familievisningen (ikke-admin) kan ikke uploade et billede', async () => {
-    requireAdmin.mockResolvedValue(null);
+  it('afviser uden familie- eller admin-adgang', async () => {
+    hasFamilyOrAdminAccess.mockResolvedValue(false);
     const formData = new FormData();
     formData.append('photo', new File(['x'], 'key.jpg', { type: 'image/jpeg' }));
 
@@ -79,7 +79,7 @@ describe('POST /api/bookings/:id/photo', () => {
   });
 
   it('afviser filtyper der ikke er billeder', async () => {
-    requireAdmin.mockResolvedValue('admin-1');
+    hasFamilyOrAdminAccess.mockResolvedValue(true);
     const formData = new FormData();
     formData.append('photo', new File(['x'], 'note.pdf', { type: 'application/pdf' }));
 
@@ -89,7 +89,7 @@ describe('POST /api/bookings/:id/photo', () => {
   });
 
   it('afviser filer over 8 MB', async () => {
-    requireAdmin.mockResolvedValue('admin-1');
+    hasFamilyOrAdminAccess.mockResolvedValue(true);
     const bigContent = new Uint8Array(8 * 1024 * 1024 + 1);
     const formData = new FormData();
     formData.append('photo', new File([bigContent], 'key.jpg', { type: 'image/jpeg' }));
@@ -99,8 +99,8 @@ describe('POST /api/bookings/:id/photo', () => {
     expect(upload).not.toHaveBeenCalled();
   });
 
-  it('administratoren kan uploade et gyldigt billede', async () => {
-    requireAdmin.mockResolvedValue('admin-1');
+  it('familievisningen (ikke-admin) KAN uploade et gyldigt billede (fx den afrejsende gæst)', async () => {
+    hasFamilyOrAdminAccess.mockResolvedValue(true);
     upload.mockResolvedValue({ error: null });
     setBookingPhoto.mockResolvedValue(true);
 

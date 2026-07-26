@@ -46,7 +46,8 @@ export default function AdminGuidePage() {
           “Redigér”, og tryk “Tilføj billede” for at tage et foto med telefonen eller vælge
           et fra kamerarullen. Billedet vises for familie og venner på netop den
           kalenderpost, så den næste gæst kan finde nøglen. Tryk “Fjern billede” for at
-          slette det igen.
+          slette det igen. Familie og venner kan også selv tilføje/opdatere billedet
+          direkte fra kalenderen, uden at logge ind — praktisk for den afrejsende gæst.
         </li>
         <li>
           <strong>9. Praktisk info (tjekliste og FAQ).</strong> Under{' '}
