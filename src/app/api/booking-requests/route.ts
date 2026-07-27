@@ -3,6 +3,7 @@ import { hasFamilyOrAdminAccess } from '@/lib/auth/accessControl';
 import { createBooking } from '@/lib/bookings/repository';
 import { bookingRequestSchema } from '@/lib/validation/bookingRequest';
 import { SUGGESTED_COLORS } from '@/lib/colors';
+import { sendBookingRequestNotification } from '@/lib/notifications/email';
 
 /**
  * POST /api/booking-requests
@@ -43,6 +44,12 @@ export async function POST(request: NextRequest) {
       },
       null,
     );
+    await sendBookingRequestNotification({
+      name: parsed.data.name,
+      startDate: parsed.data.startDate,
+      endDate: parsed.data.endDate,
+      flightNumber: parsed.data.flightNumber,
+    });
     return NextResponse.json({}, { status: 201 });
   } catch (error) {
     console.error('Fejl ved oprettelse af ønske', error);

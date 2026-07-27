@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { CalendarShell } from '@/components/calendar/CalendarShell';
 import { BookingForm, type BookingFormValues } from './BookingForm';
 import { PasswordForm } from './PasswordForm';
+import { NewRequestsPanel } from './NewRequestsPanel';
 import { KeyLocationPhoto } from '@/components/booking/KeyLocationPhoto';
 import type { AdminBooking, CalendarBooking } from '@/lib/types';
 import { getBrowserSupabaseClient } from '@/lib/supabase/browserClient';
@@ -127,6 +128,12 @@ export function AdminDashboard() {
           <PasswordForm />
         </div>
       )}
+
+      <NewRequestsPanel
+        refreshToken={refreshToken}
+        onEdit={(booking) => setFormMode({ kind: 'edit', booking })}
+        onChanged={refresh}
+      />
 
       <KeyLocationPhoto isAdmin />
 

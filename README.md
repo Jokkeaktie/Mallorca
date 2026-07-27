@@ -175,6 +175,30 @@ openssl rand -base64 32
 `.env.local` bliver **aldrig** committet til GitHub (den står i
 `.gitignore`), så dine hemmelige nøgler er trygge.
 
+### E-mail-notifikationer (valgfrit)
+
+Uden mere opsætning skal administratorerne selv åbne appen for at opdage nye
+ønsker (om end der er et tydeligt "Nye ønsker"-panel øverst på
+administratorsiden til det, se afsnit 13). Vil I i stedet have en mail, så
+snart nogen sender et ønske, skal I bruge [Resend](https://resend.com) (gratis
+niveau: 100 mails/dag, intet kreditkort krævet):
+
+1. Opret en gratis konto på resend.com, og verificér et domæne, I ejer
+   (Resend kræver dette for at kunne sende fra en adresse som
+   `onsker@jeres-domæne.dk` – det tager typisk et par minutter og kræver, at
+   I kan tilføje DNS-poster hos jeres domæneudbyder).
+2. Opret en API-nøgle under **API Keys**, og sæt den som `RESEND_API_KEY`.
+3. Sæt `RESEND_FROM_EMAIL` til en afsender-adresse på det verificerede
+   domæne, fx `Mallorca-appen <onsker@jeres-domæne.dk>`.
+4. Sæt `ADMIN_NOTIFICATION_EMAILS` til jeres to e-mails, adskilt af komma.
+5. (Valgfrit) Sæt `NEXT_PUBLIC_APP_URL` til appens rigtige adresse, så mailen
+   kan linke direkte til administratorområdet.
+6. Husk at tilføje de samme miljøvariabler i Vercel (se trin 10), ikke kun
+   lokalt i `.env.local`.
+
+Mangler én eller flere af de tre påkrævede variabler, springes afsendelsen
+bare stille over – ønsket oprettes stadig helt normalt.
+
 ## 6. Opret de to administratorer
 
 Kør følgende kommando én gang for hver af forældrene (brug rigtige,
@@ -292,15 +316,23 @@ Denne vejledning findes også direkte i appen under **Administrator ->
 
 1. **Log ind** på `/admin/login` med den e-mail og adgangskode, der blev
    oprettet i trin 6.
-2. **Opret en ny kalenderpost** ved at trykke "+ Ny kalenderpost". Udfyld
+2. **"Nye ønsker"-panelet** øverst på administratorsiden viser alle
+   ubehandlede ønsker, sorteret efter hvornår de blev SENDT (ikke hvornår
+   perioden ligger) – så et ønske til fx næste sommer, der lige er kommet
+   ind, altid ligger øverst og ikke drukner i kalenderen. Godkend direkte
+   med ét tryk, eller tryk "Redigér" for at ændre noget først. Panelet
+   forsvinder, når der ikke er flere ubehandlede ønsker. Se også afsnittet
+   "E-mail-notifikationer (valgfrit)" ovenfor, hvis I vil have besked på
+   mail, så snart et ønske sendes.
+3. **Opret en ny kalenderpost** ved at trykke "+ Ny kalenderpost". Udfyld
    navn, vælg status (Ønske/Godkendt), farve, samt start- og slutdato.
    Ankomst-/afrejsetidspunkt og intern kommentar er valgfrie.
-3. **Redigér eller slet** en post ved at trykke på en dag i kalenderen og
+4. **Redigér eller slet** en post ved at trykke på en dag i kalenderen og
    derefter "Redigér" på den ønskede post. Sletning sker fra
    redigeringsvisningen og kan ikke fortrydes.
-4. **Skift status** mellem "Ønske" og "Godkendt" ved at redigere posten – det
+5. **Skift status** mellem "Ønske" og "Godkendt" ved at redigere posten – det
    sker ikke automatisk, I bestemmer selv.
-5. **Overlappende ønsker** kræver ingen handling i sig selv – flere personer
+6. **Overlappende ønsker** kræver ingen handling i sig selv – flere personer
    kan gerne ønske samme periode. I beslutter selv, hvem der får perioden.
    Familie og venner ser ikke kalenderen og kan derfor ikke selv se, om en
    periode er ledig – de sender blot et ønske via "Ønsk booking" på forsiden
@@ -308,9 +340,9 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    ankomst-/afrejsetidspunkt, samt en valgfri besked, som gemmes som intern
    kommentar), og det dukker op i jeres kalender som en almindelig
    "Ønske"-post, I kan redigere og godkende/afvise som enhver anden post.
-6. **Skift den fælles adgangskode** når som helst under "Indstillinger" på
+7. **Skift den fælles adgangskode** når som helst under "Indstillinger" på
    administratorsiden.
-7. **Nøglegemmested-billedet** er ÉT fælles billede (ikke knyttet til en
+8. **Nøglegemmested-billedet** er ÉT fælles billede (ikke knyttet til en
    bestemt booking eller et bestemt ophold), vist øverst på både familiens
    forside og administratorsiden. Da de fleste ophold IKKE har en skjult
    nøgle (gæsten får den direkte af jer), vises der som udgangspunkt kun et
@@ -326,7 +358,7 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    > nye felter i `app_settings`. Kør `supabase/schema.sql` igen i Supabase
    > **SQL Editor** (se boksen i trin 4 ovenfor) før denne funktion virker,
    > hvis I opdaterer en database, der allerede kører.
-8. **Redigér praktisk info** ("Om lejligheden" fri tekst + FAQ + tjekliste
+9. **Redigér praktisk info** ("Om lejligheden" fri tekst + FAQ + tjekliste
    ved afrejse) under **Praktisk info** på administratorsiden. "Om
    lejligheden" er et frit tekstfelt til fx adresse og telefonnumre på
    relevante personer — vises øverst på familiens side, hvis det er udfyldt.
@@ -336,7 +368,7 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    info" på forsiden. Familiens afkrydsninger på tjeklisten gemmes lokalt på
    den enkelte gæsts egen telefon (ikke i databasen) og forsvinder
    automatisk dagen efter opholdet slutter.
-9. **Se fejlrapporter** under **Fejlrapporter** på administratorsiden.
+10. **Se fejlrapporter** under **Fejlrapporter** på administratorsiden.
    Familie og venner kan rapportere mindre fejl/mangler (med op til 5
    billeder) fra forsiden under "Rapportér fejl" — det er kun synligt for
    jer. Markér en rapport som "løst", genåbn den, eller slet den permanent.

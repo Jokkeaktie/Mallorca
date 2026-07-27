@@ -2,9 +2,11 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 
 const hasFamilyOrAdminAccess = vi.fn();
 const createBooking = vi.fn();
+const sendBookingRequestNotification = vi.fn();
 
 vi.mock('@/lib/auth/accessControl', () => ({ hasFamilyOrAdminAccess }));
 vi.mock('@/lib/bookings/repository', () => ({ createBooking }));
+vi.mock('@/lib/notifications/email', () => ({ sendBookingRequestNotification }));
 
 const { POST } = await import('@/app/api/booking-requests/route');
 
@@ -19,6 +21,8 @@ describe('POST /api/booking-requests', () => {
   beforeEach(() => {
     hasFamilyOrAdminAccess.mockReset();
     createBooking.mockReset();
+    sendBookingRequestNotification.mockReset();
+    sendBookingRequestNotification.mockResolvedValue(undefined);
   });
 
   const validPayload = {
@@ -107,6 +111,20 @@ describe('POST /api/booking-requests', () => {
       }),
       null,
     );
+  });
+
+  it('sender en notifikation efter oprettelse af ønsket', async () => {
+    hasFamilyOrAdminAccess.mockResolvedValue(true);
+    createBooking.mockResolvedValue({ id: 'b1' });
+
+    await POST(makeRequest({ ...validPayload, flightNumber: 'SK1533' }));
+
+    expect(sendBookingRequestNotification).toHaveBeenCalledWith({
+      name: 'Peter og Lise',
+      startDate: '2026-08-10',
+      endDate: '2026-08-17',
+      flightNumber: 'SK1533',
+    });
   });
 
   it('afviser ugyldigt input (manglende navn)', async () => {
