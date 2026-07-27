@@ -309,18 +309,19 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    redigere og godkende/afvise som enhver anden post.
 6. **Skift den fælles adgangskode** når som helst under "Indstillinger" på
    administratorsiden.
-7. **Tilføj et billede af nøglegemmested** ved at redigere en **allerede
-   oprettet** post (billedet kan først tilføjes, når posten findes). Under
-   "Billede af nøglegemmested" kan I tage et foto direkte med telefonen eller
-   vælge et fra kamerarullen. Billedet vises for familie og venner på netop
-   den kalenderpost, så den næste gæst kan finde nøglen. Tryk "Fjern billede"
-   for at slette det igen.
-   - **Familie og venner kan også selv tilføje/opdatere dette billede** for
-     det ophold, der er aktivt lige nu (uden at logge ind som admin og uden
-     at se kalenderen) — forsiden viser en lille boks med kun det aktuelle
-     ophold, når nogen bor i lejligheden, typisk brugt af den afrejsende
-     gæst til at vise den næste gæst, hvor nøglen er lagt. Kun sletning er
-     forbeholdt administratorer.
+7. **Nøglegemmested-billedet** er ÉT fælles billede (ikke knyttet til en
+   bestemt booking eller et bestemt ophold) — det vises altid øverst på
+   både familiens forside og administratorsiden. Tryk "Tilføj billede"/
+   "Opdatér billede" for at tage et foto direkte med telefonen eller vælge
+   et fra kamerarullen. **Familie og venner kan også selv tilføje/opdatere
+   billedet** (uden at logge ind som admin) — typisk den afrejsende gæst,
+   der viser den næste gæst, hvor nøglen er lagt. Kun administratorer kan
+   trykke "Fjern billede" og slette det permanent.
+
+   > **Kræver en opdateret database.** Denne udgave af nøglebilledet bruger
+   > nye felter i `app_settings`. Kør `supabase/schema.sql` igen i Supabase
+   > **SQL Editor** (se boksen i trin 4 ovenfor) før denne funktion virker,
+   > hvis I opdaterer en database, der allerede kører.
 8. **Redigér praktisk info** ("Om lejligheden" fri tekst + FAQ + tjekliste
    ved afrejse) under **Praktisk info** på administratorsiden. "Om
    lejligheden" er et frit tekstfelt til fx adresse og telefonnumre på
@@ -368,12 +369,12 @@ ingen typefejl, build lykkedes.**
   gennemgang af layoutet, men er ikke verificeret med et automatiseret
   visuelt regressionsværktøj på en fysisk iPhone. Test gerne selv på jeres
   egne telefoner efter deployment.
-- **Billede af nøglegemmested kan tilføjes/opdateres af enhver med adgang
-  til familievisningen** (ikke kun til "egen" booking) – der er ingen
-  individuelle gæstekonti at knytte det til, så dette er en bevidst
-  afvejning inden for den lille, betroede kreds af familie/venner, der har
-  den fælles adgangskode. Sletning af billedet er forbeholdt
-  administratorer.
+- **Billede af nøglegemmested er ét fælles billede, som kan
+  tilføjes/opdateres af enhver med adgang til familievisningen** – der er
+  ingen individuelle gæstekonti eller bookinger at knytte det til, så dette
+  er en bevidst afvejning inden for den lille, betroede kreds af
+  familie/venner, der har den fælles adgangskode. Sletning af billedet er
+  forbeholdt administratorer.
 
 ## 16. Fremtidige udvidelser
 

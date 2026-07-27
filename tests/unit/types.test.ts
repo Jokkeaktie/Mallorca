@@ -12,9 +12,6 @@ const fullBooking: AdminBooking = {
   departureTime: '10:00',
   internalComment: 'Hemmelig intern note',
   createdBy: 'admin-uuid',
-  photoPath: 'abc-123/photo',
-  photoContentType: 'image/jpeg',
-  hasPhoto: true,
   createdAt: '2026-01-01T00:00:00.000Z',
   updatedAt: '2026-01-02T00:00:00.000Z',
 };
@@ -29,7 +26,6 @@ describe('toPublicBooking', () => {
       color: '#3A6351',
       startDate: '2026-08-10',
       endDate: '2026-08-17',
-      hasPhoto: true,
     });
   });
 
@@ -39,14 +35,7 @@ describe('toPublicBooking', () => {
     expect(publicBooking.departureTime).toBeUndefined();
     expect(publicBooking.internalComment).toBeUndefined();
     expect(publicBooking.createdBy).toBeUndefined();
-    expect(publicBooking.photoPath).toBeUndefined();
     expect('arrivalTime' in publicBooking).toBe(false);
     expect('internalComment' in publicBooking).toBe(false);
-    expect('photoPath' in publicBooking).toBe(false);
-  });
-
-  it('afslører ikke den interne fil-sti, kun om der findes et billede', () => {
-    const publicBooking = toPublicBooking(fullBooking);
-    expect(publicBooking.hasPhoto).toBe(true);
   });
 });

@@ -49,13 +49,13 @@ export default function AdminGuidePage() {
           post til den samme person eller familie, så farven er genkendelig i kalenderen.
         </li>
         <li>
-          <strong>8. Billede af nøglegemmested.</strong> Åbn en allerede oprettet post via
-          “Redigér”, og tryk “Tilføj billede” for at tage et foto med telefonen eller vælge
-          et fra kamerarullen. Billedet vises for familie og venner, mens opholdet er
-          aktivt, så den næste gæst kan finde nøglen. Tryk “Fjern billede” for at slette
-          det igen. Familie og venner kan også selv tilføje/opdatere billedet for det
-          ophold, der er aktivt lige nu, uden at logge ind — praktisk for den afrejsende
-          gæst.
+          <strong>8. Billede af nøglegemmested.</strong> Der er ét fælles billede, ikke
+          knyttet til en bestemt post – det vises øverst på både jeres og familiens side.
+          Tryk “Tilføj billede”/“Opdatér billede” for at tage et foto med telefonen eller
+          vælge et fra kamerarullen. Familie og venner kan også selv tilføje/opdatere
+          billedet uden at logge ind – typisk den afrejsende gæst, der viser den næste
+          gæst, hvor nøglen er lagt. Kun I kan trykke “Fjern billede” og slette det
+          permanent.
         </li>
         <li>
           <strong>9. Praktisk info (tjekliste og FAQ).</strong> Under{' '}

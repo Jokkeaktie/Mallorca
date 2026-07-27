@@ -22,9 +22,6 @@ const fullBooking: AdminBooking = {
   departureTime: '10:00',
   internalComment: 'Intern hemmelig note',
   createdBy: 'admin-1',
-  photoPath: null,
-  photoContentType: null,
-  hasPhoto: false,
   createdAt: '2026-01-01T00:00:00.000Z',
   updatedAt: '2026-01-01T00:00:00.000Z',
 };
@@ -64,10 +61,7 @@ describe('GET /api/bookings', () => {
     expect(booking.departureTime).toBeUndefined();
     expect(booking.internalComment).toBeUndefined();
     expect(booking.createdBy).toBeUndefined();
-    expect(booking.photoPath).toBeUndefined();
     expect('internalComment' in booking).toBe(false);
-    expect('photoPath' in booking).toBe(false);
-    expect(booking.hasPhoto).toBe(false);
   });
 
   it('leverer alle felter til administratorer, inkl. tidspunkter og kommentar', async () => {

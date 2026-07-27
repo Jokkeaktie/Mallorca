@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { BookingRequestForm } from '@/components/booking/BookingRequestForm';
-import { CurrentStayKeyPhoto } from '@/components/booking/CurrentStayKeyPhoto';
+import { KeyLocationPhoto } from '@/components/booking/KeyLocationPhoto';
 import { InstallPrompt } from '@/components/InstallPrompt';
 
 export default function FamilyCalendarPage() {
@@ -33,7 +33,7 @@ export default function FamilyCalendarPage() {
 
       <InstallPrompt />
 
-      <CurrentStayKeyPhoto />
+      <KeyLocationPhoto />
 
       <BookingRequestForm />
 

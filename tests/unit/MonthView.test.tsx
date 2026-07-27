@@ -12,7 +12,6 @@ const bookings: CalendarBooking[] = [
     color: '#3A6351',
     startDate: '2026-08-10',
     endDate: '2026-08-17',
-    hasPhoto: false,
   },
   {
     id: '2',
@@ -21,7 +20,6 @@ const bookings: CalendarBooking[] = [
     color: '#2F5D8A',
     startDate: '2026-08-10',
     endDate: '2026-08-20',
-    hasPhoto: false,
   },
 ];
 

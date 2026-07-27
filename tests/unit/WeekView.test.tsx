@@ -12,7 +12,6 @@ const bookings: CalendarBooking[] = [
     color: '#C1653A',
     startDate: '2026-08-13',
     endDate: '2026-08-13',
-    hasPhoto: false,
   },
 ];
 

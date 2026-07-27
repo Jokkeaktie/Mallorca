@@ -13,8 +13,6 @@ interface BookingRow {
   departure_time: string | null;
   internal_comment: string | null;
   created_by: string | null;
-  photo_path: string | null;
-  photo_content_type: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -31,16 +29,13 @@ function toDomain(row: BookingRow): AdminBooking {
     departureTime: row.departure_time ? row.departure_time.slice(0, 5) : null,
     internalComment: row.internal_comment,
     createdBy: row.created_by,
-    photoPath: row.photo_path,
-    photoContentType: row.photo_content_type,
-    hasPhoto: !!row.photo_path,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
 }
 
 const SELECT_COLUMNS =
-  'id, name, status, color, start_date, end_date, arrival_time, departure_time, internal_comment, created_by, photo_path, photo_content_type, created_at, updated_at';
+  'id, name, status, color, start_date, end_date, arrival_time, departure_time, internal_comment, created_by, created_at, updated_at';
 
 /**
  * Henter bookinger der overlapper med [fromDate, toDate].
@@ -130,45 +125,6 @@ export async function deleteBooking(id: string): Promise<boolean> {
   const { error, count } = await supabase
     .from('bookings')
     .delete({ count: 'exact' })
-    .eq('id', id);
-  if (error) throw error;
-  return (count ?? 0) > 0;
-}
-
-/** Henter kun de felter der skal bruges for at slå et evt. billede op for en booking. */
-export async function getBookingPhotoInfo(
-  id: string,
-): Promise<{ photoPath: string | null; photoContentType: string | null } | null> {
-  const supabase = getServiceSupabaseClient();
-  const { data, error } = await supabase
-    .from('bookings')
-    .select('photo_path, photo_content_type')
-    .eq('id', id)
-    .maybeSingle();
-  if (error) throw error;
-  if (!data) return null;
-  return { photoPath: data.photo_path, photoContentType: data.photo_content_type };
-}
-
-export async function setBookingPhoto(
-  id: string,
-  photoPath: string,
-  photoContentType: string,
-): Promise<boolean> {
-  const supabase = getServiceSupabaseClient();
-  const { error, count } = await supabase
-    .from('bookings')
-    .update({ photo_path: photoPath, photo_content_type: photoContentType }, { count: 'exact' })
-    .eq('id', id);
-  if (error) throw error;
-  return (count ?? 0) > 0;
-}
-
-export async function clearBookingPhoto(id: string): Promise<boolean> {
-  const supabase = getServiceSupabaseClient();
-  const { error, count } = await supabase
-    .from('bookings')
-    .update({ photo_path: null, photo_content_type: null }, { count: 'exact' })
     .eq('id', id);
   if (error) throw error;
   return (count ?? 0) > 0;

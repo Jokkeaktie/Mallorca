@@ -28,16 +28,15 @@ create table if not exists public.bookings (
   departure_time time without time zone,
   internal_comment text,
   created_by text,
-  photo_path text,
-  photo_content_type text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
 
--- Tilføjer felterne til billede af nøglegemmested, hvis tabellen allerede
--- fandtes fra en tidligere version af skemaet (denne fil er sikker at køre igen).
-alter table public.bookings add column if not exists photo_path text;
-alter table public.bookings add column if not exists photo_content_type text;
+-- BEMÆRK: "photo_path"/"photo_content_type" fandtes tidligere her (billede af
+-- nøglegemmested pr. booking), men er erstattet af ét fælles nøglebillede på
+-- public.app_settings (se key_photo_path nedenfor). Kolonnerne fjernes ikke
+-- automatisk her for ikke at risikere datatab ved en fejl – de kan roligt
+-- ignoreres eller fjernes manuelt, hvis I er sikre på, at I ikke bruger dem.
 
 create index if not exists bookings_date_range_idx
   on public.bookings (start_date, end_date);
@@ -51,12 +50,16 @@ create table if not exists public.app_settings (
   id smallint primary key default 1 check (id = 1),
   family_password_hash text,
   apartment_info text not null default '',
+  key_photo_path text,
+  key_photo_content_type text,
   updated_at timestamptz not null default now()
 );
 
--- Tilføjer feltet til "Om lejligheden", hvis tabellen allerede fandtes fra
--- en tidligere version af skemaet (denne fil er sikker at køre igen).
+-- Tilføjer felterne, hvis tabellen allerede fandtes fra en tidligere version
+-- af skemaet (denne fil er sikker at køre igen).
 alter table public.app_settings add column if not exists apartment_info text not null default '';
+alter table public.app_settings add column if not exists key_photo_path text;
+alter table public.app_settings add column if not exists key_photo_content_type text;
 
 -- family_password_hash var oprindeligt "not null", men skal kunne være tom,
 -- så "Om lejligheden" kan gemmes uafhængigt af, om adgangskoden er sat endnu.
@@ -123,10 +126,11 @@ create trigger faq_items_set_updated_at
   before update on public.faq_items
   for each row execute function public.set_updated_at();
 
--- Fillager til billeder af nøglegemmested o.lign., knyttet til en booking.
--- Bucket'en er IKKE offentlig ("public: false") – billeder hentes udelukkende
--- via API-ruten /api/bookings/[id]/photo, som selv tjekker at den, der spørger,
--- enten er administrator eller har familiens fælles adgangskode. Det er samme
+-- Fillager til billedet af nøglegemmested (ét fælles billede for hele
+-- lejligheden, ikke pr. booking). Bucket'en er IKKE offentlig
+-- ("public: false") – billedet hentes udelukkende via API-ruten
+-- /api/key-photo/image, som selv tjekker at den, der spørger, enten er
+-- administrator eller har familiens fælles adgangskode. Det er samme
 -- sikkerhedsmodel som resten af appen: kun service role-nøglen har direkte
 -- adgang til bucket'en.
 insert into storage.buckets (id, name, public)
