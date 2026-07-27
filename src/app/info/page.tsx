@@ -14,7 +14,7 @@ export default function InfoPage() {
       <InfoView />
 
       <Link href="/" className="text-sm text-accent underline underline-offset-2">
-        ← Tilbage til kalenderen
+        ← Tilbage til forsiden
       </Link>
     </main>
   );

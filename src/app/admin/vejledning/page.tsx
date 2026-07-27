@@ -36,7 +36,7 @@ export default function AdminGuidePage() {
           periode samtidig – systemet sletter eller afviser ikke automatisk noget. I
           beslutter selv, hvem der får perioden, ved at sætte den ene til “Godkendt”.
           Familie og venner ser ikke kalenderen og kan derfor ikke selv se ledighed – de
-          sender et ønske via en formular på forsiden, som dukker op her som en
+          sender et ønske via “Ønsk booking” på forsiden, som dukker op her som en
           almindelig “Ønske”-post.
         </li>
         <li>

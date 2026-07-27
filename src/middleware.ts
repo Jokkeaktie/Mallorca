@@ -63,7 +63,11 @@ export const config = {
   matcher: [
     /*
      * Kør på alle stier undtagen statiske filer, billeder og PWA-assets.
+     * "images/" skal også undtages – ellers bliver Next.js' interne
+     * billedoptimering (som selv henter kildefilen via en HTTP-forespørgsel)
+     * blokeret af login-tjekket og returnerer en login-omdirigering i
+     * stedet for selve billedet.
      */
-    '/((?!_next/static|_next/image|favicon.ico|manifest.json|sw.js|icons/).*)',
+    '/((?!_next/static|_next/image|favicon.ico|manifest.json|sw.js|icons/|images/).*)',
   ],
 };

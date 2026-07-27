@@ -303,7 +303,7 @@ Denne vejledning findes også direkte i appen under **Administrator ->
 5. **Overlappende ønsker** kræver ingen handling i sig selv – flere personer
    kan gerne ønske samme periode. I beslutter selv, hvem der får perioden.
    Familie og venner ser ikke kalenderen og kan derfor ikke selv se, om en
-   periode er ledig – de sender blot et ønske via en formular på forsiden
+   periode er ledig – de sender blot et ønske via "Ønsk booking" på forsiden
    (med navn, datoer og en valgfri besked, som gemmes som intern kommentar),
    og det dukker op i jeres kalender som en almindelig "Ønske"-post, I kan
    redigere og godkende/afvise som enhver anden post.
