@@ -22,7 +22,8 @@ export default function BugReportPage() {
           Denne side er kun til <strong>mindre fejl og mangler</strong>, som ikke haster — vi
           kigger på dem, når vi har tid. Ved <strong>akutte eller alvorlige problemer</strong>
           (fx vandskade, ingen strøm, eller andet der skal løses med det samme), skal du i
-          stedet kontakte <strong>Sven eller Inger</strong> direkte.
+          stedet kontakte <strong>Sven eller Inger</strong> direkte. Hvis vi ikke kan kontaktes,
+          så ring til <strong>Dawn Taylor</strong>.
         </p>
       </div>
 

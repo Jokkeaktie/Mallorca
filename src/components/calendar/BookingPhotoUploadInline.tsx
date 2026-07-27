@@ -27,6 +27,7 @@ export function BookingPhotoUploadInline({
   const [version, setVersion] = useState(0);
   const [isBusy, setIsBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   async function handleFileSelected(event: React.ChangeEvent<HTMLInputElement>) {
@@ -71,17 +72,35 @@ export function BookingPhotoUploadInline({
   return (
     <div className="mt-2 flex flex-col gap-2">
       {hasPhoto && (
-        <a
-          href={`/api/bookings/${bookingId}/photo?v=${version}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <button type="button" onClick={() => setIsPreviewOpen(true)} className="text-left">
           <img
             src={`/api/bookings/${bookingId}/photo?v=${version}`}
             alt={`Billede af nøglegemmested for ${bookingName}`}
             className="h-32 w-full rounded-xl2 border border-line object-cover"
           />
-        </a>
+        </button>
+      )}
+
+      {hasPhoto && isPreviewOpen && (
+        <div
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-black/90 p-4"
+          onClick={() => setIsPreviewOpen(false)}
+        >
+          <button
+            type="button"
+            onClick={() => setIsPreviewOpen(false)}
+            aria-label="Luk billede"
+            className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-white text-2xl leading-none text-ink"
+          >
+            ×
+          </button>
+          <img
+            src={`/api/bookings/${bookingId}/photo?v=${version}`}
+            alt={`Billede af nøglegemmested for ${bookingName}`}
+            className="max-h-full max-w-full rounded-xl2 object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
       )}
 
       <button

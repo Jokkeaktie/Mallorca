@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { BugReportsList } from '@/components/admin/BugReportsList';
+import { AdminBugReportsSection } from '@/components/admin/AdminBugReportsSection';
 
 export const metadata = { title: 'Fejlrapporter – Mallorca-kalenderen' };
 
@@ -21,7 +21,7 @@ export default function AdminBugReportsPage() {
         </p>
       </header>
 
-      <BugReportsList />
+      <AdminBugReportsSection />
 
       <Link href="/admin" className="text-sm text-accent underline underline-offset-2">
         ← Tilbage til administratorområdet

@@ -9,7 +9,12 @@ interface PendingPhoto {
   previewUrl: string;
 }
 
-export function BugReportForm() {
+interface BugReportFormProps {
+  /** Kaldes efter en vellykket indsendelse, fx så en liste kan genindlæses. */
+  onSubmitted?: () => void;
+}
+
+export function BugReportForm({ onSubmitted }: BugReportFormProps = {}) {
   const [description, setDescription] = useState('');
   const [reporterName, setReporterName] = useState('');
   const [photos, setPhotos] = useState<PendingPhoto[]>([]);
@@ -92,6 +97,7 @@ export function BugReportForm() {
       setReporterName('');
       setPhotos([]);
       setIsSent(true);
+      onSubmitted?.();
     } catch {
       setError('Kunne ikke sende rapporten. Tjek din internetforbindelse.');
     } finally {
