@@ -12,8 +12,11 @@ interface KeyLocationPhotoProps {
  * Ét fælles billede af nøglegemmestedet – ikke knyttet til en bestemt
  * booking. Alle med adgang (familie/venner og administratorer) kan
  * tilføje/opdatere det, typisk den afrejsende gæst, der viser den næste
- * gæst, hvor nøglen er lagt. Vises derfor uafhængigt af, om der lige nu er
- * et aktivt ophold.
+ * gæst, hvor nøglen er lagt.
+ *
+ * De fleste ophold har IKKE en skjult nøgle (gæsterne får den direkte af
+ * Sven/Inger), så uden et billede vises kun et diskret link i stedet for en
+ * fremtrædende boks, der ellers ville se ud som om et billede mangler.
  */
 export function KeyLocationPhoto({ isAdmin }: KeyLocationPhotoProps) {
   const [hasPhoto, setHasPhoto] = useState(false);
@@ -94,24 +97,48 @@ export function KeyLocationPhoto({ isAdmin }: KeyLocationPhotoProps) {
 
   if (isLoading) return null;
 
+  const fileInput = (
+    <input
+      ref={fileInputRef}
+      type="file"
+      accept="image/*"
+      onChange={handleFileSelected}
+      className="hidden"
+    />
+  );
+
+  if (!hasPhoto) {
+    return (
+      <div className="flex flex-col items-start gap-1">
+        <button
+          type="button"
+          disabled={isBusy}
+          onClick={() => fileInputRef.current?.click()}
+          className="text-xs text-muted underline underline-offset-2 hover:text-ink disabled:opacity-60"
+        >
+          {isBusy ? 'Uploader…' : '+ Tilføj billede af nøglegemmested'}
+        </button>
+        {fileInput}
+        {error && (
+          <p role="alert" className="text-xs text-red-700">
+            {error}
+          </p>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-2 rounded-xl2 border border-line bg-white p-4">
       <h2 className="text-sm font-medium text-ink">Nøglegemmested</h2>
 
-      {hasPhoto ? (
-        <button type="button" onClick={() => setIsPreviewOpen(true)} className="text-left">
-          <img
-            src={`/api/key-photo/image?v=${version}`}
-            alt="Billede af nøglegemmested"
-            className="h-32 w-full rounded-xl2 border border-line object-cover"
-          />
-        </button>
-      ) : (
-        <p className="text-xs text-muted">
-          Der er ikke lagt et billede op endnu. Den afrejsende gæst må gerne tage et billede af,
-          hvor nøglen er gemt, til den næste gæst.
-        </p>
-      )}
+      <button type="button" onClick={() => setIsPreviewOpen(true)} className="text-left">
+        <img
+          src={`/api/key-photo/image?v=${version}`}
+          alt="Billede af nøglegemmested"
+          className="h-32 w-full rounded-xl2 border border-line object-cover"
+        />
+      </button>
 
       <div className="flex gap-2">
         <button
@@ -120,9 +147,9 @@ export function KeyLocationPhoto({ isAdmin }: KeyLocationPhotoProps) {
           onClick={() => fileInputRef.current?.click()}
           className="self-start rounded-full border border-line px-3 py-1 text-xs hover:bg-canvas disabled:opacity-60"
         >
-          {isBusy ? 'Uploader…' : hasPhoto ? 'Opdatér billede' : 'Tilføj billede'}
+          {isBusy ? 'Uploader…' : 'Opdatér billede'}
         </button>
-        {isAdmin && hasPhoto && (
+        {isAdmin && (
           <button
             type="button"
             disabled={isBusy}
@@ -134,13 +161,7 @@ export function KeyLocationPhoto({ isAdmin }: KeyLocationPhotoProps) {
         )}
       </div>
 
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        onChange={handleFileSelected}
-        className="hidden"
-      />
+      {fileInput}
 
       {error && (
         <p role="alert" className="text-xs text-red-700">
@@ -148,7 +169,7 @@ export function KeyLocationPhoto({ isAdmin }: KeyLocationPhotoProps) {
         </p>
       )}
 
-      {hasPhoto && isPreviewOpen && (
+      {isPreviewOpen && (
         <div
           className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-black/90 p-4"
           onClick={() => setIsPreviewOpen(false)}

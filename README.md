@@ -310,10 +310,13 @@ Denne vejledning findes også direkte i appen under **Administrator ->
 6. **Skift den fælles adgangskode** når som helst under "Indstillinger" på
    administratorsiden.
 7. **Nøglegemmested-billedet** er ÉT fælles billede (ikke knyttet til en
-   bestemt booking eller et bestemt ophold) — det vises altid øverst på
-   både familiens forside og administratorsiden. Tryk "Tilføj billede"/
-   "Opdatér billede" for at tage et foto direkte med telefonen eller vælge
-   et fra kamerarullen. **Familie og venner kan også selv tilføje/opdatere
+   bestemt booking eller et bestemt ophold), vist øverst på både familiens
+   forside og administratorsiden. Da de fleste ophold IKKE har en skjult
+   nøgle (gæsten får den direkte af jer), vises der som udgangspunkt kun et
+   diskret "+ Tilføj billede af nøglegemmested"-link, ikke en fremtrædende
+   boks — den fulde boks med billede dukker først op, når nogen rent
+   faktisk har uploadet et billede. Tryk "Opdatér billede" for at erstatte
+   det med et nyt. **Familie og venner kan også selv tilføje/opdatere
    billedet** (uden at logge ind som admin) — typisk den afrejsende gæst,
    der viser den næste gæst, hvor nøglen er lagt. Kun administratorer kan
    trykke "Fjern billede" og slette det permanent.
