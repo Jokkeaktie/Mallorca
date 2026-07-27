@@ -10,6 +10,7 @@ export interface AdminBooking {
   endDate: string; // ISO-dato (YYYY-MM-DD)
   arrivalTime: string | null; // HH:mm
   departureTime: string | null; // HH:mm
+  flightNumber: string | null;
   internalComment: string | null;
   createdBy: string | null;
   createdAt: string;
@@ -37,6 +38,7 @@ export interface PublicBooking {
 export interface CalendarBooking extends PublicBooking {
   arrivalTime?: string | null;
   departureTime?: string | null;
+  flightNumber?: string | null;
   internalComment?: string | null;
   createdBy?: string | null;
   createdAt?: string;

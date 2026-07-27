@@ -20,6 +20,7 @@ const fullBooking: AdminBooking = {
   endDate: '2026-08-17',
   arrivalTime: '15:00',
   departureTime: '10:00',
+  flightNumber: 'SK1533',
   internalComment: 'Intern hemmelig note',
   createdBy: 'admin-1',
   createdAt: '2026-01-01T00:00:00.000Z',
@@ -61,7 +62,9 @@ describe('GET /api/bookings', () => {
     expect(booking.departureTime).toBeUndefined();
     expect(booking.internalComment).toBeUndefined();
     expect(booking.createdBy).toBeUndefined();
+    expect(booking.flightNumber).toBeUndefined();
     expect('internalComment' in booking).toBe(false);
+    expect('flightNumber' in booking).toBe(false);
   });
 
   it('leverer alle felter til administratorer, inkl. tidspunkter og kommentar', async () => {

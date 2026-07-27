@@ -75,6 +75,7 @@ export function DayDetailsPanel({
                         {booking.departureTime ?? 'ikke angivet'}
                       </p>
                     )}
+                    {booking.flightNumber && <p>Flynummer: {booking.flightNumber}</p>}
                     {booking.internalComment && (
                       <p className="italic">&ldquo;{booking.internalComment}&rdquo;</p>
                     )}

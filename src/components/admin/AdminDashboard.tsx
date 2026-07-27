@@ -20,6 +20,7 @@ function toApiPayload(values: BookingFormValues) {
     endDate: values.endDate,
     arrivalTime: values.arrivalTime || null,
     departureTime: values.departureTime || null,
+    flightNumber: values.flightNumber || null,
     internalComment: values.internalComment || null,
   };
 }

@@ -10,6 +10,7 @@ const fullBooking: AdminBooking = {
   endDate: '2026-08-17',
   arrivalTime: '15:00',
   departureTime: '10:00',
+  flightNumber: 'SK1533',
   internalComment: 'Hemmelig intern note',
   createdBy: 'admin-uuid',
   createdAt: '2026-01-01T00:00:00.000Z',

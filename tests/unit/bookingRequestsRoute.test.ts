@@ -70,6 +70,45 @@ describe('POST /api/booking-requests', () => {
     );
   });
 
+  it('gemmer valgfrit flynummer og ankomst-/afrejsetidspunkt', async () => {
+    hasFamilyOrAdminAccess.mockResolvedValue(true);
+    createBooking.mockResolvedValue({ id: 'b1' });
+
+    await POST(
+      makeRequest({
+        ...validPayload,
+        flightNumber: 'SK1533',
+        arrivalTime: '15:00',
+        departureTime: '10:00',
+      }),
+    );
+
+    expect(createBooking).toHaveBeenCalledWith(
+      expect.objectContaining({
+        flightNumber: 'SK1533',
+        arrivalTime: '15:00',
+        departureTime: '10:00',
+      }),
+      null,
+    );
+  });
+
+  it('rejseoplysninger er valgfrie (bliver null uden dem)', async () => {
+    hasFamilyOrAdminAccess.mockResolvedValue(true);
+    createBooking.mockResolvedValue({ id: 'b1' });
+
+    await POST(makeRequest(validPayload));
+
+    expect(createBooking).toHaveBeenCalledWith(
+      expect.objectContaining({
+        flightNumber: null,
+        arrivalTime: null,
+        departureTime: null,
+      }),
+      null,
+    );
+  });
+
   it('afviser ugyldigt input (manglende navn)', async () => {
     hasFamilyOrAdminAccess.mockResolvedValue(true);
 

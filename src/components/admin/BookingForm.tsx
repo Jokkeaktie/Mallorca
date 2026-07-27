@@ -12,6 +12,7 @@ export interface BookingFormValues {
   endDate: string;
   arrivalTime: string;
   departureTime: string;
+  flightNumber: string;
   internalComment: string;
 }
 
@@ -30,6 +31,7 @@ function toFormValues(booking?: AdminBooking): BookingFormValues {
     endDate: booking?.endDate ?? '',
     arrivalTime: booking?.arrivalTime ?? '',
     departureTime: booking?.departureTime ?? '',
+    flightNumber: booking?.flightNumber ?? '',
     internalComment: booking?.internalComment ?? '',
   };
 }
@@ -198,6 +200,20 @@ export function BookingForm({ initial, onSubmit, onCancel }: BookingFormProps) {
             className="rounded-xl2 border border-line px-3 py-2 text-base outline-none focus:border-accent"
           />
         </div>
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <label htmlFor="flightNumber" className="text-sm font-medium text-ink">
+          Flynummer <span className="text-muted">(valgfri)</span>
+        </label>
+        <input
+          id="flightNumber"
+          value={values.flightNumber}
+          onChange={(e) => update('flightNumber', e.target.value)}
+          className="rounded-xl2 border border-line px-3 py-2 text-base outline-none focus:border-accent"
+          placeholder="Fx SK1533"
+          maxLength={20}
+        />
       </div>
 
       <div className="flex flex-col gap-1.5">

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { timeSchema } from '@/lib/validation/booking';
 
 const dateSchema = z
   .string()
@@ -13,6 +14,14 @@ export const bookingRequestSchema = z
       .max(120, 'Navn er for langt'),
     startDate: dateSchema,
     endDate: dateSchema,
+    flightNumber: z
+      .string()
+      .max(20, 'Flynummer er for langt')
+      .nullable()
+      .optional()
+      .transform((v) => (v && v.trim().length > 0 ? v.trim() : null)),
+    arrivalTime: timeSchema,
+    departureTime: timeSchema,
     note: z
       .string()
       .max(500, 'Beskeden er for lang')

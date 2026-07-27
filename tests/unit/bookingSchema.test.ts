@@ -32,6 +32,16 @@ describe('bookingSchema', () => {
     expect(result.success).toBe(false);
   });
 
+  it('accepterer et valgfrit flynummer', () => {
+    const result = bookingSchema.safeParse({ ...validBooking, flightNumber: 'SK1533' });
+    expect(result.success).toBe(true);
+  });
+
+  it('afviser et for langt flynummer', () => {
+    const result = bookingSchema.safeParse({ ...validBooking, flightNumber: 'X'.repeat(21) });
+    expect(result.success).toBe(false);
+  });
+
   it('afviser tomt navn', () => {
     const result = bookingSchema.safeParse({ ...validBooking, name: '   ' });
     expect(result.success).toBe(false);

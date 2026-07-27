@@ -4,7 +4,7 @@ const dateSchema = z
   .string()
   .regex(/^\d{4}-\d{2}-\d{2}$/, 'Dato skal have formatet ÅÅÅÅ-MM-DD');
 
-const timeSchema = z
+export const timeSchema = z
   .string()
   .regex(/^([01]\d|2[0-3]):[0-5]\d$/, 'Klokkeslæt skal have formatet TT:MM')
   .nullable()
@@ -28,6 +28,12 @@ export const bookingSchema = z
     endDate: dateSchema,
     arrivalTime: timeSchema,
     departureTime: timeSchema,
+    flightNumber: z
+      .string()
+      .max(20, 'Flynummer er for langt')
+      .nullable()
+      .optional()
+      .transform((v) => (v && v.trim().length > 0 ? v.trim() : null)),
     internalComment: z
       .string()
       .max(2000, 'Kommentaren er for lang')

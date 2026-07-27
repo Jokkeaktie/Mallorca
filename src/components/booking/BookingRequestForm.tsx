@@ -6,6 +6,9 @@ export function BookingRequestForm() {
   const [name, setName] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [flightNumber, setFlightNumber] = useState('');
+  const [arrivalTime, setArrivalTime] = useState('');
+  const [departureTime, setDepartureTime] = useState('');
   const [note, setNote] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,6 +40,9 @@ export function BookingRequestForm() {
           name: name.trim(),
           startDate,
           endDate,
+          flightNumber: flightNumber.trim() || undefined,
+          arrivalTime: arrivalTime || undefined,
+          departureTime: departureTime || undefined,
           note: note.trim() || undefined,
         }),
       });
@@ -48,6 +54,9 @@ export function BookingRequestForm() {
       setName('');
       setStartDate('');
       setEndDate('');
+      setFlightNumber('');
+      setArrivalTime('');
+      setDepartureTime('');
       setNote('');
       setIsSent(true);
     } catch {
@@ -116,6 +125,51 @@ export function BookingRequestForm() {
             onChange={(e) => setEndDate(e.target.value)}
             className="rounded-xl2 border border-line px-3 py-2 text-base outline-none focus:border-accent"
           />
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-3 rounded-xl2 border border-line bg-canvas p-3">
+        <span className="text-sm font-medium text-ink">
+          Rejsedetaljer <span className="text-muted">(valgfrit)</span>
+        </span>
+        <div className="flex flex-col gap-2">
+          <label htmlFor="requestFlightNumber" className="text-xs font-medium text-muted">
+            Flynummer
+          </label>
+          <input
+            id="requestFlightNumber"
+            value={flightNumber}
+            onChange={(e) => setFlightNumber(e.target.value)}
+            maxLength={20}
+            placeholder="Fx SK1533"
+            className="rounded-xl2 border border-line bg-white px-3 py-2 text-base outline-none focus:border-accent"
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="requestArrivalTime" className="text-xs font-medium text-muted">
+              Ankomsttidspunkt
+            </label>
+            <input
+              id="requestArrivalTime"
+              type="time"
+              value={arrivalTime}
+              onChange={(e) => setArrivalTime(e.target.value)}
+              className="rounded-xl2 border border-line bg-white px-3 py-2 text-base outline-none focus:border-accent"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="requestDepartureTime" className="text-xs font-medium text-muted">
+              Afrejsetidspunkt
+            </label>
+            <input
+              id="requestDepartureTime"
+              type="time"
+              value={departureTime}
+              onChange={(e) => setDepartureTime(e.target.value)}
+              className="rounded-xl2 border border-line bg-white px-3 py-2 text-base outline-none focus:border-accent"
+            />
+          </div>
         </div>
       </div>
 

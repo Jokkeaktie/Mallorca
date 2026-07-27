@@ -304,9 +304,10 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    kan gerne ønske samme periode. I beslutter selv, hvem der får perioden.
    Familie og venner ser ikke kalenderen og kan derfor ikke selv se, om en
    periode er ledig – de sender blot et ønske via "Ønsk booking" på forsiden
-   (med navn, datoer og en valgfri besked, som gemmes som intern kommentar),
-   og det dukker op i jeres kalender som en almindelig "Ønske"-post, I kan
-   redigere og godkende/afvise som enhver anden post.
+   (med navn, datoer, en valgfri "Rejsedetaljer"-boks til flynummer og
+   ankomst-/afrejsetidspunkt, samt en valgfri besked, som gemmes som intern
+   kommentar), og det dukker op i jeres kalender som en almindelig
+   "Ønske"-post, I kan redigere og godkende/afvise som enhver anden post.
 6. **Skift den fælles adgangskode** når som helst under "Indstillinger" på
    administratorsiden.
 7. **Nøglegemmested-billedet** er ÉT fælles billede (ikke knyttet til en

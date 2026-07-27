@@ -11,6 +11,7 @@ interface BookingRow {
   end_date: string;
   arrival_time: string | null;
   departure_time: string | null;
+  flight_number: string | null;
   internal_comment: string | null;
   created_by: string | null;
   created_at: string;
@@ -27,6 +28,7 @@ function toDomain(row: BookingRow): AdminBooking {
     endDate: row.end_date,
     arrivalTime: row.arrival_time ? row.arrival_time.slice(0, 5) : null,
     departureTime: row.departure_time ? row.departure_time.slice(0, 5) : null,
+    flightNumber: row.flight_number,
     internalComment: row.internal_comment,
     createdBy: row.created_by,
     createdAt: row.created_at,
@@ -35,7 +37,7 @@ function toDomain(row: BookingRow): AdminBooking {
 }
 
 const SELECT_COLUMNS =
-  'id, name, status, color, start_date, end_date, arrival_time, departure_time, internal_comment, created_by, created_at, updated_at';
+  'id, name, status, color, start_date, end_date, arrival_time, departure_time, flight_number, internal_comment, created_by, created_at, updated_at';
 
 /**
  * Henter bookinger der overlapper med [fromDate, toDate].
@@ -87,6 +89,7 @@ export async function createBooking(
       end_date: input.endDate,
       arrival_time: input.arrivalTime,
       departure_time: input.departureTime,
+      flight_number: input.flightNumber,
       internal_comment: input.internalComment,
       created_by: createdBy,
     })
@@ -111,6 +114,7 @@ export async function updateBooking(
       end_date: input.endDate,
       arrival_time: input.arrivalTime,
       departure_time: input.departureTime,
+      flight_number: input.flightNumber,
       internal_comment: input.internalComment,
     })
     .eq('id', id)

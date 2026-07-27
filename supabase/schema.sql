@@ -26,11 +26,16 @@ create table if not exists public.bookings (
   end_date date not null check (end_date >= start_date),
   arrival_time time without time zone,
   departure_time time without time zone,
+  flight_number text,
   internal_comment text,
   created_by text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+-- Tilføjer feltet, hvis tabellen allerede fandtes fra en tidligere version
+-- af skemaet (denne fil er sikker at køre igen).
+alter table public.bookings add column if not exists flight_number text;
 
 -- BEMÆRK: "photo_path"/"photo_content_type" fandtes tidligere her (billede af
 -- nøglegemmested pr. booking), men er erstattet af ét fælles nøglebillede på
