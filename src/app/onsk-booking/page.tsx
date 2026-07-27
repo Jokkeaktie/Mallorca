@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { BookingRequestForm } from '@/components/booking/BookingRequestForm';
 
-export const metadata = { title: 'Ønsk booking – Mallorca-kalenderen' };
+export const metadata = { title: 'Ønsk booking – Mallorca-appen' };
 
 export default function OnskBookingPage() {
   return (

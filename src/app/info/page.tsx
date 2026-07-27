@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { InfoView } from '@/components/info/InfoView';
 
-export const metadata = { title: 'Praktisk info – Mallorca-kalenderen' };
+export const metadata = { title: 'Praktisk info – Mallorca-appen' };
 
 export default function InfoPage() {
   return (

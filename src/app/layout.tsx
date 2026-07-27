@@ -3,7 +3,7 @@ import './globals.css';
 import { ServiceWorkerRegister } from '@/components/ServiceWorkerRegister';
 
 export const metadata: Metadata = {
-  title: 'Mallorca-kalenderen',
+  title: 'Mallorca-appen',
   description: 'Fælles kalender for familiens lejlighed på Mallorca',
   manifest: '/manifest.json',
   icons: {

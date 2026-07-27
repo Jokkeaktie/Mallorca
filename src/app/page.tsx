@@ -39,7 +39,7 @@ export default function FamilyLandingPage() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 px-4 py-4 sm:px-6">
           <h1 className="text-2xl font-semibold text-white drop-shadow-sm sm:text-3xl">
-            Mallorca-kalenderen
+            Mallorca-appen
           </h1>
         </div>
       </div>

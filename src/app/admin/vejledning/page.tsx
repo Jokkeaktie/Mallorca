@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export const metadata = { title: 'Vejledning – Mallorca-kalenderen' };
+export const metadata = { title: 'Vejledning – Mallorca-appen' };
 
 export default function AdminGuidePage() {
   return (

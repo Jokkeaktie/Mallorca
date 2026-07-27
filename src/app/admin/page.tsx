@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { AdminDashboard } from '@/components/admin/AdminDashboard';
 import { InstallPrompt } from '@/components/InstallPrompt';
 
-export const metadata = { title: 'Administrator – Mallorca-kalenderen' };
+export const metadata = { title: 'Administrator – Mallorca-appen' };
 
 export default function AdminPage() {
   return (

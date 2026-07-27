@@ -1,4 +1,4 @@
-# Mallorca-kalenderen
+# Mallorca-appen
 
 En simpel, fælles kalender til at planlægge ophold i familiens lejlighed på
 Mallorca. Familie og venner kan ønske en periode via en formular, men ser

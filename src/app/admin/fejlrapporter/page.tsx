@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { AdminBugReportsSection } from '@/components/admin/AdminBugReportsSection';
 
-export const metadata = { title: 'Fejlrapporter – Mallorca-kalenderen' };
+export const metadata = { title: 'Fejlrapporter – Mallorca-appen' };
 
 export default function AdminBugReportsPage() {
   return (

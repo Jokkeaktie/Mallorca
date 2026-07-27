@@ -1,6 +1,6 @@
 import { AdminLoginForm } from '@/components/AdminLoginForm';
 
-export const metadata = { title: 'Administrator-login – Mallorca-kalenderen' };
+export const metadata = { title: 'Administrator-login – Mallorca-appen' };
 
 export default function AdminLoginPage() {
   return (

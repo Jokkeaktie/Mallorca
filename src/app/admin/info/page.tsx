@@ -3,7 +3,7 @@ import { ApartmentInfoEditor } from '@/components/admin/ApartmentInfoEditor';
 import { ChecklistEditor } from '@/components/admin/ChecklistEditor';
 import { FaqEditor } from '@/components/admin/FaqEditor';
 
-export const metadata = { title: 'Praktisk info – Mallorca-kalenderen' };
+export const metadata = { title: 'Praktisk info – Mallorca-appen' };
 
 export default function AdminInfoPage() {
   return (

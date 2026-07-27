@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { BugReportForm } from '@/components/bugReports/BugReportForm';
 
-export const metadata = { title: 'Rapportér en fejl – Mallorca-kalenderen' };
+export const metadata = { title: 'Rapportér en fejl – Mallorca-appen' };
 
 export default function BugReportPage() {
   return (
