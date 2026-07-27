@@ -320,8 +320,9 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    ubehandlede ønsker, sorteret efter hvornår de blev SENDT (ikke hvornår
    perioden ligger) – så et ønske til fx næste sommer, der lige er kommet
    ind, altid ligger øverst og ikke drukner i kalenderen. Godkend direkte
-   med ét tryk, eller tryk "Redigér" for at ændre noget først. Panelet
-   forsvinder, når der ikke er flere ubehandlede ønsker. Se også afsnittet
+   med ét tryk, tryk "Redigér" for at ændre noget først, eller "Slet" for at
+   afvise ønsket permanent. Panelet forsvinder, når der ikke er flere
+   ubehandlede ønsker. Se også afsnittet
    "E-mail-notifikationer (valgfrit)" ovenfor, hvis I vil have besked på
    mail, så snart et ønske sendes.
 3. **Opret en ny kalenderpost** ved at trykke "+ Ny kalenderpost". Udfyld

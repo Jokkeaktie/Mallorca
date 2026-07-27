@@ -17,8 +17,8 @@ export default function AdminGuidePage() {
           ubehandlede ønsker, sorteret efter hvornår de blev SENDT (ikke hvornår perioden
           ligger) – så et ønske til fx næste sommer, der lige er kommet ind, altid ligger
           øverst og ikke drukner i kalenderen. Tryk “✓ Godkend” for at godkende med det
-          samme, eller “Redigér” for at ændre noget først. Panelet forsvinder, når der
-          ikke er flere ubehandlede ønsker.
+          samme, “Redigér” for at ændre noget først, eller “Slet” for at afvise ønsket
+          permanent. Panelet forsvinder, når der ikke er flere ubehandlede ønsker.
         </li>
         <li>
           <strong>2. Opret en ny kalenderpost.</strong> Tryk på “+ Ny kalenderpost”. Skriv

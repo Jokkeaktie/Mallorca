@@ -43,7 +43,14 @@ describe('NewRequestsPanel', () => {
   });
 
   it('viser kun ubehandlede ønsker, ikke godkendte bookinger', async () => {
-    render(<NewRequestsPanel refreshToken={0} onEdit={vi.fn()} onChanged={vi.fn()} />);
+    render(
+      <NewRequestsPanel
+        refreshToken={0}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+        onChanged={vi.fn()}
+      />,
+    );
 
     expect(await screen.findByText('Peter og Lise')).toBeInTheDocument();
     expect(screen.queryByText('Tania H.')).not.toBeInTheDocument();
@@ -55,7 +62,12 @@ describe('NewRequestsPanel', () => {
     ) as unknown as typeof fetch;
 
     const { container } = render(
-      <NewRequestsPanel refreshToken={0} onEdit={vi.fn()} onChanged={vi.fn()} />,
+      <NewRequestsPanel
+        refreshToken={0}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+        onChanged={vi.fn()}
+      />,
     );
 
     await waitFor(() => expect(container.querySelector('.animate-pulse')).not.toBeInTheDocument());
@@ -65,7 +77,14 @@ describe('NewRequestsPanel', () => {
   it('godkender et ønske med ét tryk og kalder onChanged', async () => {
     const user = userEvent.setup();
     const onChanged = vi.fn();
-    render(<NewRequestsPanel refreshToken={0} onEdit={vi.fn()} onChanged={onChanged} />);
+    render(
+      <NewRequestsPanel
+        refreshToken={0}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+        onChanged={onChanged}
+      />,
+    );
 
     await screen.findByText('Peter og Lise');
     await user.click(screen.getByText('✓ Godkend'));
@@ -83,11 +102,36 @@ describe('NewRequestsPanel', () => {
   it('kalder onEdit med bookingen ved tryk på Redigér', async () => {
     const user = userEvent.setup();
     const onEdit = vi.fn();
-    render(<NewRequestsPanel refreshToken={0} onEdit={onEdit} onChanged={vi.fn()} />);
+    render(
+      <NewRequestsPanel
+        refreshToken={0}
+        onEdit={onEdit}
+        onDelete={vi.fn()}
+        onChanged={vi.fn()}
+      />,
+    );
 
     await screen.findByText('Peter og Lise');
     await user.click(screen.getByText('Redigér'));
 
     expect(onEdit).toHaveBeenCalledWith(expect.objectContaining({ id: 'b1' }));
+  });
+
+  it('kalder onDelete med bookingen ved tryk på Slet', async () => {
+    const user = userEvent.setup();
+    const onDelete = vi.fn();
+    render(
+      <NewRequestsPanel
+        refreshToken={0}
+        onEdit={vi.fn()}
+        onDelete={onDelete}
+        onChanged={vi.fn()}
+      />,
+    );
+
+    await screen.findByText('Peter og Lise');
+    await user.click(screen.getByText('Slet'));
+
+    expect(onDelete).toHaveBeenCalledWith(expect.objectContaining({ id: 'b1' }));
   });
 });

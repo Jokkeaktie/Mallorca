@@ -9,6 +9,7 @@ interface NewRequestsPanelProps {
   /** Bumpes udefra (fx efter opret/redigér/slet) for at tvinge genindlæsning. */
   refreshToken: number;
   onEdit: (booking: AdminBooking) => void;
+  onDelete: (booking: AdminBooking) => void;
   onChanged: () => void;
 }
 
@@ -17,7 +18,12 @@ interface NewRequestsPanelProps {
  * hvornår de blev SENDT (ikke hvornår perioden ligger) – så et ønske til
  * fx næste sommer, der lige er kommet ind, ikke drukner i kalenderen.
  */
-export function NewRequestsPanel({ refreshToken, onEdit, onChanged }: NewRequestsPanelProps) {
+export function NewRequestsPanel({
+  refreshToken,
+  onEdit,
+  onDelete,
+  onChanged,
+}: NewRequestsPanelProps) {
   const [requests, setRequests] = useState<AdminBooking[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -144,6 +150,13 @@ export function NewRequestsPanel({ refreshToken, onEdit, onChanged }: NewRequest
                 className="rounded-full border border-line px-3 py-1 text-xs hover:bg-canvas"
               >
                 Redigér
+              </button>
+              <button
+                type="button"
+                onClick={() => onDelete(booking)}
+                className="rounded-full border border-red-200 px-3 py-1 text-xs text-red-700 hover:bg-red-50"
+              >
+                Slet
               </button>
             </div>
           </li>

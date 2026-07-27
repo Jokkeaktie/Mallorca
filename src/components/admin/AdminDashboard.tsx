@@ -132,6 +132,7 @@ export function AdminDashboard() {
       <NewRequestsPanel
         refreshToken={refreshToken}
         onEdit={(booking) => setFormMode({ kind: 'edit', booking })}
+        onDelete={handleDelete}
         onChanged={refresh}
       />
 
