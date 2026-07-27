@@ -316,13 +316,15 @@ Denne vejledning findes også direkte i appen under **Administrator ->
 
 1. **Log ind** på `/admin/login` med den e-mail og adgangskode, der blev
    oprettet i trin 6.
-2. **"Nye ønsker"-panelet** øverst på administratorsiden viser alle
+2. **"Nye ønsker"-panelet** øverst på administratorsiden er en fold-ud-boks
+   (lukket som standard, ligesom FAQ'en under Praktisk info) med alle
    ubehandlede ønsker, sorteret efter hvornår de blev SENDT (ikke hvornår
    perioden ligger) – så et ønske til fx næste sommer, der lige er kommet
-   ind, altid ligger øverst og ikke drukner i kalenderen. Godkend direkte
-   med ét tryk, tryk "Redigér" for at ændre noget først, eller "Slet" for at
-   afvise ønsket permanent. Panelet forsvinder, når der ikke er flere
-   ubehandlede ønsker. Se også afsnittet
+   ind, altid ligger øverst og ikke drukner i kalenderen. Tryk på
+   overskriften for at folde listen ud. Godkend direkte med ét tryk, tryk
+   "Redigér" for at ændre noget først, eller "Slet" for at afvise ønsket
+   permanent. Panelet forsvinder helt, når der ikke er flere ubehandlede
+   ønsker. Se også afsnittet
    "E-mail-notifikationer (valgfrit)" ovenfor, hvis I vil have besked på
    mail, så snart et ønske sendes.
 3. **Opret en ny kalenderpost** ved at trykke "+ Ny kalenderpost". Udfyld

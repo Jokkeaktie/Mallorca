@@ -29,6 +29,10 @@ const approvedBooking: AdminBooking = {
   createdAt: '2026-06-01T00:00:00.000Z',
 };
 
+async function expandPanel(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(await screen.findByRole('button', { name: /Nye ønsker/ }));
+}
+
 describe('NewRequestsPanel', () => {
   beforeEach(() => {
     global.fetch = vi.fn(async (url: string, init?: RequestInit) => {
@@ -42,7 +46,7 @@ describe('NewRequestsPanel', () => {
     }) as unknown as typeof fetch;
   });
 
-  it('viser kun ubehandlede ønsker, ikke godkendte bookinger', async () => {
+  it('er lukket som standard og viser kun overskrift + antal', async () => {
     render(
       <NewRequestsPanel
         refreshToken={0}
@@ -52,7 +56,25 @@ describe('NewRequestsPanel', () => {
       />,
     );
 
-    expect(await screen.findByText('Peter og Lise')).toBeInTheDocument();
+    expect(await screen.findByRole('button', { name: /Nye ønsker/ })).toBeInTheDocument();
+    expect(screen.getByText('1')).toBeInTheDocument();
+    expect(screen.queryByText('Peter og Lise')).not.toBeInTheDocument();
+  });
+
+  it('viser listen efter tryk på overskriften', async () => {
+    const user = userEvent.setup();
+    render(
+      <NewRequestsPanel
+        refreshToken={0}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+        onChanged={vi.fn()}
+      />,
+    );
+
+    await expandPanel(user);
+
+    expect(screen.getByText('Peter og Lise')).toBeInTheDocument();
     expect(screen.queryByText('Tania H.')).not.toBeInTheDocument();
   });
 
@@ -86,7 +108,7 @@ describe('NewRequestsPanel', () => {
       />,
     );
 
-    await screen.findByText('Peter og Lise');
+    await expandPanel(user);
     await user.click(screen.getByText('✓ Godkend'));
 
     await waitFor(() => expect(onChanged).toHaveBeenCalled());
@@ -111,7 +133,7 @@ describe('NewRequestsPanel', () => {
       />,
     );
 
-    await screen.findByText('Peter og Lise');
+    await expandPanel(user);
     await user.click(screen.getByText('Redigér'));
 
     expect(onEdit).toHaveBeenCalledWith(expect.objectContaining({ id: 'b1' }));
@@ -129,7 +151,7 @@ describe('NewRequestsPanel', () => {
       />,
     );
 
-    await screen.findByText('Peter og Lise');
+    await expandPanel(user);
     await user.click(screen.getByText('Slet'));
 
     expect(onDelete).toHaveBeenCalledWith(expect.objectContaining({ id: 'b1' }));

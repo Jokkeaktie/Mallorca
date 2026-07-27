@@ -28,6 +28,7 @@ export function NewRequestsPanel({
   const [isLoading, setIsLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     load();
@@ -94,79 +95,95 @@ export function NewRequestsPanel({
 
   return (
     <div className="flex flex-col gap-3 rounded-xl2 border-2 border-accent/40 bg-accent/5 p-4">
-      <h2 className="flex items-center gap-2 text-base font-semibold text-ink">
-        <span aria-hidden="true">🔔</span> Nye ønsker
-        <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-medium text-white">
-          {requests.length}
+      <button
+        type="button"
+        onClick={() => setIsOpen((v) => !v)}
+        aria-expanded={isOpen}
+        className="flex w-full items-center justify-between gap-2 text-left"
+      >
+        <h2 className="flex items-center gap-2 text-base font-semibold text-ink">
+          <span aria-hidden="true">🔔</span> Nye ønsker
+          <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-medium text-white">
+            {requests.length}
+          </span>
+        </h2>
+        <span aria-hidden="true" className="shrink-0 text-lg text-muted">
+          {isOpen ? '–' : '+'}
         </span>
-      </h2>
+      </button>
 
-      <ul className="flex flex-col gap-2">
-        {requests.map((booking) => (
-          <li
-            key={booking.id}
-            className="flex flex-col gap-1.5 rounded-xl2 border border-line bg-white p-3"
-          >
-            <div className="flex items-start justify-between gap-2">
-              <div>
-                <p className="font-medium text-ink">{booking.name}</p>
-                <p className="text-sm text-muted">
-                  {formatDanishDateRange(booking.startDate, booking.endDate)}
-                </p>
-              </div>
-              <span className="shrink-0 text-xs text-muted">
-                Sendt {formatDanishDate(booking.createdAt.slice(0, 10))}
-              </span>
-            </div>
-
-            {(booking.flightNumber || booking.arrivalTime || booking.departureTime) && (
-              <p className="text-xs text-muted">
-                {[
-                  booking.flightNumber && `Fly ${booking.flightNumber}`,
-                  booking.arrivalTime && `Ankomst ${booking.arrivalTime}`,
-                  booking.departureTime && `Afrejse ${booking.departureTime}`,
-                ]
-                  .filter(Boolean)
-                  .join(' · ')}
-              </p>
-            )}
-
-            {booking.internalComment && (
-              <p className="text-xs italic text-muted">&ldquo;{booking.internalComment}&rdquo;</p>
-            )}
-
-            <div className="mt-1 flex gap-2">
-              <button
-                type="button"
-                disabled={busyId === booking.id}
-                onClick={() => handleApprove(booking)}
-                className="rounded-full bg-accent px-3 py-1 text-xs font-medium text-white hover:opacity-90 disabled:opacity-60"
+      {isOpen && (
+        <>
+          <ul className="flex flex-col gap-2">
+            {requests.map((booking) => (
+              <li
+                key={booking.id}
+                className="flex flex-col gap-1.5 rounded-xl2 border border-line bg-white p-3"
               >
-                {busyId === booking.id ? 'Godkender…' : '✓ Godkend'}
-              </button>
-              <button
-                type="button"
-                onClick={() => onEdit(booking)}
-                className="rounded-full border border-line px-3 py-1 text-xs hover:bg-canvas"
-              >
-                Redigér
-              </button>
-              <button
-                type="button"
-                onClick={() => onDelete(booking)}
-                className="rounded-full border border-red-200 px-3 py-1 text-xs text-red-700 hover:bg-red-50"
-              >
-                Slet
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <p className="font-medium text-ink">{booking.name}</p>
+                    <p className="text-sm text-muted">
+                      {formatDanishDateRange(booking.startDate, booking.endDate)}
+                    </p>
+                  </div>
+                  <span className="shrink-0 text-xs text-muted">
+                    Sendt {formatDanishDate(booking.createdAt.slice(0, 10))}
+                  </span>
+                </div>
 
-      {error && (
-        <p role="alert" className="text-xs text-red-700">
-          {error}
-        </p>
+                {(booking.flightNumber || booking.arrivalTime || booking.departureTime) && (
+                  <p className="text-xs text-muted">
+                    {[
+                      booking.flightNumber && `Fly ${booking.flightNumber}`,
+                      booking.arrivalTime && `Ankomst ${booking.arrivalTime}`,
+                      booking.departureTime && `Afrejse ${booking.departureTime}`,
+                    ]
+                      .filter(Boolean)
+                      .join(' · ')}
+                  </p>
+                )}
+
+                {booking.internalComment && (
+                  <p className="text-xs italic text-muted">
+                    &ldquo;{booking.internalComment}&rdquo;
+                  </p>
+                )}
+
+                <div className="mt-1 flex gap-2">
+                  <button
+                    type="button"
+                    disabled={busyId === booking.id}
+                    onClick={() => handleApprove(booking)}
+                    className="rounded-full bg-accent px-3 py-1 text-xs font-medium text-white hover:opacity-90 disabled:opacity-60"
+                  >
+                    {busyId === booking.id ? 'Godkender…' : '✓ Godkend'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onEdit(booking)}
+                    className="rounded-full border border-line px-3 py-1 text-xs hover:bg-canvas"
+                  >
+                    Redigér
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onDelete(booking)}
+                    className="rounded-full border border-red-200 px-3 py-1 text-xs text-red-700 hover:bg-red-50"
+                  >
+                    Slet
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          {error && (
+            <p role="alert" className="text-xs text-red-700">
+              {error}
+            </p>
+          )}
+        </>
       )}
     </div>
   );

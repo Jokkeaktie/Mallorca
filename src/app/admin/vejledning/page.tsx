@@ -13,11 +13,12 @@ export default function AdminGuidePage() {
 
       <ol className="flex flex-col gap-4 text-sm leading-relaxed text-ink">
         <li>
-          <strong>1. Nye ønsker.</strong> Øverst på administratorsiden viser et panel alle
-          ubehandlede ønsker, sorteret efter hvornår de blev SENDT (ikke hvornår perioden
-          ligger) – så et ønske til fx næste sommer, der lige er kommet ind, altid ligger
-          øverst og ikke drukner i kalenderen. Tryk “✓ Godkend” for at godkende med det
-          samme, “Redigér” for at ændre noget først, eller “Slet” for at afvise ønsket
+          <strong>1. Nye ønsker.</strong> Øverst på administratorsiden er en fold-ud-boks
+          (lukket som standard, ligesom FAQ’en) med alle ubehandlede ønsker, sorteret efter
+          hvornår de blev SENDT (ikke hvornår perioden ligger) – så et ønske til fx næste
+          sommer, der lige er kommet ind, altid ligger øverst og ikke drukner i kalenderen.
+          Tryk på overskriften for at folde listen ud. Tryk “✓ Godkend” for at godkende med
+          det samme, “Redigér” for at ændre noget først, eller “Slet” for at afvise ønsket
           permanent. Panelet forsvinder, når der ikke er flere ubehandlede ønsker.
         </li>
         <li>
