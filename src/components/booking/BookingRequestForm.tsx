@@ -130,7 +130,7 @@ export function BookingRequestForm() {
 
       <div className="flex flex-col gap-3 rounded-xl2 border border-line bg-canvas p-3">
         <span className="text-sm font-medium text-ink">
-          Rejsedetaljer <span className="text-muted">(valgfrit)</span>
+          Rejsedetaljer <span className="text-muted">(oplys når dette kendes)</span>
         </span>
         <div className="flex flex-col gap-2">
           <label htmlFor="requestFlightNumber" className="text-xs font-medium text-muted">
