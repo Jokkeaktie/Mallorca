@@ -35,6 +35,9 @@ export default function AdminGuidePage() {
           <strong>5. Overlappende ønsker.</strong> Flere personer kan gerne ønske samme
           periode samtidig – systemet sletter eller afviser ikke automatisk noget. I
           beslutter selv, hvem der får perioden, ved at sætte den ene til “Godkendt”.
+          Familie og venner ser ikke kalenderen og kan derfor ikke selv se ledighed – de
+          sender et ønske via en formular på forsiden, som dukker op her som en
+          almindelig “Ønske”-post.
         </li>
         <li>
           <strong>6. Skift den fælles adgangskode.</strong> Under “Indstillinger” på
@@ -48,10 +51,11 @@ export default function AdminGuidePage() {
         <li>
           <strong>8. Billede af nøglegemmested.</strong> Åbn en allerede oprettet post via
           “Redigér”, og tryk “Tilføj billede” for at tage et foto med telefonen eller vælge
-          et fra kamerarullen. Billedet vises for familie og venner på netop den
-          kalenderpost, så den næste gæst kan finde nøglen. Tryk “Fjern billede” for at
-          slette det igen. Familie og venner kan også selv tilføje/opdatere billedet
-          direkte fra kalenderen, uden at logge ind — praktisk for den afrejsende gæst.
+          et fra kamerarullen. Billedet vises for familie og venner, mens opholdet er
+          aktivt, så den næste gæst kan finde nøglen. Tryk “Fjern billede” for at slette
+          det igen. Familie og venner kan også selv tilføje/opdatere billedet for det
+          ophold, der er aktivt lige nu, uden at logge ind — praktisk for den afrejsende
+          gæst.
         </li>
         <li>
           <strong>9. Praktisk info (tjekliste og FAQ).</strong> Under{' '}

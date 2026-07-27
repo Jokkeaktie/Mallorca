@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { CalendarShell } from '@/components/calendar/CalendarShell';
+import { BookingRequestForm } from '@/components/booking/BookingRequestForm';
+import { CurrentStayKeyPhoto } from '@/components/booking/CurrentStayKeyPhoto';
 import { InstallPrompt } from '@/components/InstallPrompt';
 
 export default function FamilyCalendarPage() {
@@ -9,7 +10,9 @@ export default function FamilyCalendarPage() {
         <div className="flex items-start justify-between gap-3">
           <div>
             <h1 className="text-xl font-semibold text-ink sm:text-2xl">Mallorca-kalenderen</h1>
-            <p className="text-sm text-muted">Se hvornår lejligheden er ønsket eller booket.</p>
+            <p className="text-sm text-muted">
+              Ønsk en periode i lejligheden – Sven og Inger vender tilbage.
+            </p>
           </div>
           <div className="flex shrink-0 gap-2">
             <Link
@@ -30,7 +33,9 @@ export default function FamilyCalendarPage() {
 
       <InstallPrompt />
 
-      <CalendarShell />
+      <CurrentStayKeyPhoto />
+
+      <BookingRequestForm />
 
       <footer className="mt-6 flex justify-center">
         <Link href="/admin/login" className="text-xs text-muted underline-offset-2 hover:underline">

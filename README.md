@@ -1,9 +1,11 @@
 # Mallorca-kalenderen
 
 En simpel, fælles kalender til at planlægge ophold i familiens lejlighed på
-Mallorca. Familie og venner kan se, hvornår lejligheden er ønsket eller
-booket. Kun lejlighedens to ejere (administratorer) kan oprette, ændre og
-slette kalenderposter.
+Mallorca. Familie og venner kan ønske en periode via en formular, men ser
+bevidst **ikke** selve kalenderen eller de eksisterende bookinger – det er et
+bevidst valg, så lejlighedens ejere selv kan formidle, hvornår den er
+ledig/optaget. Kun lejlighedens to ejere (administratorer) kan se hele
+kalenderen og oprette, ændre og slette kalenderposter.
 
 Denne README er skrevet, så du kan følge den, selvom du ikke har erfaring med
 webudvikling. Følg trinene i rækkefølge.
@@ -300,6 +302,11 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    sker ikke automatisk, I bestemmer selv.
 5. **Overlappende ønsker** kræver ingen handling i sig selv – flere personer
    kan gerne ønske samme periode. I beslutter selv, hvem der får perioden.
+   Familie og venner ser ikke kalenderen og kan derfor ikke selv se, om en
+   periode er ledig – de sender blot et ønske via en formular på forsiden
+   (med navn, datoer og en valgfri besked, som gemmes som intern kommentar),
+   og det dukker op i jeres kalender som en almindelig "Ønske"-post, I kan
+   redigere og godkende/afvise som enhver anden post.
 6. **Skift den fælles adgangskode** når som helst under "Indstillinger" på
    administratorsiden.
 7. **Tilføj et billede af nøglegemmested** ved at redigere en **allerede
@@ -308,10 +315,12 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    vælge et fra kamerarullen. Billedet vises for familie og venner på netop
    den kalenderpost, så den næste gæst kan finde nøglen. Tryk "Fjern billede"
    for at slette det igen.
-   - **Familie og venner kan også selv tilføje/opdatere dette billede** ved
-     at trykke på en dag i kalenderen (helt uden at logge ind som admin) —
-     typisk den afrejsende gæst, der tager et billede af, hvor nøglen er
-     lagt, til den næste gæst. Kun sletning er forbeholdt administratorer.
+   - **Familie og venner kan også selv tilføje/opdatere dette billede** for
+     det ophold, der er aktivt lige nu (uden at logge ind som admin og uden
+     at se kalenderen) — forsiden viser en lille boks med kun det aktuelle
+     ophold, når nogen bor i lejligheden, typisk brugt af den afrejsende
+     gæst til at vise den næste gæst, hvor nøglen er lagt. Kun sletning er
+     forbeholdt administratorer.
 8. **Redigér praktisk info** ("Om lejligheden" fri tekst + FAQ + tjekliste
    ved afrejse) under **Praktisk info** på administratorsiden. "Om
    lejligheden" er et frit tekstfelt til fx adresse og telefonnumre på
