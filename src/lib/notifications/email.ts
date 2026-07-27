@@ -1,4 +1,4 @@
-const RESEND_API_URL = 'https://api.resend.com/emails';
+import nodemailer from 'nodemailer';
 
 interface BookingRequestNotification {
   name: string;
@@ -9,19 +9,21 @@ interface BookingRequestNotification {
 
 /**
  * Sender en e-mail til administratorerne, når familie/venner sender et
- * ønske. Notifikationer er helt valgfrie – hvis RESEND_API_KEY,
- * RESEND_FROM_EMAIL eller ADMIN_NOTIFICATION_EMAILS ikke er sat op, springes
- * afsendelsen bare stille over, og selve ønsket oprettes uden problemer.
- * Fejl ved afsendelse blokerer aldrig oprettelsen af ønsket – de logges kun.
+ * ønske – via Gmail (med en app-adgangskode, ikke den almindelige
+ * kontoadgangskode). Notifikationer er helt valgfrie – hvis GMAIL_USER,
+ * GMAIL_APP_PASSWORD eller ADMIN_NOTIFICATION_EMAILS ikke er sat op,
+ * springes afsendelsen bare stille over, og selve ønsket oprettes uden
+ * problemer. Fejl ved afsendelse blokerer aldrig oprettelsen af ønsket –
+ * de logges kun.
  */
 export async function sendBookingRequestNotification(
   input: BookingRequestNotification,
 ): Promise<void> {
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM_EMAIL;
+  const gmailUser = process.env.GMAIL_USER;
+  const gmailAppPassword = process.env.GMAIL_APP_PASSWORD;
   const recipientsRaw = process.env.ADMIN_NOTIFICATION_EMAILS;
 
-  if (!apiKey || !from || !recipientsRaw) return;
+  if (!gmailUser || !gmailAppPassword || !recipientsRaw) return;
 
   const to = recipientsRaw
     .split(',')
@@ -37,22 +39,16 @@ export async function sendBookingRequestNotification(
   if (appUrl) lines.push(`\nSe og godkend det i administratorområdet: ${appUrl}/admin`);
 
   try {
-    const response = await fetch(RESEND_API_URL, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from,
-        to,
-        subject: `Nyt ønske om booking – ${input.name}`,
-        text: lines.join('\n'),
-      }),
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: { user: gmailUser, pass: gmailAppPassword },
     });
-    if (!response.ok) {
-      console.error('Kunne ikke sende notifikations-mail', await response.text().catch(() => ''));
-    }
+    await transporter.sendMail({
+      from: gmailUser,
+      to,
+      subject: `Nyt ønske om booking – ${input.name}`,
+      text: lines.join('\n'),
+    });
   } catch (error) {
     console.error('Fejl ved afsendelse af notifikations-mail', error);
   }

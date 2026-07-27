@@ -180,21 +180,32 @@ openssl rand -base64 32
 Uden mere opsætning skal administratorerne selv åbne appen for at opdage nye
 ønsker (om end der er et tydeligt "Nye ønsker"-panel øverst på
 administratorsiden til det, se afsnit 13). Vil I i stedet have en mail, så
-snart nogen sender et ønske, skal I bruge [Resend](https://resend.com) (gratis
-niveau: 100 mails/dag, intet kreditkort krævet):
+snart nogen sender et ønske, sendes den via en almindelig Gmail-konto (helt
+gratis, ingen domæne eller DNS-opsætning nødvendig):
 
-1. Opret en gratis konto på resend.com, og verificér et domæne, I ejer
-   (Resend kræver dette for at kunne sende fra en adresse som
-   `onsker@jeres-domæne.dk` – det tager typisk et par minutter og kræver, at
-   I kan tilføje DNS-poster hos jeres domæneudbyder).
-2. Opret en API-nøgle under **API Keys**, og sæt den som `RESEND_API_KEY`.
-3. Sæt `RESEND_FROM_EMAIL` til en afsender-adresse på det verificerede
-   domæne, fx `Mallorca-appen <onsker@jeres-domæne.dk>`.
-4. Sæt `ADMIN_NOTIFICATION_EMAILS` til jeres to e-mails, adskilt af komma.
+1. **Slå 2-trins-bekræftelse til på den Gmail-konto, mailen skal sendes
+   fra** (kræves for at kunne oprette en app-adgangskode i trin 2):
+   - Gå til [myaccount.google.com/security](https://myaccount.google.com/security)
+   - Under "Sådan logger du ind på Google", tryk på **"2-trins-bekræftelse"**
+   - Følg trinene (typisk bekræftelse via din telefon)
+2. **Opret en "app-adgangskode":**
+   - Gå til [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords)
+   - Log ind igen, hvis Google beder om det
+   - Skriv et navn, fx "Mallorca-appen", og tryk **"Opret"**
+   - Google viser en 16-tegns kode (fx `abcd efgh ijkl mnop`) – kopiér den.
+     Den vises kun denne ene gang, så gem den et sikkert sted, indtil den er
+     sat ind i Vercel (trin 4).
+3. **Notér de tre ting, I skal bruge:**
+   - `GMAIL_USER`: selve Gmail-adressen, fx `ingerriber@gmail.com`
+   - `GMAIL_APP_PASSWORD`: 16-tegns-koden fra trin 2
+   - `ADMIN_NOTIFICATION_EMAILS`: jeres to e-mails, adskilt af komma (må
+     gerne være forskellige udbydere, fx `ingerriber@gmail.com,sven@svenriber.dk`
+     – modtageren behøver ikke bruge Gmail)
+4. Tilføj disse som miljøvariabler i Vercel (se trin 10) – **ikke kun**
+   lokalt i `.env.local`, da det er den rigtige, kørende app, der skal sende
+   mailen.
 5. (Valgfrit) Sæt `NEXT_PUBLIC_APP_URL` til appens rigtige adresse, så mailen
    kan linke direkte til administratorområdet.
-6. Husk at tilføje de samme miljøvariabler i Vercel (se trin 10), ikke kun
-   lokalt i `.env.local`.
 
 Mangler én eller flere af de tre påkrævede variabler, springes afsendelsen
 bare stille over – ønsket oprettes stadig helt normalt.

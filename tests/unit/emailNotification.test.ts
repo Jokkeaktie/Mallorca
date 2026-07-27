@@ -1,22 +1,29 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
-import { sendBookingRequestNotification } from '@/lib/notifications/email';
+
+const sendMail = vi.fn();
+const createTransport = vi.fn(() => ({ sendMail }));
+
+vi.mock('nodemailer', () => ({ default: { createTransport } }));
+
+const { sendBookingRequestNotification } = await import('@/lib/notifications/email');
 
 const originalEnv = { ...process.env };
 
 describe('sendBookingRequestNotification', () => {
   beforeEach(() => {
     process.env = { ...originalEnv };
-    global.fetch = vi.fn(async () => new Response('{}', { status: 200 })) as unknown as typeof fetch;
+    createTransport.mockClear();
+    sendMail.mockReset();
+    sendMail.mockResolvedValue({ messageId: 'test' });
   });
 
   afterEach(() => {
     process.env = { ...originalEnv };
-    vi.restoreAllMocks();
   });
 
   it('springer stille over uden konfiguration (ingen fejl, intet kald)', async () => {
-    delete process.env.RESEND_API_KEY;
-    delete process.env.RESEND_FROM_EMAIL;
+    delete process.env.GMAIL_USER;
+    delete process.env.GMAIL_APP_PASSWORD;
     delete process.env.ADMIN_NOTIFICATION_EMAILS;
 
     await sendBookingRequestNotification({
@@ -26,13 +33,14 @@ describe('sendBookingRequestNotification', () => {
       flightNumber: null,
     });
 
-    expect(global.fetch).not.toHaveBeenCalled();
+    expect(createTransport).not.toHaveBeenCalled();
+    expect(sendMail).not.toHaveBeenCalled();
   });
 
-  it('sender en mail via Resend når fuldt konfigureret', async () => {
-    process.env.RESEND_API_KEY = 'test-key';
-    process.env.RESEND_FROM_EMAIL = 'Mallorca-appen <onsker@example.dk>';
-    process.env.ADMIN_NOTIFICATION_EMAILS = 'sven@example.dk, inger@example.dk';
+  it('sender en mail via Gmail når fuldt konfigureret', async () => {
+    process.env.GMAIL_USER = 'ingerriber@gmail.com';
+    process.env.GMAIL_APP_PASSWORD = 'test-app-adgangskode';
+    process.env.ADMIN_NOTIFICATION_EMAILS = 'sven@svenriber.dk, ingerriber@gmail.com';
 
     await sendBookingRequestNotification({
       name: 'Joakim H.',
@@ -41,27 +49,26 @@ describe('sendBookingRequestNotification', () => {
       flightNumber: 'SK1533',
     });
 
-    expect(global.fetch).toHaveBeenCalledWith(
-      'https://api.resend.com/emails',
+    expect(createTransport).toHaveBeenCalledWith({
+      service: 'gmail',
+      auth: { user: 'ingerriber@gmail.com', pass: 'test-app-adgangskode' },
+    });
+    expect(sendMail).toHaveBeenCalledWith(
       expect.objectContaining({
-        method: 'POST',
-        headers: expect.objectContaining({ Authorization: 'Bearer test-key' }),
+        from: 'ingerriber@gmail.com',
+        to: ['sven@svenriber.dk', 'ingerriber@gmail.com'],
+        subject: 'Nyt ønske om booking – Joakim H.',
       }),
     );
-    const [, init] = (global.fetch as ReturnType<typeof vi.fn>).mock.calls[0]!;
-    const body = JSON.parse(init.body as string);
-    expect(body.to).toEqual(['sven@example.dk', 'inger@example.dk']);
-    expect(body.from).toBe('Mallorca-appen <onsker@example.dk>');
-    expect(body.text).toContain('SK1533');
+    const [call] = sendMail.mock.calls[0]!;
+    expect(call.text).toContain('SK1533');
   });
 
-  it('kaster ikke en fejl videre, hvis Resend-kaldet fejler', async () => {
-    process.env.RESEND_API_KEY = 'test-key';
-    process.env.RESEND_FROM_EMAIL = 'Mallorca-appen <onsker@example.dk>';
-    process.env.ADMIN_NOTIFICATION_EMAILS = 'sven@example.dk';
-    global.fetch = vi.fn(async () => {
-      throw new Error('netværksfejl');
-    }) as unknown as typeof fetch;
+  it('kaster ikke en fejl videre, hvis afsendelsen fejler', async () => {
+    process.env.GMAIL_USER = 'ingerriber@gmail.com';
+    process.env.GMAIL_APP_PASSWORD = 'test-app-adgangskode';
+    process.env.ADMIN_NOTIFICATION_EMAILS = 'sven@svenriber.dk';
+    sendMail.mockRejectedValue(new Error('netværksfejl'));
 
     await expect(
       sendBookingRequestNotification({
