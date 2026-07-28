@@ -456,7 +456,7 @@ npm run typecheck  # Tjekker TypeScript-typer
 npm run build      # Bygger produktionsversionen (fanger evt. resterende fejl)
 ```
 
-Ved seneste kørsel i dette projekt: **190 tests bestået, ingen lint-fejl,
+Ved seneste kørsel i dette projekt: **191 tests bestået, ingen lint-fejl,
 ingen typefejl, build lykkedes.**
 
 ## 15. Begrænsninger i denne version

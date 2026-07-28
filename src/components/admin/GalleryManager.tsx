@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { GalleryCategory, GalleryPhoto } from '@/lib/types';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { compressImageForUpload } from '@/lib/media/compressImage';
 
 const UNCATEGORIZED_KEY = '__uncategorized__';
 
@@ -141,8 +142,12 @@ export function GalleryManager() {
 
     for (const file of Array.from(files)) {
       try {
+        // Formindsk billedet før upload - iPhone-fotos er ofte langt over
+        // vores 4 MB-grænse, og ville ellers fejle med en uklar fejlbesked.
+        const uploadFile = await compressImageForUpload(file);
+
         const formData = new FormData();
-        formData.append('photo', file);
+        formData.append('photo', uploadFile);
         if (uploadCategoryId) formData.append('categoryId', uploadCategoryId);
 
         const response = await fetch('/api/gallery/photos', { method: 'POST', body: formData });
@@ -352,7 +357,7 @@ export function GalleryManager() {
       </div>
 
       {error && (
-        <p role="alert" className="text-sm text-red-700">
+        <p role="alert" className="rounded-xl2 border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
           {error}
         </p>
       )}
