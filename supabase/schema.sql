@@ -171,6 +171,57 @@ insert into storage.buckets (id, name, public)
 values ('bug-report-photos', 'bug-report-photos', false)
 on conflict (id) do nothing;
 
+-- Billedgalleri til familiens side. Kun administratorer kan uploade,
+-- kategorisere og slette billeder; familie/venner kan se dem via /billeder
+-- (samme adgangsmodel som resten af appen). Kategorier navngives frit af
+-- administratorerne (fx "Udsigt", "Inventar", "Sådan finder du hertil").
+create table if not exists public.gallery_categories (
+  id uuid primary key default gen_random_uuid(),
+  name text not null check (char_length(trim(name)) > 0),
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.gallery_categories enable row level security;
+-- Ingen policies: kun service role kan læse/skrive.
+
+drop trigger if exists gallery_categories_set_updated_at on public.gallery_categories;
+create trigger gallery_categories_set_updated_at
+  before update on public.gallery_categories
+  for each row execute function public.set_updated_at();
+
+-- Slettes en kategori, mister dens billeder blot kategorien (bliver
+-- "ukategoriseret") i stedet for selv at blive slettet - se
+-- "on delete set null" nedenfor.
+create table if not exists public.gallery_photos (
+  id uuid primary key default gen_random_uuid(),
+  category_id uuid references public.gallery_categories(id) on delete set null,
+  photo_path text not null,
+  photo_content_type text not null,
+  sort_order integer not null default 0,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists gallery_photos_category_idx
+  on public.gallery_photos (category_id, sort_order);
+
+alter table public.gallery_photos enable row level security;
+-- Ingen policies: kun service role kan læse/skrive.
+
+drop trigger if exists gallery_photos_set_updated_at on public.gallery_photos;
+create trigger gallery_photos_set_updated_at
+  before update on public.gallery_photos
+  for each row execute function public.set_updated_at();
+
+-- Fillager til galleribilleder. Privat bucket, kun tilgængelig via en gated
+-- API-rute (/api/gallery/photos/:id/image), som tjekker at den, der
+-- spørger, enten er administrator eller har familiens fælles adgangskode.
+insert into storage.buckets (id, name, public)
+values ('gallery-photos', 'gallery-photos', false)
+on conflict (id) do nothing;
+
 -- Push-notifikations-abonnementer (Web Push). Kun administratorer kan
 -- oprette et abonnement (se /api/push/subscribe) - familie/venner får
 -- aldrig push-notifikationer. "endpoint" identificerer entydigt den

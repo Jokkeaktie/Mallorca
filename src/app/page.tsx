@@ -22,6 +22,12 @@ const NAV_ITEMS = [
     title: 'Rapportér fejl',
     description: 'Er noget i stykker eller mangler?',
   },
+  {
+    href: '/billeder',
+    icon: '📷',
+    title: 'Billeder',
+    description: 'Se billeder af lejligheden og udsigten',
+  },
 ] as const;
 
 export default function FamilyLandingPage() {
@@ -53,7 +59,7 @@ export default function FamilyLandingPage() {
 
         <InstallPrompt />
 
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.href}

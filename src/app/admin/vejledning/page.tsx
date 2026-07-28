@@ -23,9 +23,9 @@ export default function AdminGuidePage() {
         </li>
         <li>
           <strong>2. Menu-knappen.</strong> Øverst til højre finder I “☰ Menu”. Herfra kan I
-          gå til Indstillinger, Praktisk info, Fejlrapporter, denne vejledning, og logge ud.
-          Selve forsiden viser kun kalenderen og “Nye ønsker”-panelet, så den er let at
-          overskue.
+          gå til Indstillinger, Billeder, Praktisk info, Fejlrapporter, denne vejledning, og
+          logge ud. Selve forsiden viser kun kalenderen og “Nye ønsker”-panelet, så den er
+          let at overskue.
         </li>
         <li>
           <strong>3. Opret en ny kalenderpost.</strong> Tryk på “+ Ny kalenderpost”. Skriv
@@ -80,11 +80,31 @@ export default function AdminGuidePage() {
           </ul>
         </li>
         <li>
-          <strong>9. Farver.</strong> Vælg gerne samme farve igen, næste gang I opretter en
+          <strong>9. Billeder (under Menu).</strong> Et galleri, som familie og venner ser
+          på forsiden under “Billeder”. Kun I kan uploade og redigere:
+          <ul className="mt-2 flex list-disc flex-col gap-2 pl-5">
+            <li>
+              <strong>Kategorier:</strong> Opret, omdøb, omarrangér (↑/↓) eller slet
+              kategorier øverst på siden, fx “Udsigt”, “Inventar” eller “Sådan finder du
+              hertil”. Sletter I en kategori, bliver dens billeder ikke slettet – de bliver
+              blot “ukategoriserede”.
+            </li>
+            <li>
+              <strong>Upload:</strong> Vælg ét eller flere billeder ad gangen (maks. 4 MB
+              pr. billede), evt. med en kategori valgt på forhånd.
+            </li>
+            <li>
+              Hvert billede kan flyttes til en anden kategori, omarrangeres inden for sin
+              kategori, eller slettes permanent via knapperne under billedet.
+            </li>
+          </ul>
+        </li>
+        <li>
+          <strong>10. Farver.</strong> Vælg gerne samme farve igen, næste gang I opretter en
           post til den samme person eller familie, så farven er genkendelig i kalenderen.
         </li>
         <li>
-          <strong>10. Praktisk info (tjekliste og FAQ).</strong> Under{' '}
+          <strong>11. Praktisk info (tjekliste og FAQ).</strong> Under{' '}
           <Link href="/admin/info" className="underline underline-offset-2">
             Praktisk info
           </Link>{' '}
@@ -95,7 +115,7 @@ export default function AdminGuidePage() {
           forsiden.
         </li>
         <li>
-          <strong>11. Fejlrapporter.</strong> Under{' '}
+          <strong>12. Fejlrapporter.</strong> Under{' '}
           <Link href="/admin/fejlrapporter" className="underline underline-offset-2">
             Fejlrapporter
           </Link>{' '}

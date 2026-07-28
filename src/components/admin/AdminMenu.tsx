@@ -9,6 +9,7 @@ interface AdminMenuProps {
 
 const LINKS = [
   { href: '/admin/indstillinger', label: 'Indstillinger' },
+  { href: '/admin/billeder', label: 'Billeder' },
   { href: '/admin/info', label: 'Praktisk info' },
   { href: '/admin/fejlrapporter', label: 'Fejlrapporter' },
   { href: '/admin/vejledning', label: 'Kort vejledning' },

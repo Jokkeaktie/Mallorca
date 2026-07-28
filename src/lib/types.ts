@@ -93,3 +93,22 @@ export interface BugReport {
   createdAt: string;
   updatedAt: string;
 }
+
+/** Kategori i billedgalleriet (fx "Udsigt", "Inventar"), navngivet af administratorerne. */
+export interface GalleryCategory {
+  id: string;
+  name: string;
+  sortOrder: number;
+}
+
+/**
+ * Billede i galleriet. Selve billeddataen leveres separat via
+ * /api/gallery/photos/:id/image, som tjekker adgang - denne type
+ * indeholder bevidst ikke sti/content-type.
+ */
+export interface GalleryPhoto {
+  id: string;
+  categoryId: string | null;
+  sortOrder: number;
+  createdAt: string;
+}

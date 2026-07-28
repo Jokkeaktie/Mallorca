@@ -136,9 +136,10 @@ Supabase-klient osv.). Det tager typisk et minuts tid.
    hele indholdet af filen [`supabase/schema.sql`](./supabase/schema.sql) fra
    dette projekt. Tryk "Run".
    - Dette opretter tabellerne `bookings`, `app_settings` (inkl. feltet
-     `apartment_info` til "Generelt"), `checklist_items`, `faq_items`
-     og `bug_reports` samt de nødvendige sikkerhedsregler (Row Level
-     Security).
+     `apartment_info` til "Generelt"), `checklist_items`, `faq_items`,
+     `bug_reports`, `gallery_categories` og `gallery_photos`, samt de
+     nødvendige sikkerhedsregler (Row Level Security) og private
+     Storage-buckets til billeder (nøglebillede, fejlrapporter, galleri).
 5. Gå til **Project Settings -> API**. Her finder du:
    - **Project URL** → bruges som `NEXT_PUBLIC_SUPABASE_URL` og
      `SUPABASE_URL`.
@@ -344,6 +345,11 @@ gratis-grænser, hvis brugen skulle vokse markant:
     projekter der slet ikke bruges, men er værd at kende til).
   - Op til 500 MB databaselagring og 5 GB filoverførsel pr. måned – langt
     mere end en kalender med et par hundrede bookinger nogensinde vil bruge.
+  - **Billedgalleriet** (se afsnit 13) er den funktion, der fylder mest i
+    filoverførslen, da hvert billede er begrænset til 4 MB. Med jævnlig brug
+    holder I jer stadig komfortabelt inden for den gratis grænse, men hvis I
+    en dag skulle nærme jer loftet, kan I slette ældre billeder fra
+    galleriet for at gøre plads.
   - Begrænset antal e-mails, hvis I nogensinde slår e-mailbekræftelse til for
     administratorer (bruges ikke i denne version).
 - **Vercel (gratis "Hobby"-niveau):**
@@ -363,8 +369,8 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    oprettet i trin 6.
 2. **Forsiden er bevidst holdt minimal:** kun "+ Ny kalenderpost", en
    "Menu"-knap, "Nye ønsker"-panelet og selve kalenderen. Alt andet
-   (indstillinger, praktisk info, fejlrapporter, vejledning, log ud) ligger
-   under **"☰ Menu"**-knappen øverst til højre.
+   (indstillinger, billeder, praktisk info, fejlrapporter, vejledning, log
+   ud) ligger under **"☰ Menu"**-knappen øverst til højre.
 3. **"Nye ønsker"-panelet** er en fold-ud-boks (lukket som standard, ligesom
    FAQ'en under Praktisk info) med alle ubehandlede ønsker, sorteret efter
    hvornår de blev SENDT (ikke hvornår perioden ligger) – så et ønske til fx
@@ -398,15 +404,25 @@ Denne vejledning findes også direkte i appen under **Administrator ->
      > bruger nye felter i `app_settings`. Kør `supabase/schema.sql` igen i
      > Supabase **SQL Editor** (se boksen i trin 4 ovenfor) før denne
      > funktion virker, hvis I opdaterer en database, der allerede kører.
-5. **Opret en ny kalenderpost** ved at trykke "+ Ny kalenderpost". Udfyld
+5. **Billeder** (under Menu) er et galleri, familie og venner kan se på
+   forsiden under "Billeder". Kun administratorer kan uploade og redigere:
+   - **Kategorier** bruges til at gruppere billederne (fx "Udsigt",
+     "Inventar", "Sådan finder du hertil"). Opret, omdøb, omarrangér
+     (↑/↓) eller slet en kategori øverst på siden — sletter I en kategori,
+     bliver dens billeder ikke slettet, de bliver blot "ukategoriserede".
+   - **Upload** ét eller flere billeder ad gangen (maks. **4 MB** pr.
+     billede — se afsnit 12 om hvorfor), vælg evt. en kategori først.
+   - Hvert billede kan flyttes til en anden kategori, omarrangeres inden
+     for sin kategori, eller slettes permanent.
+6. **Opret en ny kalenderpost** ved at trykke "+ Ny kalenderpost". Udfyld
    navn, vælg status (Ønske/Godkendt), farve, samt start- og slutdato.
    Ankomst-/afrejsetidspunkt og intern kommentar er valgfrie.
-6. **Redigér eller slet** en post ved at trykke på en dag i kalenderen og
+7. **Redigér eller slet** en post ved at trykke på en dag i kalenderen og
    derefter "Redigér" på den ønskede post. Sletning sker fra
    redigeringsvisningen og kan ikke fortrydes.
-7. **Skift status** mellem "Ønske" og "Godkendt" ved at redigere posten – det
+8. **Skift status** mellem "Ønske" og "Godkendt" ved at redigere posten – det
    sker ikke automatisk, I bestemmer selv.
-8. **Overlappende ønsker** kræver ingen handling i sig selv – flere personer
+9. **Overlappende ønsker** kræver ingen handling i sig selv – flere personer
    kan gerne ønske samme periode. I beslutter selv, hvem der får perioden.
    Familie og venner ser ikke kalenderen og kan derfor ikke selv se, om en
    periode er ledig – de sender blot et ønske via "Ønsk booking" på forsiden
@@ -414,7 +430,7 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    ankomst-/afrejsetidspunkt, samt en valgfri besked, som gemmes som intern
    kommentar), og det dukker op i jeres kalender som en almindelig
    "Ønske"-post, I kan redigere og godkende/afvise som enhver anden post.
-9. **Redigér praktisk info** ("Generelt" fri tekst + FAQ + tjekliste
+10. **Redigér praktisk info** ("Generelt" fri tekst + FAQ + tjekliste
    ved afrejse) under **Praktisk info** (under Menu). "Generelt" er et
    frit tekstfelt til fx adresse og telefonnumre på relevante personer —
    vises øverst på familiens side, hvis det er udfyldt. Skriv i felterne og
@@ -424,7 +440,7 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    Familiens afkrydsninger på tjeklisten gemmes lokalt på den enkelte
    gæsts egen telefon (ikke i databasen) og forsvinder automatisk dagen
    efter opholdet slutter.
-10. **Se fejlrapporter** under **Fejlrapporter** (under Menu). Familie og
+11. **Se fejlrapporter** under **Fejlrapporter** (under Menu). Familie og
    venner kan rapportere mindre fejl/mangler (med op til 5 billeder) fra
    forsiden under "Rapportér fejl" — det er kun synligt for jer. Markér en
    rapport som "løst", genåbn den, eller slet den permanent.
@@ -440,7 +456,7 @@ npm run typecheck  # Tjekker TypeScript-typer
 npm run build      # Bygger produktionsversionen (fanger evt. resterende fejl)
 ```
 
-Ved seneste kørsel i dette projekt: **152 tests bestået, ingen lint-fejl,
+Ved seneste kørsel i dette projekt: **190 tests bestået, ingen lint-fejl,
 ingen typefejl, build lykkedes.**
 
 ## 15. Begrænsninger i denne version

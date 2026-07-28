@@ -17,6 +17,7 @@ describe('AdminMenu', () => {
     await user.click(screen.getByRole('button', { name: /Menu/ }));
 
     expect(screen.getByText('Indstillinger')).toBeInTheDocument();
+    expect(screen.getByText('Billeder')).toBeInTheDocument();
     expect(screen.getByText('Praktisk info')).toBeInTheDocument();
     expect(screen.getByText('Fejlrapporter')).toBeInTheDocument();
     expect(screen.getByText('Kort vejledning')).toBeInTheDocument();
