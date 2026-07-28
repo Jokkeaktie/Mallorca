@@ -138,7 +138,7 @@ export function GalleryManager() {
 
     setIsUploading(true);
     setError(null);
-    let failureCount = 0;
+    const failures: string[] = [];
 
     for (const file of Array.from(files)) {
       try {
@@ -152,21 +152,22 @@ export function GalleryManager() {
 
         const response = await fetch('/api/gallery/photos', { method: 'POST', body: formData });
         if (!response.ok) {
-          failureCount += 1;
+          const body = await response.json().catch(() => null);
+          const reason = body?.error ?? `HTTP ${response.status}`;
+          failures.push(`${file.name}: ${reason}`);
           continue;
         }
         const data = await response.json();
         setPhotos((prev) => [...prev, data.photo]);
-      } catch {
-        failureCount += 1;
+      } catch (err) {
+        const reason = err instanceof Error ? err.message : 'netværksfejl';
+        failures.push(`${file.name}: ${reason}`);
       }
     }
 
     setIsUploading(false);
-    if (failureCount > 0) {
-      setError(
-        `${failureCount} billede${failureCount === 1 ? '' : 'r'} kunne ikke uploades (for stort, forkert filtype, eller netværksfejl).`,
-      );
+    if (failures.length > 0) {
+      setError(`Kunne ikke uploade ${failures.length} billede(r):\n${failures.join('\n')}`);
     }
   }
 
@@ -357,7 +358,10 @@ export function GalleryManager() {
       </div>
 
       {error && (
-        <p role="alert" className="rounded-xl2 border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
+        <p
+          role="alert"
+          className="whitespace-pre-line rounded-xl2 border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700"
+        >
           {error}
         </p>
       )}
