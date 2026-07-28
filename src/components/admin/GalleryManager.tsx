@@ -132,15 +132,20 @@ export function GalleryManager() {
   // --- Upload ---
 
   async function handleFilesSelected(event: React.ChangeEvent<HTMLInputElement>) {
-    const files = event.target.files;
+    // Filerne skal hentes ud som en rigtig liste FØR feltet nulstilles - på
+    // nogle browsere (bl.a. Safari på iPhone) tømmes den bagvedliggende
+    // fil-liste "live", når value nulstilles, selvom vi allerede har gemt en
+    // reference til den. Så ville et efterfølgende tjek af files.length altid
+    // give 0, og uploaden ville stoppe stille og roligt, som om intet var valgt.
+    const files = Array.from(event.target.files ?? []);
     event.target.value = '';
-    if (!files || files.length === 0) return;
+    if (files.length === 0) return;
 
     setIsUploading(true);
     setError(null);
     const failures: string[] = [];
 
-    for (const file of Array.from(files)) {
+    for (const file of files) {
       try {
         // Formindsk billedet før upload - iPhone-fotos er ofte langt over
         // vores 4 MB-grænse, og ville ellers fejle med en uklar fejlbesked.
