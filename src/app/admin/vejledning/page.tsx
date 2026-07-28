@@ -22,10 +22,10 @@ export default function AdminGuidePage() {
           permanent. Panelet forsvinder, når der ikke er flere ubehandlede ønsker.
         </li>
         <li>
-          <strong>2. Push-notifikationer.</strong> Hvis det er sat op (se README), finder I
-          en boks med samme navn her på siden. Tryk “Slå notifikationer til”, og accepter
-          tilladelsen, browseren beder om, for at få besked direkte på telefonen, når der
-          sker noget nyt. Hver administrator skal gøre dette på sin egen enhed.
+          <strong>2. Menu-knappen.</strong> Øverst til højre finder I “☰ Menu”. Herfra kan I
+          gå til Indstillinger, Praktisk info, Fejlrapporter, denne vejledning, og logge ud.
+          Selve forsiden viser kun kalenderen og “Nye ønsker”-panelet, så den er let at
+          overskue.
         </li>
         <li>
           <strong>3. Opret en ny kalenderpost.</strong> Tryk på “+ Ny kalenderpost”. Skriv
@@ -55,41 +55,53 @@ export default function AdminGuidePage() {
           ønsker”-panelet) som en almindelig “Ønske”-post.
         </li>
         <li>
-          <strong>8. Skift den fælles adgangskode.</strong> Under “Indstillinger” på
-          administratorsiden kan I til enhver tid ændre den adgangskode, som familie og
-          venner bruger for at se kalenderen.
+          <strong>8. Indstillinger (under Menu).</strong> Her finder I tre ting samlet:
+          <ul className="mt-2 flex list-disc flex-col gap-2 pl-5">
+            <li>
+              <strong>Push-notifikationer:</strong> Hvis det er sat op (se README), kan I
+              trykke “Slå notifikationer til” og acceptere tilladelsen, browseren beder om,
+              for at få besked direkte på telefonen, når der sker noget nyt. Hver
+              administrator skal gøre dette på sin egen enhed.
+            </li>
+            <li>
+              <strong>Familiens fælles adgangskode:</strong> Her kan I til enhver tid ændre
+              den adgangskode, som familie og venner bruger for at se kalenderen.
+            </li>
+            <li>
+              <strong>Billede af nøglegemmested:</strong> Der er ét fælles billede, ikke
+              knyttet til en bestemt post. Da de fleste ophold ikke har en skjult nøgle,
+              vises som udgangspunkt kun et diskret “+ Tilføj billede”-link – boksen med
+              selve billedet dukker først op, når der er uploadet et. Tryk “Opdatér
+              billede” for at erstatte det. Familie og venner kan også selv
+              tilføje/opdatere billedet uden at logge ind – typisk den afrejsende gæst, der
+              viser den næste gæst, hvor nøglen er lagt. Kun I kan trykke “Fjern billede”
+              og slette det permanent.
+            </li>
+          </ul>
         </li>
         <li>
           <strong>9. Farver.</strong> Vælg gerne samme farve igen, næste gang I opretter en
           post til den samme person eller familie, så farven er genkendelig i kalenderen.
         </li>
         <li>
-          <strong>10. Billede af nøglegemmested.</strong> Der er ét fælles billede, ikke
-          knyttet til en bestemt post. Da de fleste ophold ikke har en skjult nøgle, vises
-          som udgangspunkt kun et diskret “+ Tilføj billede”-link – boksen med selve
-          billedet dukker først op, når der er uploadet et. Tryk “Opdatér billede” for at
-          erstatte det. Familie og venner kan også selv tilføje/opdatere billedet uden at
-          logge ind – typisk den afrejsende gæst, der viser den næste gæst, hvor nøglen er
-          lagt. Kun I kan trykke “Fjern billede” og slette det permanent.
-        </li>
-        <li>
-          <strong>11. Praktisk info (tjekliste og FAQ).</strong> Under{' '}
+          <strong>10. Praktisk info (tjekliste og FAQ).</strong> Under{' '}
           <Link href="/admin/info" className="underline underline-offset-2">
             Praktisk info
           </Link>{' '}
-          kan I tilføje punkter til tjeklisten ved afrejse (fx “Sluk lys og aircondition”) og
-          spørgsmål/svar til FAQ’en (fx “Hvor bytter jeg gaspatron?”). Husk at trykke
-          “Gem” efter en ændring. Brug ↑/↓ til at omarrangere rækkefølgen. Ændringer vises
-          med det samme for familie og venner under “Praktisk info” på forsiden.
+          (under Menu) kan I tilføje punkter til tjeklisten ved afrejse (fx “Sluk lys og
+          aircondition”) og spørgsmål/svar til FAQ’en (fx “Hvor bytter jeg gaspatron?”).
+          Husk at trykke “Gem” efter en ændring. Brug ↑/↓ til at omarrangere rækkefølgen.
+          Ændringer vises med det samme for familie og venner under “Praktisk info” på
+          forsiden.
         </li>
         <li>
-          <strong>12. Fejlrapporter.</strong> Under{' '}
+          <strong>11. Fejlrapporter.</strong> Under{' '}
           <Link href="/admin/fejlrapporter" className="underline underline-offset-2">
             Fejlrapporter
           </Link>{' '}
-          kan I se, hvad familie/venner har rapporteret via “Rapportér fejl” på forsiden
-          (inkl. eventuelle billeder). Kun I kan se disse. Markér som “løst”, genåbn, eller
-          slet permanent.
+          (under Menu) kan I se, hvad familie/venner har rapporteret via “Rapportér fejl” på
+          forsiden (inkl. eventuelle billeder). Kun I kan se disse. Markér som “løst”,
+          genåbn, eller slet permanent.
         </li>
       </ol>
 

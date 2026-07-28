@@ -4,10 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { CalendarShell } from '@/components/calendar/CalendarShell';
 import { BookingForm, type BookingFormValues } from './BookingForm';
-import { PasswordForm } from './PasswordForm';
 import { NewRequestsPanel } from './NewRequestsPanel';
-import { PushNotificationToggle } from './PushNotificationToggle';
-import { KeyLocationPhoto } from '@/components/booking/KeyLocationPhoto';
+import { AdminMenu } from './AdminMenu';
 import type { AdminBooking, CalendarBooking } from '@/lib/types';
 import { getBrowserSupabaseClient } from '@/lib/supabase/browserClient';
 
@@ -30,7 +28,6 @@ function toApiPayload(values: BookingFormValues) {
 export function AdminDashboard() {
   const router = useRouter();
   const [formMode, setFormMode] = useState<FormMode | null>(null);
-  const [showSettings, setShowSettings] = useState(false);
   const [refreshToken, setRefreshToken] = useState(0);
   const [banner, setBanner] = useState<string | null>(null);
 
@@ -98,18 +95,7 @@ export function AdminDashboard() {
         >
           + Ny kalenderpost
         </button>
-        <div className="flex items-center gap-3 text-sm">
-          <button
-            type="button"
-            onClick={() => setShowSettings((v) => !v)}
-            className="text-muted underline-offset-2 hover:underline"
-          >
-            Indstillinger
-          </button>
-          <button type="button" onClick={handleLogout} className="text-muted underline-offset-2 hover:underline">
-            Log ud
-          </button>
-        </div>
+        <AdminMenu onLogout={handleLogout} />
       </div>
 
       {banner && (
@@ -121,25 +107,12 @@ export function AdminDashboard() {
         </div>
       )}
 
-      {showSettings && (
-        <div className="rounded-xl2 border border-line bg-white p-4">
-          <h2 className="mb-3 text-base font-semibold text-ink">
-            Familiens fælles adgangskode
-          </h2>
-          <PasswordForm />
-        </div>
-      )}
-
-      <PushNotificationToggle />
-
       <NewRequestsPanel
         refreshToken={refreshToken}
         onEdit={(booking) => setFormMode({ kind: 'edit', booking })}
         onDelete={handleDelete}
         onChanged={refresh}
       />
-
-      <KeyLocationPhoto isAdmin />
 
       <CalendarShell
         isAdmin

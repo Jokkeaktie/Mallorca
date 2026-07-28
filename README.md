@@ -361,31 +361,52 @@ Denne vejledning findes også direkte i appen under **Administrator ->
 
 1. **Log ind** på `/admin/login` med den e-mail og adgangskode, der blev
    oprettet i trin 6.
-2. **"Nye ønsker"-panelet** øverst på administratorsiden er en fold-ud-boks
-   (lukket som standard, ligesom FAQ'en under Praktisk info) med alle
-   ubehandlede ønsker, sorteret efter hvornår de blev SENDT (ikke hvornår
-   perioden ligger) – så et ønske til fx næste sommer, der lige er kommet
-   ind, altid ligger øverst og ikke drukner i kalenderen. Tryk på
-   overskriften for at folde listen ud. Godkend direkte med ét tryk, tryk
-   "Redigér" for at ændre noget først, eller "Slet" for at afvise ønsket
-   permanent. Panelet forsvinder helt, når der ikke er flere ubehandlede
-   ønsker. Se også afsnittene "E-mail-notifikationer (valgfrit)" og
-   "Push-notifikationer (valgfrit)" ovenfor, hvis I vil have besked med det
-   samme, uden selv at skulle åbne appen.
-3. **Push-notifikationer:** hvis I har sat det op (se "Push-notifikationer
-   (valgfrit)" ovenfor), finder I en boks med samme navn på
-   administratorsiden. Tryk "Slå notifikationer til", og accepter
-   tilladelsen, browseren beder om. Hver administrator skal gøre dette på
-   sin egen telefon/enhed.
-4. **Opret en ny kalenderpost** ved at trykke "+ Ny kalenderpost". Udfyld
+2. **Forsiden er bevidst holdt minimal:** kun "+ Ny kalenderpost", en
+   "Menu"-knap, "Nye ønsker"-panelet og selve kalenderen. Alt andet
+   (indstillinger, praktisk info, fejlrapporter, vejledning, log ud) ligger
+   under **"☰ Menu"**-knappen øverst til højre.
+3. **"Nye ønsker"-panelet** er en fold-ud-boks (lukket som standard, ligesom
+   FAQ'en under Praktisk info) med alle ubehandlede ønsker, sorteret efter
+   hvornår de blev SENDT (ikke hvornår perioden ligger) – så et ønske til fx
+   næste sommer, der lige er kommet ind, altid ligger øverst og ikke
+   drukner i kalenderen. Tryk på overskriften for at folde listen ud.
+   Godkend direkte med ét tryk, tryk "Redigér" for at ændre noget først,
+   eller "Slet" for at afvise ønsket permanent. Panelet forsvinder helt, når
+   der ikke er flere ubehandlede ønsker.
+4. **Indstillinger** (under Menu) samler tre ting på ét sted:
+   - **Push-notifikationer:** hvis I har sat det op (se
+     "Push-notifikationer (valgfrit)" ovenfor), tryk "Slå notifikationer
+     til", og accepter tilladelsen, browseren beder om. Hver administrator
+     skal gøre dette på sin egen telefon/enhed. Se også afsnittet
+     "E-mail-notifikationer (valgfrit)" ovenfor, hvis I hellere (eller
+     også) vil have besked på mail.
+   - **Familiens fælles adgangskode** kan ændres her når som helst.
+   - **Nøglegemmested-billedet** er ÉT fælles billede (ikke knyttet til en
+     bestemt booking eller et bestemt ophold), vist både her og øverst på
+     familiens forside. Da de fleste ophold IKKE har en skjult nøgle
+     (gæsten får den direkte af jer), vises der som udgangspunkt kun et
+     diskret "+ Tilføj billede af nøglegemmested"-link, ikke en
+     fremtrædende boks — den fulde boks med billede dukker først op, når
+     nogen rent faktisk har uploadet et billede. Tryk "Opdatér billede"
+     for at erstatte det med et nyt. **Familie og venner kan også selv
+     tilføje/opdatere billedet** (uden at logge ind som admin) — typisk
+     den afrejsende gæst, der viser den næste gæst, hvor nøglen er lagt.
+     Kun administratorer kan trykke "Fjern billede" og slette det
+     permanent.
+
+     > **Kræver en opdateret database.** Denne udgave af nøglebilledet
+     > bruger nye felter i `app_settings`. Kør `supabase/schema.sql` igen i
+     > Supabase **SQL Editor** (se boksen i trin 4 ovenfor) før denne
+     > funktion virker, hvis I opdaterer en database, der allerede kører.
+5. **Opret en ny kalenderpost** ved at trykke "+ Ny kalenderpost". Udfyld
    navn, vælg status (Ønske/Godkendt), farve, samt start- og slutdato.
    Ankomst-/afrejsetidspunkt og intern kommentar er valgfrie.
-5. **Redigér eller slet** en post ved at trykke på en dag i kalenderen og
+6. **Redigér eller slet** en post ved at trykke på en dag i kalenderen og
    derefter "Redigér" på den ønskede post. Sletning sker fra
    redigeringsvisningen og kan ikke fortrydes.
-6. **Skift status** mellem "Ønske" og "Godkendt" ved at redigere posten – det
+7. **Skift status** mellem "Ønske" og "Godkendt" ved at redigere posten – det
    sker ikke automatisk, I bestemmer selv.
-7. **Overlappende ønsker** kræver ingen handling i sig selv – flere personer
+8. **Overlappende ønsker** kræver ingen handling i sig selv – flere personer
    kan gerne ønske samme periode. I beslutter selv, hvem der får perioden.
    Familie og venner ser ikke kalenderen og kan derfor ikke selv se, om en
    periode er ledig – de sender blot et ønske via "Ønsk booking" på forsiden
@@ -393,38 +414,20 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    ankomst-/afrejsetidspunkt, samt en valgfri besked, som gemmes som intern
    kommentar), og det dukker op i jeres kalender som en almindelig
    "Ønske"-post, I kan redigere og godkende/afvise som enhver anden post.
-8. **Skift den fælles adgangskode** når som helst under "Indstillinger" på
-   administratorsiden.
-9. **Nøglegemmested-billedet** er ÉT fælles billede (ikke knyttet til en
-   bestemt booking eller et bestemt ophold), vist øverst på både familiens
-   forside og administratorsiden. Da de fleste ophold IKKE har en skjult
-   nøgle (gæsten får den direkte af jer), vises der som udgangspunkt kun et
-   diskret "+ Tilføj billede af nøglegemmested"-link, ikke en fremtrædende
-   boks — den fulde boks med billede dukker først op, når nogen rent
-   faktisk har uploadet et billede. Tryk "Opdatér billede" for at erstatte
-   det med et nyt. **Familie og venner kan også selv tilføje/opdatere
-   billedet** (uden at logge ind som admin) — typisk den afrejsende gæst,
-   der viser den næste gæst, hvor nøglen er lagt. Kun administratorer kan
-   trykke "Fjern billede" og slette det permanent.
-
-   > **Kræver en opdateret database.** Denne udgave af nøglebilledet bruger
-   > nye felter i `app_settings`. Kør `supabase/schema.sql` igen i Supabase
-   > **SQL Editor** (se boksen i trin 4 ovenfor) før denne funktion virker,
-   > hvis I opdaterer en database, der allerede kører.
-10. **Redigér praktisk info** ("Om lejligheden" fri tekst + FAQ + tjekliste
-   ved afrejse) under **Praktisk info** på administratorsiden. "Om
-   lejligheden" er et frit tekstfelt til fx adresse og telefonnumre på
-   relevante personer — vises øverst på familiens side, hvis det er udfyldt.
-   Skriv i felterne og tryk **"Gem"** for at gemme en ændring, brug ↑/↓ til
-   at omarrangere FAQ/tjekliste, eller "Slet" for at fjerne et punkt —
-   ændringer vises med det samme for familie og venner under "Praktisk
-   info" på forsiden. Familiens afkrydsninger på tjeklisten gemmes lokalt på
-   den enkelte gæsts egen telefon (ikke i databasen) og forsvinder
-   automatisk dagen efter opholdet slutter.
-11. **Se fejlrapporter** under **Fejlrapporter** på administratorsiden.
-   Familie og venner kan rapportere mindre fejl/mangler (med op til 5
-   billeder) fra forsiden under "Rapportér fejl" — det er kun synligt for
-   jer. Markér en rapport som "løst", genåbn den, eller slet den permanent.
+9. **Redigér praktisk info** ("Om lejligheden" fri tekst + FAQ + tjekliste
+   ved afrejse) under **Praktisk info** (under Menu). "Om lejligheden" er et
+   frit tekstfelt til fx adresse og telefonnumre på relevante personer —
+   vises øverst på familiens side, hvis det er udfyldt. Skriv i felterne og
+   tryk **"Gem"** for at gemme en ændring, brug ↑/↓ til at omarrangere
+   FAQ/tjekliste, eller "Slet" for at fjerne et punkt — ændringer vises med
+   det samme for familie og venner under "Praktisk info" på forsiden.
+   Familiens afkrydsninger på tjeklisten gemmes lokalt på den enkelte
+   gæsts egen telefon (ikke i databasen) og forsvinder automatisk dagen
+   efter opholdet slutter.
+10. **Se fejlrapporter** under **Fejlrapporter** (under Menu). Familie og
+   venner kan rapportere mindre fejl/mangler (med op til 5 billeder) fra
+   forsiden under "Rapportér fejl" — det er kun synligt for jer. Markér en
+   rapport som "løst", genåbn den, eller slet den permanent.
 
 ## 14. Tests, linting og typecheck
 
