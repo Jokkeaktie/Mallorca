@@ -6,6 +6,13 @@ import { ALLOWED_KEY_PHOTO_CONTENT_TYPES, MAX_KEY_PHOTO_SIZE_BYTES } from '@/lib
 interface KeyLocationPhotoProps {
   /** Viser en "Fjern billede"-knap. Kun administratorer må slette permanent. */
   isAdmin?: boolean;
+  /**
+   * 'link' (standard): et diskret tekstlink uden billede, så siden ikke ser
+   * ud som om et billede mangler, når de fleste ophold slet ikke har en
+   * skjult nøgle. 'card' bruges på Indstillinger-siden, hvor det skal se ens
+   * ud med de andre indstillings-bokse.
+   */
+  emptyStateVariant?: 'link' | 'card';
 }
 
 /**
@@ -18,7 +25,7 @@ interface KeyLocationPhotoProps {
  * Sven/Inger), så uden et billede vises kun et diskret link i stedet for en
  * fremtrædende boks, der ellers ville se ud som om et billede mangler.
  */
-export function KeyLocationPhoto({ isAdmin }: KeyLocationPhotoProps) {
+export function KeyLocationPhoto({ isAdmin, emptyStateVariant = 'link' }: KeyLocationPhotoProps) {
   const [hasPhoto, setHasPhoto] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [version, setVersion] = useState(0);
@@ -108,6 +115,30 @@ export function KeyLocationPhoto({ isAdmin }: KeyLocationPhotoProps) {
   );
 
   if (!hasPhoto) {
+    if (emptyStateVariant === 'card') {
+      return (
+        <div className="flex flex-col items-start gap-2 rounded-xl2 border border-line bg-white p-4">
+          <h2 className="text-base font-semibold text-ink">Nøglegemmested</h2>
+          <p className="text-xs text-muted">
+            Der er endnu ikke uploadet et billede af nøglegemmestedet.
+          </p>
+          <button
+            type="button"
+            disabled={isBusy}
+            onClick={() => fileInputRef.current?.click()}
+            className="self-start rounded-full border border-line px-3 py-1 text-xs hover:bg-canvas disabled:opacity-60"
+          >
+            {isBusy ? 'Uploader…' : '+ Tilføj billede'}
+          </button>
+          {fileInput}
+          {error && (
+            <p role="alert" className="text-xs text-red-700">
+              {error}
+            </p>
+          )}
+        </div>
+      );
+    }
     return (
       <div className="flex flex-col items-start gap-1">
         <button
@@ -130,7 +161,7 @@ export function KeyLocationPhoto({ isAdmin }: KeyLocationPhotoProps) {
 
   return (
     <div className="flex flex-col gap-2 rounded-xl2 border border-line bg-white p-4">
-      <h2 className="text-sm font-medium text-ink">Nøglegemmested</h2>
+      <h2 className="text-base font-semibold text-ink">Nøglegemmested</h2>
 
       <button type="button" onClick={() => setIsPreviewOpen(true)} className="text-left">
         <img

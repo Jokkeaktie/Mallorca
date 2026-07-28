@@ -23,7 +23,7 @@ export default function AdminSettingsPage() {
         <PasswordForm />
       </div>
 
-      <KeyLocationPhoto isAdmin />
+      <KeyLocationPhoto isAdmin emptyStateVariant="card" />
 
       <Link href="/admin" className="text-sm text-accent underline underline-offset-2">
         ← Tilbage til administratorområdet

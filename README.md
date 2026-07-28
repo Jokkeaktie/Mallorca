@@ -136,7 +136,7 @@ Supabase-klient osv.). Det tager typisk et minuts tid.
    hele indholdet af filen [`supabase/schema.sql`](./supabase/schema.sql) fra
    dette projekt. Tryk "Run".
    - Dette opretter tabellerne `bookings`, `app_settings` (inkl. feltet
-     `apartment_info` til "Om lejligheden"), `checklist_items`, `faq_items`
+     `apartment_info` til "Generelt"), `checklist_items`, `faq_items`
      og `bug_reports` samt de nødvendige sikkerhedsregler (Row Level
      Security).
 5. Gå til **Project Settings -> API**. Her finder du:
@@ -414,8 +414,8 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    ankomst-/afrejsetidspunkt, samt en valgfri besked, som gemmes som intern
    kommentar), og det dukker op i jeres kalender som en almindelig
    "Ønske"-post, I kan redigere og godkende/afvise som enhver anden post.
-9. **Redigér praktisk info** ("Om lejligheden" fri tekst + FAQ + tjekliste
-   ved afrejse) under **Praktisk info** (under Menu). "Om lejligheden" er et
+9. **Redigér praktisk info** ("Generelt" fri tekst + FAQ + tjekliste
+   ved afrejse) under **Praktisk info** (under Menu). "Generelt" er et
    frit tekstfelt til fx adresse og telefonnumre på relevante personer —
    vises øverst på familiens side, hvis det er udfyldt. Skriv i felterne og
    tryk **"Gem"** for at gemme en ændring, brug ↑/↓ til at omarrangere

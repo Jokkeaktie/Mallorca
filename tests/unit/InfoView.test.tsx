@@ -33,25 +33,25 @@ describe('InfoView', () => {
     vi.restoreAllMocks();
   });
 
-  it('viser Om lejligheden, FAQ og tjekliste efter indlæsning', async () => {
+  it('viser Generelt, FAQ og tjekliste efter indlæsning', async () => {
     render(<InfoView />);
     expect(await screen.findByText('Adresse: Carrer Example 12')).toBeInTheDocument();
     expect(screen.getByText('Hvor bytter jeg gaspatron?')).toBeInTheDocument();
     expect(screen.getByText('Sluk lys')).toBeInTheDocument();
   });
 
-  it('viser sektionerne i rækkefølgen Om lejligheden, FAQ, tjekliste', async () => {
+  it('viser sektionerne i rækkefølgen Generelt, FAQ, tjekliste', async () => {
     render(<InfoView />);
     await screen.findByText('Hvor bytter jeg gaspatron?');
     const headings = screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent);
-    expect(headings).toEqual(['Om lejligheden', 'Praktisk FAQ', 'Inden du rejser']);
+    expect(headings).toEqual(['Generelt', 'Praktisk FAQ', 'Inden du rejser']);
   });
 
-  it('skjuler "Om lejligheden" hvis teksten er tom', async () => {
+  it('skjuler "Generelt" hvis teksten er tom', async () => {
     apartmentInfoText = '';
     render(<InfoView />);
     await screen.findByText('Hvor bytter jeg gaspatron?');
-    expect(screen.queryByText('Om lejligheden')).not.toBeInTheDocument();
+    expect(screen.queryByText('Generelt')).not.toBeInTheDocument();
   });
 
   it('afkrydsning af tjekliste-punkt sender IKKE noget til serveren, men gemmes lokalt', async () => {

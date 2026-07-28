@@ -52,7 +52,7 @@ export function ApartmentInfoEditor() {
 
   return (
     <div className="flex flex-col gap-3">
-      <h2 className="text-base font-semibold text-ink">Om lejligheden</h2>
+      <h2 className="text-base font-semibold text-ink">Generelt</h2>
       <p className="text-sm text-muted">
         Fri tekst, fx adresse, telefonnumre på relevante personer, eller andre praktiske
         oplysninger. Vises øverst på familiens side, over FAQ&apos;en.

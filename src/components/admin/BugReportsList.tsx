@@ -9,6 +9,7 @@ export function BugReportsList() {
   const [reports, setReports] = useState<BugReport[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showResolved, setShowResolved] = useState(false);
 
   useEffect(() => {
     load();
@@ -73,72 +74,133 @@ export function BugReportsList() {
       </ul>
     );
   }
-  if (error) return <p className="text-sm text-red-700">{error}</p>;
+  if (error && reports.length === 0) return <p className="text-sm text-red-700">{error}</p>;
 
   if (reports.length === 0) {
     return <p className="text-sm text-muted">Ingen fejlrapporter endnu.</p>;
   }
 
+  const openReports = reports.filter((r) => r.status === 'new');
+  const resolvedReports = reports.filter((r) => r.status === 'resolved');
+
   return (
-    <ul className="flex flex-col gap-3">
-      {reports.map((report) => (
-        <li key={report.id} className="flex flex-col gap-2 rounded-xl2 border border-line bg-white p-3">
-          <div className="flex items-start justify-between gap-2">
-            <div>
-              <p className="text-sm text-muted">
-                {formatDanishDate(report.createdAt.slice(0, 10))} ·{' '}
-                {report.reporterName ?? 'Anonym'}
-              </p>
-              <p className="whitespace-pre-line text-ink">{report.description}</p>
-            </div>
-            <span
-              className={`shrink-0 rounded-full px-2 py-1 text-xs font-medium ${
-                report.status === 'resolved'
-                  ? 'bg-accent/15 text-accent'
-                  : 'bg-muted/15 text-muted'
-              }`}
-            >
-              {report.status === 'resolved' ? '✓ Løst' : '~ Ny'}
-            </span>
-          </div>
+    <div className="flex flex-col gap-4">
+      {openReports.length === 0 ? (
+        <p className="text-sm text-muted">Ingen åbne fejlrapporter.</p>
+      ) : (
+        <ul className="flex flex-col gap-3">
+          {openReports.map((report) => (
+            <BugReportCard
+              key={report.id}
+              report={report}
+              onToggleStatus={toggleStatus}
+              onDelete={handleDelete}
+            />
+          ))}
+        </ul>
+      )}
 
-          {report.photos.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {report.photos.map((_, index) => (
-                <a
-                  key={index}
-                  href={`/api/bug-reports/${report.id}/photos/${index}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img
-                    src={`/api/bug-reports/${report.id}/photos/${index}`}
-                    alt={`Billede ${index + 1} til fejlrapport`}
-                    className="h-20 w-20 rounded-xl2 border border-line object-cover"
-                  />
-                </a>
+      {resolvedReports.length > 0 && (
+        <div className="flex flex-col gap-3">
+          <button
+            type="button"
+            onClick={() => setShowResolved((v) => !v)}
+            aria-expanded={showResolved}
+            className="self-start text-sm text-muted underline underline-offset-2 hover:text-ink"
+          >
+            {showResolved ? '– Skjul' : '+ Vis'} løste fejlrapporter ({resolvedReports.length})
+          </button>
+
+          {showResolved && (
+            <ul className="flex flex-col gap-3">
+              {resolvedReports.map((report) => (
+                <BugReportCard
+                  key={report.id}
+                  report={report}
+                  onToggleStatus={toggleStatus}
+                  onDelete={handleDelete}
+                />
               ))}
-            </div>
+            </ul>
           )}
+        </div>
+      )}
 
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => toggleStatus(report)}
-              className="rounded-full border border-line px-3 py-1 text-xs hover:bg-canvas"
+      {error && (
+        <p role="alert" className="text-sm text-red-700">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
+
+interface BugReportCardProps {
+  report: BugReport;
+  onToggleStatus: (report: BugReport) => void;
+  onDelete: (id: string) => void;
+}
+
+function BugReportCard({ report, onToggleStatus, onDelete }: BugReportCardProps) {
+  const isResolved = report.status === 'resolved';
+
+  return (
+    <li
+      className={`flex flex-col gap-2 rounded-xl2 border-l-4 border border-line p-3 ${
+        isResolved ? 'border-l-accent/50 bg-canvas' : 'border-l-amber-400 bg-white'
+      }`}
+    >
+      <div className="flex items-start justify-between gap-2">
+        <div>
+          <p className="text-sm text-muted">
+            {formatDanishDate(report.createdAt.slice(0, 10))} · {report.reporterName ?? 'Anonym'}
+          </p>
+          <p className="whitespace-pre-line text-ink">{report.description}</p>
+        </div>
+        <span
+          className={`shrink-0 rounded-full px-2 py-1 text-xs font-medium ${
+            isResolved ? 'bg-accent/15 text-accent' : 'bg-amber-100 text-amber-800'
+          }`}
+        >
+          {isResolved ? '✓ Løst' : '● Åben'}
+        </span>
+      </div>
+
+      {report.photos.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {report.photos.map((_, index) => (
+            <a
+              key={index}
+              href={`/api/bug-reports/${report.id}/photos/${index}`}
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              {report.status === 'new' ? 'Markér som løst' : 'Genåbn'}
-            </button>
-            <button
-              type="button"
-              onClick={() => handleDelete(report.id)}
-              className="rounded-full border border-red-200 px-3 py-1 text-xs text-red-700 hover:bg-red-50"
-            >
-              Slet
-            </button>
-          </div>
-        </li>
-      ))}
-    </ul>
+              <img
+                src={`/api/bug-reports/${report.id}/photos/${index}`}
+                alt={`Billede ${index + 1} til fejlrapport`}
+                className="h-20 w-20 rounded-xl2 border border-line object-cover"
+              />
+            </a>
+          ))}
+        </div>
+      )}
+
+      <div className="flex gap-2">
+        <button
+          type="button"
+          onClick={() => onToggleStatus(report)}
+          className="rounded-full border border-line px-3 py-1 text-xs hover:bg-canvas"
+        >
+          {isResolved ? 'Genåbn' : 'Markér som løst'}
+        </button>
+        <button
+          type="button"
+          onClick={() => onDelete(report.id)}
+          className="rounded-full border border-red-200 px-3 py-1 text-xs text-red-700 hover:bg-red-50"
+        >
+          Slet
+        </button>
+      </div>
+    </li>
   );
 }

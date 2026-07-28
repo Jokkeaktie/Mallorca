@@ -98,7 +98,7 @@ export function InfoView() {
     <div className="flex flex-col gap-8">
       {apartmentInfo && (
         <section className="flex flex-col gap-3">
-          <h2 className="text-lg font-semibold text-ink">Om lejligheden</h2>
+          <h2 className="text-lg font-semibold text-ink">Generelt</h2>
           <p className="whitespace-pre-line rounded-xl2 border border-line bg-white p-3 text-ink">
             {apartmentInfo}
           </p>

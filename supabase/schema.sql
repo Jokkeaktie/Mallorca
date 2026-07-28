@@ -67,7 +67,7 @@ alter table public.app_settings add column if not exists key_photo_path text;
 alter table public.app_settings add column if not exists key_photo_content_type text;
 
 -- family_password_hash var oprindeligt "not null", men skal kunne være tom,
--- så "Om lejligheden" kan gemmes uafhængigt af, om adgangskoden er sat endnu.
+-- så "Generelt" kan gemmes uafhængigt af, om adgangskoden er sat endnu.
 alter table public.app_settings alter column family_password_hash drop not null;
 
 alter table public.app_settings enable row level security;

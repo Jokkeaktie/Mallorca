@@ -114,7 +114,7 @@ export function PushNotificationToggle() {
 
   return (
     <div className="flex flex-col gap-2 rounded-xl2 border border-line bg-white p-4">
-      <h2 className="text-sm font-medium text-ink">Push-notifikationer</h2>
+      <h2 className="text-base font-semibold text-ink">Push-notifikationer</h2>
 
       {support === 'not-installed' ? (
         <p className="text-xs text-muted">
