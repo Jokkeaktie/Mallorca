@@ -33,3 +33,37 @@ self.addEventListener('fetch', (event) => {
     caches.match(event.request).then((cached) => cached ?? fetch(event.request)),
   );
 });
+
+// Push-notifikationer (kun til administratorer, se /api/push/subscribe).
+self.addEventListener('push', (event) => {
+  let data = { title: 'Mallorca-appen', body: '', url: '/admin' };
+  try {
+    if (event.data) data = { ...data, ...event.data.json() };
+  } catch {
+    // Ignorer ugyldigt payload - vis en generisk notifikation i stedet.
+  }
+
+  event.waitUntil(
+    self.registration.showNotification(data.title, {
+      body: data.body,
+      icon: '/icons/icon-192.png',
+      badge: '/icons/icon-192.png',
+      data: { url: data.url },
+    }),
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const targetUrl = event.notification.data?.url ?? '/admin';
+
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+      for (const client of windowClients) {
+        if (client.url.includes(targetUrl) && 'focus' in client) return client.focus();
+      }
+      if (self.clients.openWindow) return self.clients.openWindow(targetUrl);
+      return undefined;
+    }),
+  );
+});

@@ -6,6 +6,7 @@ import { bugReportSchema, MAX_BUG_REPORT_PHOTOS } from '@/lib/validation/bugRepo
 import { ALLOWED_IMAGE_CONTENT_TYPES, MAX_IMAGE_SIZE_BYTES } from '@/lib/media/imagePolicy';
 import { getServiceSupabaseClient } from '@/lib/supabase/serviceClient';
 import type { BugReportPhoto } from '@/lib/types';
+import { sendPushToAdmins } from '@/lib/notifications/push';
 
 /**
  * GET /api/bug-reports – liste over alle fejlrapporter. Kun administratorer.
@@ -96,6 +97,13 @@ export async function POST(request: NextRequest) {
       description: parsed.data.description,
       reporterName: parsed.data.reporterName,
       photos: uploadedPhotos,
+    });
+    await sendPushToAdmins({
+      title: 'Ny fejlrapport',
+      body: parsed.data.reporterName
+        ? `${parsed.data.reporterName}: ${parsed.data.description}`
+        : parsed.data.description,
+      url: '/admin/fejlrapporter',
     });
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (error) {

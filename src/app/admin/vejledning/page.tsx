@@ -22,26 +22,32 @@ export default function AdminGuidePage() {
           permanent. Panelet forsvinder, når der ikke er flere ubehandlede ønsker.
         </li>
         <li>
-          <strong>2. Opret en ny kalenderpost.</strong> Tryk på “+ Ny kalenderpost”. Skriv
+          <strong>2. Push-notifikationer.</strong> Hvis det er sat op (se README), finder I
+          en boks med samme navn her på siden. Tryk “Slå notifikationer til”, og accepter
+          tilladelsen, browseren beder om, for at få besked direkte på telefonen, når der
+          sker noget nyt. Hver administrator skal gøre dette på sin egen enhed.
+        </li>
+        <li>
+          <strong>3. Opret en ny kalenderpost.</strong> Tryk på “+ Ny kalenderpost”. Skriv
           navnet på personen eller familien, vælg status (Ønske eller Godkendt), vælg en
           farve, og angiv start- og slutdato. Ankomst-/afrejsetidspunkt, flynummer og
           intern kommentar er valgfrie.
         </li>
         <li>
-          <strong>3. Redigér en post.</strong> Tryk på en dag i kalenderen for at se
+          <strong>4. Redigér en post.</strong> Tryk på en dag i kalenderen for at se
           dagens poster, og tryk “Redigér” på den post, I vil ændre.
         </li>
         <li>
-          <strong>4. Skift status.</strong> Åbn posten via “Redigér”, og skift mellem
+          <strong>5. Skift status.</strong> Åbn posten via “Redigér”, og skift mellem
           “Ønske” og “Godkendt”. Der er ingen automatik – I bestemmer selv, hvornår et
           ønske bliver til en godkendt booking.
         </li>
         <li>
-          <strong>5. Slet en post.</strong> Tryk “Redigér” på dagen, og brug “Slet”-knappen
+          <strong>6. Slet en post.</strong> Tryk “Redigér” på dagen, og brug “Slet”-knappen
           i redigeringsvisningen. Sletning kan ikke fortrydes.
         </li>
         <li>
-          <strong>6. Overlappende ønsker.</strong> Flere personer kan gerne ønske samme
+          <strong>7. Overlappende ønsker.</strong> Flere personer kan gerne ønske samme
           periode samtidig – systemet sletter eller afviser ikke automatisk noget. I
           beslutter selv, hvem der får perioden, ved at sætte den ene til “Godkendt”.
           Familie og venner ser ikke kalenderen og kan derfor ikke selv se ledighed – de
@@ -49,16 +55,16 @@ export default function AdminGuidePage() {
           ønsker”-panelet) som en almindelig “Ønske”-post.
         </li>
         <li>
-          <strong>7. Skift den fælles adgangskode.</strong> Under “Indstillinger” på
+          <strong>8. Skift den fælles adgangskode.</strong> Under “Indstillinger” på
           administratorsiden kan I til enhver tid ændre den adgangskode, som familie og
           venner bruger for at se kalenderen.
         </li>
         <li>
-          <strong>8. Farver.</strong> Vælg gerne samme farve igen, næste gang I opretter en
+          <strong>9. Farver.</strong> Vælg gerne samme farve igen, næste gang I opretter en
           post til den samme person eller familie, så farven er genkendelig i kalenderen.
         </li>
         <li>
-          <strong>9. Billede af nøglegemmested.</strong> Der er ét fælles billede, ikke
+          <strong>10. Billede af nøglegemmested.</strong> Der er ét fælles billede, ikke
           knyttet til en bestemt post. Da de fleste ophold ikke har en skjult nøgle, vises
           som udgangspunkt kun et diskret “+ Tilføj billede”-link – boksen med selve
           billedet dukker først op, når der er uploadet et. Tryk “Opdatér billede” for at
@@ -67,7 +73,7 @@ export default function AdminGuidePage() {
           lagt. Kun I kan trykke “Fjern billede” og slette det permanent.
         </li>
         <li>
-          <strong>10. Praktisk info (tjekliste og FAQ).</strong> Under{' '}
+          <strong>11. Praktisk info (tjekliste og FAQ).</strong> Under{' '}
           <Link href="/admin/info" className="underline underline-offset-2">
             Praktisk info
           </Link>{' '}
@@ -77,7 +83,7 @@ export default function AdminGuidePage() {
           med det samme for familie og venner under “Praktisk info” på forsiden.
         </li>
         <li>
-          <strong>11. Fejlrapporter.</strong> Under{' '}
+          <strong>12. Fejlrapporter.</strong> Under{' '}
           <Link href="/admin/fejlrapporter" className="underline underline-offset-2">
             Fejlrapporter
           </Link>{' '}

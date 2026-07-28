@@ -6,6 +6,7 @@ import { CalendarShell } from '@/components/calendar/CalendarShell';
 import { BookingForm, type BookingFormValues } from './BookingForm';
 import { PasswordForm } from './PasswordForm';
 import { NewRequestsPanel } from './NewRequestsPanel';
+import { PushNotificationToggle } from './PushNotificationToggle';
 import { KeyLocationPhoto } from '@/components/booking/KeyLocationPhoto';
 import type { AdminBooking, CalendarBooking } from '@/lib/types';
 import { getBrowserSupabaseClient } from '@/lib/supabase/browserClient';
@@ -128,6 +129,8 @@ export function AdminDashboard() {
           <PasswordForm />
         </div>
       )}
+
+      <PushNotificationToggle />
 
       <NewRequestsPanel
         refreshToken={refreshToken}

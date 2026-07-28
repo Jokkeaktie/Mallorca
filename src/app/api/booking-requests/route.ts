@@ -4,6 +4,8 @@ import { createBooking } from '@/lib/bookings/repository';
 import { bookingRequestSchema } from '@/lib/validation/bookingRequest';
 import { SUGGESTED_COLORS } from '@/lib/colors';
 import { sendBookingRequestNotification } from '@/lib/notifications/email';
+import { sendPushToAdmins } from '@/lib/notifications/push';
+import { formatDanishDateRange } from '@/lib/date/format';
 
 /**
  * POST /api/booking-requests
@@ -49,6 +51,11 @@ export async function POST(request: NextRequest) {
       startDate: parsed.data.startDate,
       endDate: parsed.data.endDate,
       flightNumber: parsed.data.flightNumber,
+    });
+    await sendPushToAdmins({
+      title: 'Nyt ønske om booking',
+      body: `${parsed.data.name}: ${formatDanishDateRange(parsed.data.startDate, parsed.data.endDate)}`,
+      url: '/admin',
     });
     return NextResponse.json({}, { status: 201 });
   } catch (error) {

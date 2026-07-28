@@ -10,6 +10,7 @@ const deleteBugReport = vi.fn();
 const upload = vi.fn();
 const remove = vi.fn();
 const download = vi.fn();
+const sendPushToAdmins = vi.fn();
 
 vi.mock('@/lib/auth/accessControl', () => ({ hasFamilyOrAdminAccess, requireAdmin }));
 vi.mock('@/lib/bugReports/repository', () => ({
@@ -24,6 +25,7 @@ vi.mock('@/lib/supabase/serviceClient', () => ({
     storage: { from: () => ({ upload, remove, download }) },
   }),
 }));
+vi.mock('@/lib/notifications/push', () => ({ sendPushToAdmins }));
 
 const { GET, POST } = await import('@/app/api/bug-reports/route');
 const { PATCH, DELETE } = await import('@/app/api/bug-reports/[id]/route');
@@ -61,6 +63,8 @@ describe('POST /api/bug-reports', () => {
     hasFamilyOrAdminAccess.mockReset();
     createBugReport.mockReset();
     upload.mockReset();
+    sendPushToAdmins.mockReset();
+    sendPushToAdmins.mockResolvedValue(undefined);
   });
 
   it('afviser uden familie- eller admin-adgang', async () => {
@@ -84,6 +88,9 @@ describe('POST /api/bug-reports', () => {
     expect(response.status).toBe(201);
     expect(createBugReport).toHaveBeenCalledWith(
       expect.objectContaining({ description: 'Opvaskemaskinen larmer', reporterName: 'Joakim H.', photos: [] }),
+    );
+    expect(sendPushToAdmins).toHaveBeenCalledWith(
+      expect.objectContaining({ title: 'Ny fejlrapport', url: '/admin/fejlrapporter' }),
     );
   });
 

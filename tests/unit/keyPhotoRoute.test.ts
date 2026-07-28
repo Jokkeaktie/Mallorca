@@ -8,6 +8,7 @@ const clearKeyPhoto = vi.fn();
 const download = vi.fn();
 const upload = vi.fn();
 const remove = vi.fn();
+const sendPushToAdmins = vi.fn();
 
 vi.mock('@/lib/auth/accessControl', () => ({ hasFamilyOrAdminAccess, requireAdmin }));
 vi.mock('@/lib/settings/keyPhoto', async () => {
@@ -21,6 +22,7 @@ vi.mock('@/lib/supabase/serviceClient', () => ({
     storage: { from: () => ({ download, upload, remove }) },
   }),
 }));
+vi.mock('@/lib/notifications/push', () => ({ sendPushToAdmins }));
 
 const { GET, POST, DELETE } = await import('@/app/api/key-photo/route');
 const { GET: GET_IMAGE } = await import('@/app/api/key-photo/image/route');
@@ -63,8 +65,11 @@ describe('GET /api/key-photo', () => {
 describe('POST /api/key-photo', () => {
   beforeEach(() => {
     hasFamilyOrAdminAccess.mockReset();
+    requireAdmin.mockReset();
     upload.mockReset();
     setKeyPhoto.mockReset();
+    sendPushToAdmins.mockReset();
+    sendPushToAdmins.mockResolvedValue(undefined);
   });
 
   it('afviser uden familie- eller admin-adgang', async () => {
@@ -100,6 +105,7 @@ describe('POST /api/key-photo', () => {
 
   it('familievisningen (ikke-admin) KAN uploade et gyldigt billede (fx den afrejsende gæst)', async () => {
     hasFamilyOrAdminAccess.mockResolvedValue(true);
+    requireAdmin.mockResolvedValue(null);
     upload.mockResolvedValue({ error: null });
     setKeyPhoto.mockResolvedValue(undefined);
 
@@ -114,6 +120,23 @@ describe('POST /api/key-photo', () => {
       expect.objectContaining({ contentType: 'image/jpeg', upsert: true }),
     );
     expect(setKeyPhoto).toHaveBeenCalledWith('key-location/photo', 'image/jpeg');
+    expect(sendPushToAdmins).toHaveBeenCalledWith(
+      expect.objectContaining({ title: 'Nyt nøglebillede' }),
+    );
+  });
+
+  it('sender ikke push når det er en administrator selv, der uploader', async () => {
+    hasFamilyOrAdminAccess.mockResolvedValue(true);
+    requireAdmin.mockResolvedValue('admin-1');
+    upload.mockResolvedValue({ error: null });
+    setKeyPhoto.mockResolvedValue(undefined);
+
+    const formData = new FormData();
+    formData.append('photo', new File(['x'], 'key.jpg', { type: 'image/jpeg' }));
+
+    const response = await POST(makeRequest('POST', formData));
+    expect(response.status).toBe(200);
+    expect(sendPushToAdmins).not.toHaveBeenCalled();
   });
 });
 

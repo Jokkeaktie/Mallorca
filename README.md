@@ -210,6 +210,40 @@ gratis, ingen domæne eller DNS-opsætning nødvendig):
 Mangler én eller flere af de tre påkrævede variabler, springes afsendelsen
 bare stille over – ønsket oprettes stadig helt normalt.
 
+### Push-notifikationer (valgfrit)
+
+Ud over (eller i stedet for) e-mail kan administratorerne få en rigtig
+push-notifikation direkte på telefonen, med det samme der kommer et nyt
+ønske, en fejlrapport, eller et nyt nøglebillede fra familie/venner – uden
+at åbne appen først. Det virker på både Android og iPhone (iOS kræver dog
+at appen er føjet til hjemmeskærmen, se afsnittet "Føj til hjemmeskærm"
+nedenfor – almindelig Safari-browsing understøtter det ikke).
+
+Modsat e-mail-delen kræver dette **ingen ekstern konto** – kun tre
+selv-genererede nøgler ("VAPID-nøgler", en åben webstandard, som Apple,
+Google og alle andre push-tjenester forstår uden en mellemmand):
+
+1. I projektmappen, kør:
+   ```bash
+   npx web-push generate-vapid-keys
+   ```
+   Det giver dig en "Public Key" og en "Private Key" – kopiér begge.
+2. Tilføj disse tre miljøvariabler i Vercel (se trin 10):
+   - `NEXT_PUBLIC_VAPID_PUBLIC_KEY`: "Public Key" fra trin 1
+   - `VAPID_PRIVATE_KEY`: "Private Key" fra trin 1 (hold den hemmelig – den
+     må aldrig deles eller committes)
+   - `VAPID_SUBJECT`: en kontakt-adresse i formatet `mailto:din@mail.dk`
+     (bruges kun af push-tjenesterne, hvis der skulle opstå et problem)
+3. Redeploy.
+4. Log ind som administrator, og tryk **"Slå notifikationer til"** i
+   boksen "Push-notifikationer" på administratorsiden. Din browser beder om
+   tilladelse til at vise notifikationer – accepter den.
+
+Hver administrator skal selv slå det til på sin egen telefon/enhed (det er
+ikke en indstilling, der gælder for hele appen på én gang). Mangler én
+eller flere af de tre miljøvariabler, springes afsendelsen bare stille
+over.
+
 ## 6. Opret de to administratorer
 
 Kør følgende kommando én gang for hver af forældrene (brug rigtige,
@@ -335,18 +369,23 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    overskriften for at folde listen ud. Godkend direkte med ét tryk, tryk
    "Redigér" for at ændre noget først, eller "Slet" for at afvise ønsket
    permanent. Panelet forsvinder helt, når der ikke er flere ubehandlede
-   ønsker. Se også afsnittet
-   "E-mail-notifikationer (valgfrit)" ovenfor, hvis I vil have besked på
-   mail, så snart et ønske sendes.
-3. **Opret en ny kalenderpost** ved at trykke "+ Ny kalenderpost". Udfyld
+   ønsker. Se også afsnittene "E-mail-notifikationer (valgfrit)" og
+   "Push-notifikationer (valgfrit)" ovenfor, hvis I vil have besked med det
+   samme, uden selv at skulle åbne appen.
+3. **Push-notifikationer:** hvis I har sat det op (se "Push-notifikationer
+   (valgfrit)" ovenfor), finder I en boks med samme navn på
+   administratorsiden. Tryk "Slå notifikationer til", og accepter
+   tilladelsen, browseren beder om. Hver administrator skal gøre dette på
+   sin egen telefon/enhed.
+4. **Opret en ny kalenderpost** ved at trykke "+ Ny kalenderpost". Udfyld
    navn, vælg status (Ønske/Godkendt), farve, samt start- og slutdato.
    Ankomst-/afrejsetidspunkt og intern kommentar er valgfrie.
-4. **Redigér eller slet** en post ved at trykke på en dag i kalenderen og
+5. **Redigér eller slet** en post ved at trykke på en dag i kalenderen og
    derefter "Redigér" på den ønskede post. Sletning sker fra
    redigeringsvisningen og kan ikke fortrydes.
-5. **Skift status** mellem "Ønske" og "Godkendt" ved at redigere posten – det
+6. **Skift status** mellem "Ønske" og "Godkendt" ved at redigere posten – det
    sker ikke automatisk, I bestemmer selv.
-6. **Overlappende ønsker** kræver ingen handling i sig selv – flere personer
+7. **Overlappende ønsker** kræver ingen handling i sig selv – flere personer
    kan gerne ønske samme periode. I beslutter selv, hvem der får perioden.
    Familie og venner ser ikke kalenderen og kan derfor ikke selv se, om en
    periode er ledig – de sender blot et ønske via "Ønsk booking" på forsiden
@@ -354,9 +393,9 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    ankomst-/afrejsetidspunkt, samt en valgfri besked, som gemmes som intern
    kommentar), og det dukker op i jeres kalender som en almindelig
    "Ønske"-post, I kan redigere og godkende/afvise som enhver anden post.
-7. **Skift den fælles adgangskode** når som helst under "Indstillinger" på
+8. **Skift den fælles adgangskode** når som helst under "Indstillinger" på
    administratorsiden.
-8. **Nøglegemmested-billedet** er ÉT fælles billede (ikke knyttet til en
+9. **Nøglegemmested-billedet** er ÉT fælles billede (ikke knyttet til en
    bestemt booking eller et bestemt ophold), vist øverst på både familiens
    forside og administratorsiden. Da de fleste ophold IKKE har en skjult
    nøgle (gæsten får den direkte af jer), vises der som udgangspunkt kun et
@@ -372,7 +411,7 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    > nye felter i `app_settings`. Kør `supabase/schema.sql` igen i Supabase
    > **SQL Editor** (se boksen i trin 4 ovenfor) før denne funktion virker,
    > hvis I opdaterer en database, der allerede kører.
-9. **Redigér praktisk info** ("Om lejligheden" fri tekst + FAQ + tjekliste
+10. **Redigér praktisk info** ("Om lejligheden" fri tekst + FAQ + tjekliste
    ved afrejse) under **Praktisk info** på administratorsiden. "Om
    lejligheden" er et frit tekstfelt til fx adresse og telefonnumre på
    relevante personer — vises øverst på familiens side, hvis det er udfyldt.
@@ -382,7 +421,7 @@ Denne vejledning findes også direkte i appen under **Administrator ->
    info" på forsiden. Familiens afkrydsninger på tjeklisten gemmes lokalt på
    den enkelte gæsts egen telefon (ikke i databasen) og forsvinder
    automatisk dagen efter opholdet slutter.
-10. **Se fejlrapporter** under **Fejlrapporter** på administratorsiden.
+11. **Se fejlrapporter** under **Fejlrapporter** på administratorsiden.
    Familie og venner kan rapportere mindre fejl/mangler (med op til 5
    billeder) fra forsiden under "Rapportér fejl" — det er kun synligt for
    jer. Markér en rapport som "løst", genåbn den, eller slet den permanent.
@@ -398,7 +437,7 @@ npm run typecheck  # Tjekker TypeScript-typer
 npm run build      # Bygger produktionsversionen (fanger evt. resterende fejl)
 ```
 
-Ved seneste kørsel i dette projekt: **54 tests bestået, ingen lint-fejl,
+Ved seneste kørsel i dette projekt: **152 tests bestået, ingen lint-fejl,
 ingen typefejl, build lykkedes.**
 
 ## 15. Begrænsninger i denne version

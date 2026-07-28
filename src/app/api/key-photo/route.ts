@@ -10,6 +10,7 @@ import {
   setKeyPhoto,
 } from '@/lib/settings/keyPhoto';
 import { getServiceSupabaseClient } from '@/lib/supabase/serviceClient';
+import { sendPushToAdmins } from '@/lib/notifications/push';
 
 /**
  * GET /api/key-photo
@@ -42,6 +43,7 @@ export async function POST(request: NextRequest) {
   if (!isAllowed) {
     return NextResponse.json({ error: 'Ikke godkendt.' }, { status: 401 });
   }
+  const isAdmin = !!(await requireAdmin());
 
   const formData = await request.formData().catch(() => null);
   const file = formData?.get('photo');
@@ -72,6 +74,17 @@ export async function POST(request: NextRequest) {
   }
 
   await setKeyPhoto(KEY_PHOTO_STORAGE_PATH, file.type);
+
+  if (!isAdmin) {
+    // Kun push, hvis det er familie/venner der har lagt et nyt billede op -
+    // administratorer behøver ikke selv få besked om deres egen handling.
+    await sendPushToAdmins({
+      title: 'Nyt nøglebillede',
+      body: 'Der er lagt et nyt billede af nøglegemmestedet op.',
+      url: '/',
+    });
+  }
+
   return NextResponse.json({ ok: true });
 }
 

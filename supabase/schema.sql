@@ -170,3 +170,18 @@ create trigger bug_reports_set_updated_at
 insert into storage.buckets (id, name, public)
 values ('bug-report-photos', 'bug-report-photos', false)
 on conflict (id) do nothing;
+
+-- Push-notifikations-abonnementer (Web Push). Kun administratorer kan
+-- oprette et abonnement (se /api/push/subscribe) - familie/venner får
+-- aldrig push-notifikationer. "endpoint" identificerer entydigt den
+-- browser/enhed, abonnementet hører til.
+create table if not exists public.push_subscriptions (
+  id uuid primary key default gen_random_uuid(),
+  endpoint text not null unique,
+  p256dh text not null,
+  auth text not null,
+  created_at timestamptz not null default now()
+);
+
+alter table public.push_subscriptions enable row level security;
+-- Ingen policies: kun service role kan læse/skrive.

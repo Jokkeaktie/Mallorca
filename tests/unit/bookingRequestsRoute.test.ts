@@ -3,10 +3,12 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 const hasFamilyOrAdminAccess = vi.fn();
 const createBooking = vi.fn();
 const sendBookingRequestNotification = vi.fn();
+const sendPushToAdmins = vi.fn();
 
 vi.mock('@/lib/auth/accessControl', () => ({ hasFamilyOrAdminAccess }));
 vi.mock('@/lib/bookings/repository', () => ({ createBooking }));
 vi.mock('@/lib/notifications/email', () => ({ sendBookingRequestNotification }));
+vi.mock('@/lib/notifications/push', () => ({ sendPushToAdmins }));
 
 const { POST } = await import('@/app/api/booking-requests/route');
 
@@ -23,6 +25,8 @@ describe('POST /api/booking-requests', () => {
     createBooking.mockReset();
     sendBookingRequestNotification.mockReset();
     sendBookingRequestNotification.mockResolvedValue(undefined);
+    sendPushToAdmins.mockReset();
+    sendPushToAdmins.mockResolvedValue(undefined);
   });
 
   const validPayload = {
@@ -125,6 +129,17 @@ describe('POST /api/booking-requests', () => {
       endDate: '2026-08-17',
       flightNumber: 'SK1533',
     });
+  });
+
+  it('sender en push-notifikation efter oprettelse af ønsket', async () => {
+    hasFamilyOrAdminAccess.mockResolvedValue(true);
+    createBooking.mockResolvedValue({ id: 'b1' });
+
+    await POST(makeRequest(validPayload));
+
+    expect(sendPushToAdmins).toHaveBeenCalledWith(
+      expect.objectContaining({ title: 'Nyt ønske om booking', url: '/admin' }),
+    );
   });
 
   it('afviser ugyldigt input (manglende navn)', async () => {
